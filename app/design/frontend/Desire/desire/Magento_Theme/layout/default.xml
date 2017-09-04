@@ -1,0 +1,53 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.png</argument>
+                <argument name="logo_img_width" xsi:type="number">73</argument>
+                <argument name="logo_img_height" xsi:type="number">90</argument>
+            </arguments>
+        </referenceBlock>
+		
+		<referenceBlock name="header.panel">
+			<block class="Magento\Framework\View\Element\Template" name="my-account-icon" before="header.links" template="TW_MS::my-account-icon.phtml">
+			</block>
+		</referenceBlock>
+		
+		<referenceBlock name="register-link">
+			<arguments>
+				<argument name="label" xsi:type="string" translate="true">Sign Up</argument>
+			</arguments>
+		</referenceBlock>
+		
+		<referenceBlock name="header.links" after="top.links">
+			<block class="TW\MS\Block\Link" name="return-and-exchange" after="register-link">
+				<arguments>
+					<argument name="label" xsi:type="string" translate="true">Return and Exchange</argument>
+					<argument name="path" xsi:type="string" translate="true">return-and-exchange</argument>
+				</arguments>
+			</block>
+			<block class="TW\MS\Block\Link" name="cancellation" after="register-link">
+				<arguments>
+					<argument name="label" xsi:type="string" translate="true">Cancellation</argument>
+					<argument name="path" xsi:type="string" translate="true">cancellation</argument>
+				</arguments>
+			</block>
+		</referenceBlock>
+		
+		<referenceBlock name="header" remove="true"/>
+		<referenceBlock name="register-link" remove="true"/>
+
+		<!--
+		<referenceBlock name="top.search" remove="true"/>
+		<referenceBlock name="minicart" remove="true"/>
+		-->
+		
+		<move element="breadcrumbs" destination="footer" before="-"/>
+		<move element="top.search" destination="footer"/>
+		<move element="minicart" destination="footer"/>
+		
+		
+		<move element="navigation.sections" destination="header-wrapper" />
+		<move element="header.panel.wrapper" destination="header-wrapper" />
+    </body>
+</page>

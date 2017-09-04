@@ -1,0 +1,83 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_SocialLogin
+ * @copyright   Copyright (c) 2016 Mageplaza (http://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+?>
+<div class="social-login block-container authentication">
+    <div class="social-login-title">
+        <h3 class="login-title">
+            <?php echo __('Login') ?>
+        </h3>
+		<p class="small-white"><?php echo __('Get access to your Orders,');?><br/><?php echo __('Whishlist and Recommendations.');?></p>
+    </div>
+    <div class="block social-login-customer-authentication col-mp" id="social-login-authentication">
+        <div class="block-title">
+            <span id="block-customer-login-heading" role="heading" aria-level="2"><?php echo __('SIGN IN') ?></span>
+        </div>
+        <div class="block-content" aria-labelledby="block-customer-login-heading">
+            <form class="form-customer-login" id="social-form-login" data-mage-init='{"validation":{}}'>
+                <?php echo $block->getBlockHtml('formkey'); ?>
+                <fieldset class="fieldset login" data-hasrequired="<?php 
+                echo __('* Required Fields') ?>">
+                    <div class="field email required">
+                        <div class="control">
+                            <input name="username" id="email" type="email" class="input-text"
+                                   value="<?php echo $block->escapeHtml($block->getUsername()) ?>"<?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                                   title="<?php echo __('Email') ?>" data-validate="{required:true, 'validate-email':true}">
+							<label class="label" for="email"><span><?php echo __('Email address / phone') ?></span></label>
+                        </div>
+                    </div>
+                    <div class="field password required">
+                        <div class="control">
+                            <input name="password" id="pass" type="password" class="input-text"<?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
+                                   title="<?php echo __('Password') ?>" data-validate="{required:true, 'validate-password':true}">
+							<label for="pass" class="label"><span><?php echo __('Password') ?></span></label>
+                        </div>
+                    </div>
+                    <?php echo $block->getChildHtml('form_additional_info'); ?>
+                    <?php echo $block->getChildHtml('login.captcha') ?>
+                    <div class="actions-toolbar">
+                        <div class="primary">
+                            <button type="button" class="action login primary" id="bnt-social-login-authentication"><span><?php echo __('continue') ?></span></button>
+                        </div>
+                        <!--<div class="secondary"><a class="action remind" href="#"><span><?php echo __('Forgot Your Password?') ?></span></a></div>-->
+                    </div>
+                    <div class="actions-toolbar">
+                        <div class="primary">New to Desire desire <a class="action create" href="#"><span><?php echo __('Sign Up') ?></span></a></div>
+                    </div>
+                </fieldset>
+            </form>
+			<script>
+				require(['jquery'],function($){
+					$(document).ready(function($) {
+						$("#social-login-popup .input-text").focus(function(){
+							$(this).parent().addClass("move-to-top");
+						}).blur(function(){
+							if(!$(this).val()){
+								$(this).parent().removeClass("move-to-top");
+							}
+						})
+					});  
+				});
+			</script>
+        </div>
+    </div>
+    <?php echo $block->getChildHtml('popup.authentication.social') ?>
+</div>
+
