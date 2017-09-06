@@ -43,11 +43,17 @@
 		-->
 		
 		<move element="breadcrumbs" destination="footer" before="-"/>
-		<move element="top.search" destination="footer"/>
-		<move element="minicart" destination="footer"/>
+		<move element="top.search" destination="before.body.end"/>
+		<move element="minicart" destination="before.body.end"/>
 		
 		
 		<move element="navigation.sections" destination="header-wrapper" />
 		<move element="header.panel.wrapper" destination="header-wrapper" />
+		
+		
+		<referenceContainer name="before.body.end">
+				<block class="\Magento\Framework\View\Element\Template" template="Magento_Theme::js/beforebodyend.phtml" name="before_body_js"/>
+		</referenceContainer>
+		
     </body>
 </page>

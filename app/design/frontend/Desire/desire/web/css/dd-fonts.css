@@ -6,7 +6,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'Affogato Light';
   src: url('../fonts/Affogato-Light.woff2') format('woff2'), 
@@ -41,4 +40,34 @@
 	   url('../fonts/Affogato-Black.woff') format('woff');
   font-weight: 700;
   font-style: normal;
+}
+
+/******************** Muller Fonts ********************************/
+
+@font-face {
+  font-family: 'MullerNarrow Light';
+  src: url('../fonts/MullerNarrow-Light.otf') format('opentype');
+  font-weight: 300;	
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MullerNarrow LightItalic';
+  src: url('../fonts/MullerNarrow-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MullerNarrow ExtraBold';
+  src: url('../fonts/MullerNarrow-ExtraBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MullerNarrow ExtraBoldItalic';
+  src: url('../fonts/MullerNarrow-ExtraBoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
 }

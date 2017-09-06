@@ -51,7 +51,7 @@ html {
   font-size-adjust: 100%;
 }
 body {
-  color: #333333;
+  color: #888;
   font-family: 'Affogato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -6340,9 +6340,17 @@ body.catalog-product-compare-index .action.print {
   text-align: center;
 }
 .minicart-wrapper {
-  display: inline-block;
-  position: relative;
-  float: right;
+    background: #ff685b none repeat scroll 0 0;
+	border-radius: 50%;
+    bottom: 0;
+    display: inline-block;
+    height: 80px;
+    position: fixed;
+    right: 195px;
+    text-align: center;
+    vertical-align: middle;
+    width: 80px;
+	z-index: 99;
 }
 .minicart-wrapper:before,
 .minicart-wrapper:after {
@@ -6359,9 +6367,9 @@ body.catalog-product-compare-index .action.print {
 }
 .minicart-wrapper .action.showcart:before {
   -webkit-font-smoothing: antialiased;
-  font-size: 22px;
+  font-size: 35px;
   line-height: 28px;
-  color: #8f8f8f;
+  color: #fff;
   content: '\e611';
   font-family: 'luma-icons';
   margin: 0;
@@ -6371,6 +6379,7 @@ body.catalog-product-compare-index .action.print {
   overflow: hidden;
   speak: none;
   text-align: center;
+  padding: 27px 0;
 }
 .minicart-wrapper .action.showcart:hover:before {
   color: #333333;
