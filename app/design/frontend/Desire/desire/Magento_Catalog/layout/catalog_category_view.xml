@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+	
+        <move element="catalog.leftnav" destination="category.product.list.additional" before="-"/>
+		
+		<referenceBlock name="content.top">
+			
+			<block class="Magento\Framework\View\Element\Template" name="top-filter" template="Magento_Catalog::navigation/top-filter.phtml"></block>
+		</referenceBlock>
+		
+		<referenceBlock name="page.bottom.container">
+			<block class="Magento\Framework\View\Element\Template" name="may-like-slider" template="Magento_Catalog::product/may-like-slider.phtml"></block>
+		</referenceBlock>
+    </body>
+</page>

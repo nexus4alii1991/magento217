@@ -92,7 +92,7 @@
 .owl-carousel .owl-video-wrapper {
 	position: relative;
 	height: 100%;
-	background: #000;
+	background: #ff685b;
 }
 .owl-carousel .owl-video-play-icon {
 	position: absolute;
@@ -229,7 +229,7 @@
 	width: 20px;
 	height: 1px;
 	content: "";
-	border-top: 2px solid #000;
+	border-top: 2px solid #ff685b;
 	transform: rotate(40deg);
 	border-radius: 20px;
 	text-indent: 0;
@@ -242,7 +242,7 @@
 	width: 20px;
 	height: 1px;
 	content: "";
-	border-top: 2px solid #000;
+	border-top: 2px solid #ff685b;
 	transform: rotate(-40deg);
 	border-radius: 20px;
 	text-indent: 0;
@@ -261,7 +261,7 @@
 	width: 20px;
 	height: 1px;
 	content: "";
-	border-top: 2px solid #000;
+	border-top: 2px solid #ff685b;
 	transform: rotate(40deg);
 	border-radius: 20px;
 }
@@ -273,18 +273,18 @@
 	width: 20px;
 	height: 1px;
 	content: "";
-	border-top: 2px solid #000;
+	border-top: 2px solid #ff685b;
 	transform: rotate(-40deg);
 	border-radius: 20px;
 }
 .owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
-	background: #000000;
+	background: #ff685b;
 	color: #fff;
 	text-decoration: none;
 }
 [class*=owl-carousel-products-].owl-theme .owl-controls .owl-nav [class*=owl-]:hover {
 	background: transparent;
-	color: #000000;
+	color: #ff685b;
 }
 .owl-theme .owl-controls .owl-nav [class*=owl-]:hover:before,
 .owl-theme .owl-controls .owl-nav [class*=owl-]:hover:after {
@@ -292,7 +292,7 @@
 }
 [class*=owl-carousel-products-].owl-theme .owl-controls .owl-nav [class*=owl-]:hover:before,
 [class*=owl-carousel-products-].owl-theme .owl-controls .owl-nav [class*=owl-]:hover:after {
-	border-color: #000000;
+	border-color: #ff685b;
 }
 .owl-theme .owl-controls .owl-nav .disabled {
 	opacity: .5;
@@ -329,10 +329,10 @@
 	border-radius: 30px;
 }
 .owl-theme .owl-dots .owl-dot:hover span {
-	background: #000000;
+	background: #ff685b;
 }
 .owl-theme .owl-dots .owl-dot.active span {
-	background: #000000;
+	background: #ff685b;
 }
 .no-js .owl-carousel {
 	display: block;

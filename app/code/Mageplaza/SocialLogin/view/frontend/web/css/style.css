@@ -21,11 +21,13 @@
 #social-login-popup .block-container {width: 100%; display: table; }
 #social-login-popup .social-login-title {padding: 0 0 30px 10px; background-color: #3399cc; width: 45%; display: table-cell; vertical-align: middle;}
 #social-login-popup .social-login-title .small-white{padding-left:15px; font-size:13px; color:#fff; margin-top: 15px;}
-#social-login-popup .block-container .block {padding: 20px 25px; margin: 0; }
+#social-login-popup .block-container .block {padding: 20px 25px; margin: 0; width: 100%;}
+#social-login-popup .block-container.authentication .block {padding-bottom: 20px;}
 .social-login-ajax-loading {width: 100%; height: 100%; position: absolute; opacity: 0.6; background: #fbfaf6; background-image: url('images/ajax-loader.gif'); background-repeat: no-repeat; background-position: center center; }
-#social-login-popup .block-container .block .block-title {padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #ccc;}
+#social-login-popup .block-container .block .block-title {padding-bottom: 10px; margin-bottom: 20px; font-family: Affogato Medium; color: #888;}
 #social-login-popup .fieldset {margin: 0 0 20px;}
-.actions-toolbar {margin-top: 7px;}
+.actions-toolbar {float: left;margin-bottom: 7px;}
+.actions-toolbar > span {line-height: 32px;}
 .account-social-login .actions-toolbar.social-btn {width: 215px;}
 #social-login-popup .actions-toolbar > .secondary .action.back {display: block;}
 .social-login-title h2 {margin: 0; padding-left: 15px; background-position: 12px center; background-repeat: no-repeat; color: #ffffff;}
@@ -36,6 +38,16 @@
 #social-login-popup .mfp-close {color: #3eadaa; font-weight: 100; font-size: 25px;}
 #social-login-popup .message.error > *:first-child:before{top: 50% !important;}
 #social-login-popup .message.success > *:first-child:before{top: 50% !important;}
+
+/* Input box animation */
+#social-login-popup input {border-top: none;border-left: none;border-right: none;}
+#social-login-popup .control{position:relative;}
+#social-login-popup label {position: absolute;bottom: 5px;left:0;transition: all .5s;pointer-events: none;}
+#social-login-popup .move-to-top label{bottom: 30px;}
+#social-login-popup .social-login #bnt-social-login-authentication, #social-login-popup .social-login .create.primary{padding: 10px 70px;width: 100%; border-radius: 20px;}
+.social-login-authentication-channel{padding-bottom: 10px;}
+.social-login-authentication-channel .block-content { margin: 0 auto; width: 154px;}
+
 /* Authentication Popup */
 .social-login-authentication-popup {width: 100% !important;}
 .social-login-authentication-popup .block-content {display: block !important;}
@@ -103,9 +115,8 @@
 .mfp-zoom-out.mfp-removing .mfp-with-anim {transform: scale(1.3); opacity: 0;}
 .mfp-zoom-out.mfp-removing.mfp-bg {opacity: 0;}
 
-.social-btn .btn-social{display: block; text-decoration: none; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.42857143; vertical-align: middle; touch-action: manipulation; cursor: pointer; user-select: none; background-image: none; border: 1px solid transparent; border-radius: 4px; padding-left: 44px;}
+.social-btn .btn-social{display: block; float:left; text-decoration: none; padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; line-height: 1.42857143; vertical-align: middle; touch-action: manipulation; cursor: pointer; user-select: none; background-image: none; border: 1px solid transparent; border-radius: 4px;}
 .btn-social{position:relative;padding-left:44px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.btn-social>:first-child{position:absolute;left:0;top:0;bottom:0;width:32px;line-height:34px;font-size:1.6em;text-align:center;border-right:1px solid rgba(0,0,0,0.2)}
 .btn-social.btn-lg{padding-left:61px}
 .btn-social.btn-lg>:first-child{line-height:45px;width:45px;font-size:1.8em}
 .btn-social.btn-sm{padding-left:38px}
@@ -148,6 +159,7 @@
 .btn-dropbox:active,.btn-dropbox.active,.open>.dropdown-toggle.btn-dropbox{background-image:none}
 .btn-dropbox.disabled:hover,.btn-dropbox[disabled]:hover,fieldset[disabled] .btn-dropbox:hover,.btn-dropbox.disabled:focus,.btn-dropbox[disabled]:focus,fieldset[disabled] .btn-dropbox:focus,.btn-dropbox.disabled.focus,.btn-dropbox[disabled].focus,fieldset[disabled] .btn-dropbox.focus{background-color:#1087dd;border-color:rgba(0,0,0,0.2)}
 .btn-dropbox .badge{color:#1087dd;background-color:#fff}
+/*
 .btn-facebook{color:#fff;background-color:#3b5998;border-color:rgba(0,0,0,0.2)}
 .btn-facebook:focus,.btn-facebook.focus{color:#fff;background-color:#2d4373;border-color:rgba(0,0,0,0.2)}
 .btn-facebook:hover{color:#fff;background-color:#2d4373;border-color:rgba(0,0,0,0.2)}
@@ -299,4 +311,8 @@
 .btn-amazon:active:hover,.btn-amazon.active:hover,.open>.dropdown-toggle.btn-amazon:hover,.btn-amazon:active:focus,.btn-amazon.active:focus,.open>.dropdown-toggle.btn-amazon:focus,.btn-amazon:active.focus,.btn-amazon.active.focus,.open>.dropdown-toggle.btn-amazon.focus{color:#fff;background-color:#ffb425;border-color:rgba(0,0,0,0.2)}
 .btn-amazon:active,.btn-amazon.active,.open>.dropdown-toggle.btn-amazon{background-image:none}
 .btn-amazon.disabled:hover,.btn-amazon[disabled]:hover,fieldset[disabled] .btn-amazon:hover,.btn-amazon.disabled:focus,.btn-amazon[disabled]:focus,fieldset[disabled] .btn-amazon:focus,.btn-amazon.disabled.focus,.btn-amazon[disabled].focus,fieldset[disabled] .btn-amazon.focus{background-color:#ff9900;border-color:rgba(0,0,0,0.2)}
-.btn-amazon .badge{color:#ff9900;background-color:#fff}
+.btn-amazon .badge{color:#ff9900;background-color:#fff}*/
+
+@media(max-width:767px){
+.social-login-title .small-white {display: none;}
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright © 2016 Magento. All rights reserved.
+* See COPYING.txt for license details.
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<head>
+<script src="Magento_Checkout::js/custom-one.js"/>
+</head>
+   <body>
+<referenceBlock name="checkout.root">
+               <arguments>
+                   <argument name="jsLayout" xsi:type="array">
+                       <!-- Your customization will be here -->
+                       ...
+                   </argument>
+               </arguments>
+       </referenceBlock>
+       <referenceBlock name="minicart" remove="false"/>
+       <referenceContainer name="header.panel" remove="false"/>
+       <referenceBlock name="top.search" remove="false"/>
+       <referenceBlock name="catalog.compare.link" remove="false"/>
+       <referenceBlock name="catalog.topnav" remove="false"/>
+<!--<referenceContainer name="content">
+  <block class="Mageplaza\SocialLogin\Block\Form\Login" before="-" name="popup-authentication" ifconfig="sociallogin/general/is_enabled" template="Mageplaza_SocialLogin::popup/form/authentication.phtml" />
+   </referenceContainer>-->
+       <referenceContainer name="footer-container" remove="false"/>
+       <move element="logo" destination="checkout.header.wrapper"/>
+   </body>
+</page>
