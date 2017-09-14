@@ -984,7 +984,7 @@
     text-align: right;
   }
   .paypal-review-discount {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .paypal-review-discount .block {
     margin-bottom: 15px;
@@ -1497,28 +1497,29 @@
     display: none;
   }
   .opc-progress-bar {
-    margin: 0 0 20px;
-    counter-reset: i;
+    counter-reset: i 0;
     display: block;
     font-size: 0;
+    padding: 40px 0 60px;
+    width: 100%;
   }
   .opc-progress-bar-item {
-    margin: 0 0 10px;
-    width: 185px;
+    margin-right: 10px!important;
+    width: 200px;
     display: inline-block;
     position: relative;
     text-align: center;
     vertical-align: top;
   }
   .opc-progress-bar-item:before {
-    background: #e4e4e4;
+    /*background: #e4e4e4;
     top: 19px;
     transition: background 0.3s;
     content: '';
     height: 7px;
     left: 0;
     position: absolute;
-    width: 100%;
+    width: 100%;*/
   }
   .opc-progress-bar-item:first-child:before {
     border-radius: 6px 0 0 6px;
@@ -1527,8 +1528,10 @@
     border-radius: 0 6px 6px 0;
   }
   .opc-progress-bar-item > span {
+	border: 1px solid #ddd;
+    border-radius: 50px;
     display: inline-block;
-    padding-top: 45px;
+    padding: 13px 0;
     width: 100%;
     word-wrap: break-word;
     color: #e4e4e4;
@@ -1537,7 +1540,7 @@
   }
   .opc-progress-bar-item > span:before,
   .opc-progress-bar-item > span:after {
-    background: #e4e4e4;
+    /*background: #e4e4e4;
     height: 38px;
     margin-left: -19px;
     transition: background 0.3s;
@@ -1546,10 +1549,10 @@
     content: '';
     left: 50%;
     position: absolute;
-    top: 0;
+    top: 0;*/
   }
   .opc-progress-bar-item > span:after {
-    background: #ffffff;
+    /*background: #ffffff;
     height: 26px;
     margin-left: -13px;
     top: 6px;
@@ -1558,7 +1561,7 @@
     counter-increment: i;
     color: #333333;
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: 1.8rem;*/
   }
   .opc-progress-bar-item._complete {
     cursor: pointer;
@@ -1572,7 +1575,7 @@
   .opc-progress-bar-item._complete > span {
     color: #ff685b;
   }
-  .opc-progress-bar-item._complete > span:after {
+  .opc-progress-bar-item._complete > span:before {
     font-family: 'luma-icons';
     content: '\e610';
   }
@@ -1580,12 +1583,13 @@
     background: #ff685b;
   }
   .opc-progress-bar-item._active > span {
-    color: #333333;
+	border-color: #ff685b;
+    color: #ff685b;
   }
   .opc-progress-bar-item._active > span:before {
-    background: #ff685b;
+    /*background: #ff685b;*/
   }
-  .opc-progress-bar-item._active > span:after {
+  .opc-progress-bar-item._active > span:before {
     font-family: 'luma-icons';
     content: '\e610';
   }
@@ -2119,7 +2123,7 @@
   .account .data.table.table-giftregistry-items > thead > tr > td,
   .account .data.table.table-giftregistry-items > tbody > tr > td,
   .account .data.table.table-giftregistry-items > tfoot > tr > td {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .account .data.table.table-giftregistry-items > caption + thead > tr:first-child > th,
   .account .data.table.table-giftregistry-items > colgroup + thead > tr:first-child > th,
@@ -2130,7 +2134,7 @@
     border-top: 0;
   }
   .account .data.table.table-giftregistry-items > tbody + tbody {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .account .data.table.table-giftregistry-items th {
     border-bottom: 0;
@@ -2247,7 +2251,7 @@
     z-index: 1;
   }
   .page-layout-1column .filter.block {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .page-layout-1column .filter-content {
     margin-top: 10px;
@@ -3015,10 +3019,11 @@
     margin-top: 13px;
   }
   .checkout-index-index .modal-popup .modal-inner-wrap {
-    margin-left: -400px;
-    width: 800px;
+	border-radius: 10px;
     left: 50%;
-  }
+    transform: translate(-50%, 0px);
+    width: 575px;
+	}
   .opc-wrapper .shipping-address-item:before {
     background: #cccccc;
     height: calc(100% - 20px);
@@ -3682,8 +3687,144 @@ section.title-bar-container {
 /**********************************************************/
 /***************Checkout Page Css *************************/
 /**********************************************************/
-#checkout-step-shipping .addresses {
-    border-radius: 5px;
+#checkout-progress-bar {
+    float: left;
+    position: relative;
+    width: 100%;
+}
+.checkout-progress-bar-background {
+    background-color: #f6f6f6;
+    float: left;
+    padding: 6% 0;
+    position: absolute;
+    width: 100%;
+    z-index: -99;
+}
+#checkout-step-shipping {
+    /*border-radius: 5px;
     box-shadow: 5px 7px 20px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 20px;*/
+}
+.opc-order-details {
+    margin-bottom: 50px;
+}
+.opc-order-details a {
+    color: #494949;
+}
+.opc-row {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+.red {
+    color: #ff685b;
+}
+.opc-order-details-gift {
+    margin-bottom: 10px;
+}
+.opc-gift-row {
+    display: flex;
+}
+.opc-gift-row .clear-text {
+    background: #ff685b none repeat scroll 0 0;
+    color: #fff;
+    padding: 6px 20px;
+}
+table.ord_summary th, table.ord_summary td{
+
+	vertical-align:middle;
+}
+table.ord_summary th {
+    color: #ddd;
+}
+table.ord_summary tbody tr {
+    border-top: 1px solid #ddd;
+}
+table.ord_summary tfoot {
+    border-top: 1px solid #ddd;
+}
+.checkout-shipping-method .step-title {
+    display: none;
+}
+#checkout-shipping-method-load {
+    display: none;
+}
+.checkout-index-index .social-login-title {
+    height: 70px;
+    padding-left: 60px;
+    padding-top: 15px;
+    position: relative;
+}
+#checkout #shipping .step-title::before {
+    background: #ff685b none repeat scroll 0 0;
+    border-radius: 50%;
+    color: #fff;
+    content: counter(count, decimal);
+    counter-increment: count 1;
+    font-family: affogato medium;
+    height: 50px;
+	left: 0;
+    padding-top: 6px;
+    position: absolute;
+    text-align: center;
+    width: 50px;
+}
+
+#checkout-payment-method-load .step-title:before{
+	background: #ff685b none repeat scroll 0 0;
+    border-radius: 50%;
+    color: #fff;
+    content: counter(count, decimal);
+    counter-increment: count 2;
+    font-family: affogato medium;
+    height: 50px;
+	left: 0;
+    padding-top: 6px;
+    position: absolute;
+    text-align: center;
+    width: 50px;
+}
+#checkout .step-title {
+	margin-bottom: 20px;
+    padding-left: 60px;
+    position: relative;
+}
+#shipping-new-address-form .input-text {
+    border: none;
+	border-bottom: 1px solid #ddd;
+}
+#shipping-new-address-form.fieldset.address .field._required:nth-child(1){
+	display:inline-block;
+	padding-right: 20px;
+    width: 50%;
+}
+#shipping-new-address-form.fieldset.address .field._required:nth-child(2){
+	display:inline-block;
+    width: 50%;
+}
+#shipping-new-address-form.fieldset.address .field._required:nth-child(4){
+	display:inline-block;
+	padding-right: 20px;
+    width: 50%;
+}
+#shipping-new-address-form.fieldset.address .field:nth-child(6){
+	display:inline-block;
+    width: 50%;
+}
+#co-shipping-form .label {
+    color: #ddd;
+}
+#shipping-new-address-form {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 30px;
+}
+.opc-block-shipping-information {
+    display: none;
+}
+.payment-option.discount-code {
+    float: left;
+    width: 100%;
+}
+#checkout .actions-toolbar {
+    float: none;
 }

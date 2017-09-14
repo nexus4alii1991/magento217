@@ -1,45 +1,52 @@
 <!--
 /**
- * Copyright © 2013-2017 Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
+* Copyright © 2013-2017 Magento, Inc. All rights reserved.
+* See COPYING.txt for license details.
+*/
 -->
 
 <!-- ko foreach: getRegion('before_details') -->
-    <!-- ko template: getTemplate() --><!-- /ko -->
+   <!-- ko template: getTemplate() --><!-- /ko -->
 <!-- /ko -->
-<div class="product-item-details">
 
-    <div class="product-item-inner">
-        <div class="product-item-name-block">
-            <strong class="product-item-name" data-bind="text: $parent.name"></strong>
-            <div class="details-qty">
-                <span class="label"><!-- ko i18n: 'Qty' --><!-- /ko --></span>
-                <span class="value" data-bind="text: $parent.qty"></span>
-            </div>
-        </div>
-        <!-- ko foreach: getRegion('after_details') -->
-            <!-- ko template: getTemplate() --><!-- /ko -->
-        <!-- /ko -->
-    </div>
+	<tr>
+		<td>
+			<img src="http://localhost/magento217/pub/media/catalog/product/cache/thumbnail/75x75/beff4985b56e3afdbeabfc89641a4582/w/h/wh03-red_main.jpg"/>
+			<strong class="product-item-name"  data-bind="text: $parent.name"></strong>
+		</td>
+		<td><strong class="product-item-price" data-bind="text: $parent.price"></strong></td>
+		<td><span class="value"  data-bind="text: $parent.qty"></span></td>
+		<td><strong><span class="product-item-subtotal" data-bind="text: $parent.base_row_total"></span></strong></td>
+	</tr>
 
-    <!-- ko if: (JSON.parse($parent.options).length > 0)-->
-    <div class="product options" data-bind="mageInit: {'collapsible':{'openedState': 'active'}}">
-        <span data-role="title" class="toggle"><!-- ko i18n: 'View Details' --><!-- /ko --></span>
-        <div data-role="content" class="content">
-            <strong class="subtitle"><!-- ko i18n: 'Options Details' --><!-- /ko --></strong>
-            <dl class="item-options">
-                <!--ko foreach: JSON.parse($parent.options)-->
-                <dt class="label" data-bind="text: label"></dt>
-                    <!-- ko if: ($data.full_view)-->
-                    <dd class="values" data-bind="html: full_view"></dd>
-                    <!-- /ko -->
-                    <!-- ko ifnot: ($data.full_view)-->
-                    <dd class="values" data-bind="html: value"></dd>
-                    <!-- /ko -->
-                <!-- /ko -->
-            </dl>
-        </div>
-    </div>
-    <!-- /ko -->
-</div>
+    <!--<div class="product-item-inner">
+       <div class="product-item-name-block">
+           <strong class="product-item-name" data-bind="text: $parent.name"></strong>
+           <div class="details-qty">
+               <span class="label"><!-- ko i18n: 'Qty' --><!-- /ko --><!--</span>-->
+             <!--  <span>+</span><span class="value" data-bind="text: $parent.qty"></span><span>-</span>
+           </div>
+       </div>-->
+       <!-- ko foreach: getRegion('after_details') -->
+           <!-- ko template: getTemplate() --><!-- /ko -->
+       <!-- /ko -->
+  <!-- </div>-->
+
+   <!-- ko if: (JSON.parse($parent.options).length > 0)-->
+   <!--<div class="product options" data-bind="mageInit: {'collapsible':{'openedState': 'active'}}">
+       <span data-role="title" class="toggle"><!-- ko i18n: 'View Details' --><!-- /ko --><!--</span>
+       <div data-role="content" class="content">
+           <strong class="subtitle"><!-- ko i18n: 'Options Details' --><!-- /ko --><!--</strong>
+        <!--   <dl class="item-options">
+               <!--ko foreach: JSON.parse($parent.options)-->
+               <!--<dt class="label" data-bind="text: label"></dt>
+                   <!-- ko if: ($data.full_view)-->
+                 <!--  <dd class="values" data-bind="html: full_view"></dd>
+                   <!-- /ko -->
+                   <!-- ko ifnot: ($data.full_view)-->
+                   <!--<dd class="values" data-bind="html: value"></dd>
+                   <!-- /ko -->
+               <!-- /ko -->
+          <!-- </dl>
+       </div>
+   </div>-->

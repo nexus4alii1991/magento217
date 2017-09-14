@@ -127,7 +127,7 @@ small,
 }
 hr {
   border: 0;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   margin-bottom: 20px;
   margin-top: 20px;
 }
@@ -371,9 +371,9 @@ table > tfoot > tr > td {
 }
 button {
   background-image: none;
-  background: #eeeeee;
-  border: 1px solid #cccccc;
-  color: #333333;
+  background: #ff685b;
+  border: 1px solid #ff685b;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
   font-family: 'Affogato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -392,9 +392,9 @@ button:active {
   color: #333333;
 }
 button:hover {
-  background: #e1e1e1;
-  border: 1px solid #cccccc;
-  color: #333333;
+  background: #ff6800;
+  border: 1px solid #ff6800;
+  color: #fff;
 }
 button.disabled,
 button[disabled],
@@ -2003,7 +2003,7 @@ fieldset[disabled] .form.send.friend .action.remove {
 .cart-summary .block > .title,
 .paypal-review-discount .block > .title,
 .cart-discount .block > .title {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   cursor: pointer;
   margin-bottom: 0;
   position: relative;
@@ -2624,7 +2624,7 @@ fieldset[disabled] .form.send.friend .action.remove {
 }
 .cart-totals,
 .opc-block-summary .table-totals {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   padding-top: 10px;
 }
 .cart-totals tbody .mark,
@@ -2660,13 +2660,13 @@ fieldset[disabled] .form.send.friend .action.remove {
 .cart-totals .grand .mark,
 .opc-block-summary .table-totals .grand .mark {
   font-size: 1.8rem;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   padding-right: 10px;
 }
 .cart-totals .grand .amount,
 .opc-block-summary .table-totals .grand .amount {
   font-size: 1.8rem;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .cart-totals .msrp,
 .opc-block-summary .table-totals .msrp {
@@ -2681,7 +2681,7 @@ fieldset[disabled] .form.send.friend .action.remove {
 .opc-block-summary .table-totals .totals-tax-summary .mark,
 .opc-block-summary .table-totals .totals-tax-summary .amount {
   border-bottom: 1px solid #cccccc;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   cursor: pointer;
 }
 .cart-totals .totals-tax-summary .amount .price,
@@ -2855,7 +2855,7 @@ table > caption {
 }
 .table tfoot > tr:first-child th,
 .table tfoot > tr:first-child td {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   padding-top: 20px;
 }
 .table tfoot th,
@@ -3655,7 +3655,7 @@ a.action.primary {
   border-radius: 30px;
 }
 button:not(.primary) {
-  box-shadow: inset 0 1px 0 0 #ffffff, inset 0 -1px 0 0 rgba(204, 204, 204, 0.3);
+  box-shadow: inset 0 1px 0 0 #ff685b, inset 0 -1px 0 0 rgba(204, 204, 204, 0.3);
 }
 button:not(.primary):active {
   box-shadow: inset 0 1px 0 0 rgba(204, 204, 204, 0.8), inset 0 -1px 0 0 rgba(204, 204, 204, 0.3);
@@ -3742,7 +3742,7 @@ fieldset[disabled] .action.primary {
   margin: 0;
 }
 .product.data.items > .item.title > .switch {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   height: 40px;
   padding: 1px 10px 1px 10px;
   font-weight: 600;
@@ -4460,7 +4460,7 @@ fieldset[disabled] .modal-slide .action-close {
   margin-top: 2.1rem;
 }
 .modals-overlay {
-  background-color: rgba(51, 51, 51, 0.55);
+  background-color: rgba(255, 255, 255, 0.95);
   bottom: 0;
   left: 0;
   position: fixed;
@@ -5170,7 +5170,7 @@ fieldset[disabled] .action-braintree-paypal-logo {
   font-weight: 600;
 }
 .bundle-options-container .product-options-bottom {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   clear: left;
   margin: 0 0 40px;
   padding-top: 20px;
@@ -5989,7 +5989,7 @@ body.catalog-product-compare-index .action.print {
   display: none;
 }
 .block-search .control {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   clear: both;
   margin: 0 -15px -1px;
   padding: 0 15px;
@@ -6660,7 +6660,7 @@ fieldset[disabled] .minicart-wrapper .action.close {
   padding: 20px 0;
 }
 .minicart-items .product-item:not(:first-child) {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .minicart-items .product-item:first-child {
   padding-top: 0;
@@ -6680,7 +6680,7 @@ fieldset[disabled] .minicart-wrapper .action.close {
   color: #ff685b;
 }
 .minicart-items .product-item-details {
-  padding-left: 88px;
+  /*padding-left: 88px;*/
 }
 .minicart-items .product-item-details .price {
   font-weight: 700;
@@ -6809,11 +6809,6 @@ fieldset[disabled] .minicart-wrapper .action.close {
 .opc-wrapper .step-content {
   margin: 0 0 40px;
 }
-.form.methods-shipping{
-  border-radius: 5px;
-  box-shadow: 5px 7px 20px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-}
 .checkout-index-index .nav-sections,
 .checkout-index-index .nav-toggle {
   display: none;
@@ -6824,7 +6819,7 @@ fieldset[disabled] .minicart-wrapper .action.close {
 .opc-estimated-wrapper {
   background: #f4f4f4;
   border-bottom: 1px solid #cccccc;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   margin: -21px -15px 15px;
   padding: 18px 15px;
 }
@@ -7070,7 +7065,7 @@ fieldset[disabled] .opc-estimated-wrapper .minicart-wrapper button.action.showca
   display: none;
 }
 .table-checkout-shipping-method tbody td {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   padding-bottom: 20px;
   padding-top: 20px;
 }
@@ -7167,7 +7162,7 @@ fieldset[disabled] .opc-estimated-wrapper .minicart-wrapper button.action.showca
   border: 1px solid #ddd;
   border-radius: 5px;
   margin: 0 0 20px;
-  padding: 22px 30px;
+  padding: 0;
 }
 .opc-block-summary > .title {
   display: block;
@@ -7240,9 +7235,7 @@ fieldset[disabled] .opc-estimated-wrapper .minicart-wrapper button.action.showca
   position: relative;
 }
 .opc-block-summary .minicart-items-wrapper {
-  margin: 0 -15px 0 0;
-  max-height: 370px;
-  padding: 15px 15px 0 0;
+  margin: 0;
   border: 0;
 }
 .column.main .opc-block-summary .product-item {
@@ -7353,7 +7346,7 @@ fieldset[disabled] .opc-estimated-wrapper .minicart-wrapper button.action.showca
   display: block;
 }
 .checkout-payment-method .payment-method + .payment-method .payment-method-title {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .checkout-payment-method .payment-method-title {
   padding: 20px 0;
@@ -7416,7 +7409,7 @@ fieldset[disabled] .opc-estimated-wrapper .minicart-wrapper button.action.showca
   display: none;
 }
 .checkout-payment-method .payment-option-title {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
   padding: 20px 0;
 }
 .checkout-payment-method .payment-option-title .action-toggle {
@@ -9624,7 +9617,7 @@ fieldset[disabled] .magento-rma-guest-create .order-links .item a {
   border-bottom: 1px solid #cccccc;
 }
 .order-details-items .table-order-items tbody + tbody {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .account .order-details-items .table-order-items tbody tr:nth-child(even) td {
   background: none;
@@ -10365,7 +10358,7 @@ fieldset[disabled] .my-credit-cards-popup .action.secondary {
 .account .table-wrapper .data.table.wishlist > thead > tr > td,
 .account .table-wrapper .data.table.wishlist > tbody > tr > td,
 .account .table-wrapper .data.table.wishlist > tfoot > tr > td {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .account .table-wrapper .data.table.wishlist > caption + thead > tr:first-child > th,
 .account .table-wrapper .data.table.wishlist > colgroup + thead > tr:first-child > th,
@@ -10376,7 +10369,7 @@ fieldset[disabled] .my-credit-cards-popup .action.secondary {
   border-top: 0;
 }
 .account .table-wrapper .data.table.wishlist > tbody + tbody {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #ddd;
 }
 .account .table-wrapper .data.table.wishlist thead > tr > th {
   border-bottom: 0;
@@ -11020,7 +11013,7 @@ fieldset[disabled] .sidebar .block-addbysku .action.remove {
     text-align: right;
   }
   .table-wrapper {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
     overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
@@ -11597,7 +11590,7 @@ fieldset[disabled] .sidebar .block-addbysku .action.remove {
   .abs-toggling-title-mobile,
   .block-wishlist-management .wishlist-select .wishlist-name,
   .block-collapsible-nav .title {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
     cursor: pointer;
     margin-bottom: 0;
     position: relative;
@@ -12087,7 +12080,7 @@ fieldset[disabled] .sidebar .block-addbysku .action.remove {
     border-bottom: 1px solid #cccccc;
   }
   .cart.table-wrapper {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .cart.table-wrapper thead .col.item,
   .cart.table-wrapper thead .col.qty,
@@ -12859,10 +12852,10 @@ fieldset[disabled] .sidebar .block-addbysku .action.remove {
   }
   .table > tbody > tr > th,
   .table > tbody > tr > td {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .table > tbody + tbody {
-    border-top: 1px solid #cccccc;
+    border-top: 1px solid #ddd;
   }
   .ui-dialog.popup {
     width: 420px;

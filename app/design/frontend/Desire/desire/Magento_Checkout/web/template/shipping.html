@@ -5,7 +5,7 @@
  */
 -->
 <li id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
-    <div class="step-title" data-bind="i18n: 'Shipping Address'" data-role="title"></div>
+    <div class="step-title" data-bind="i18n: 'Delivery Address'" data-role="title"></div>
     <div id="checkout-step-shipping"
          class="step-content"
          data-role="content">
@@ -51,7 +51,7 @@
 <li id="opc-shipping_method"
     class="checkout-shipping-method"
     data-bind="fadeVisible: visible(), blockLoader: isLoading"
-    role="presentation" style="display:none">
+    role="presentation">
     <div class="checkout-shipping-method">
         <div class="step-title" data-bind="i18n: 'Shipping Methods'" data-role="title"></div>
         <!-- ko foreach: getRegion('before-shipping-method-form') -->
@@ -148,7 +148,7 @@
                 <div class="actions-toolbar" id="shipping-method-buttons-container">
                     <div class="primary">
                         <button data-role="opc-continue" type="submit" class="button action continue primary">
-                            <span><!-- ko i18n: 'Next'--><!-- /ko --></span>
+                            <span><!-- ko i18n: 'Continue'--><!-- /ko --></span>
                         </button>
                     </div>
                 </div>
@@ -157,4 +157,11 @@
             <!-- ko ifnot: rates().length > 0 --><div class="no-quotes-block"><!-- ko i18n: 'Sorry, no quotes are available for this order at this time'--><!-- /ko --></div><!-- /ko -->
         </div>
     </div>
+</li>
+
+
+<li class="payment-method-hidden">
+	<div class="payment-method-image">
+		<img src="http://#">
+	</div>
 </li>

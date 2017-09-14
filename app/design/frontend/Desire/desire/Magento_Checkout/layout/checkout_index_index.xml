@@ -6,26 +6,62 @@
 */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-<head>
-<script src="Magento_Checkout::js/custom-one.js"/>
-</head>
    <body>
-<referenceBlock name="checkout.root">
+		<referenceBlock name="page.top">
+			<block class="Magento\Framework\View\Element\Template" name="new-progressbar" template="Magento_Checkout::progressbar.phtml">
+			</block>
+		</referenceBlock>
+
+		<referenceBlock name="checkout.root">
                <arguments>
                    <argument name="jsLayout" xsi:type="array">
-                       <!-- Your customization will be here -->
-                       ...
+						<item name="components" xsi:type="array">
+                           <item name="checkout" xsi:type="array">
+                               <item name="children" xsi:type="array">
+                                   <item name="authentication" xsi:type="array">
+                                       <item name="config" xsi:type="array">
+                                           <item name="componentDisabled" xsi:type="boolean">true</item>
+                                       </item>
+                                   </item>
+									<item name="steps" xsi:type="array">
+										<item name="children" xsi:type="array">
+											<item name="shipping-step" xsi:type="array">
+												<item name="children" xsi:type="array">
+													<item name="shippingAddress" xsi:type="array">
+														<item name="children" xsi:type="array">
+															<!-- The name of the form the field belongs to -->
+															<item name="shipping-address-fieldset" xsi:type="array">
+																<item name="children" xsi:type="array">
+																	<!--Remove fields-->
+																	<item name="company" xsi:type="array">
+																		<item name="visible" xsi:type="boolean">false</item>
+																	</item>
+																</item>
+															</item>
+														</item>
+													</item>
+												</item>
+											</item>
+										</item>
+									</item>
+                               </item>
+                           </item>
+                       </item>
                    </argument>
                </arguments>
-       </referenceBlock>
-       <referenceBlock name="minicart" remove="false"/>
-       <referenceContainer name="header.panel" remove="false"/>
-       <referenceBlock name="top.search" remove="false"/>
-       <referenceBlock name="catalog.compare.link" remove="false"/>
-       <referenceBlock name="catalog.topnav" remove="false"/>
-<!--<referenceContainer name="content">
-  <block class="Mageplaza\SocialLogin\Block\Form\Login" before="-" name="popup-authentication" ifconfig="sociallogin/general/is_enabled" template="Mageplaza_SocialLogin::popup/form/authentication.phtml" />
-   </referenceContainer>-->
+		</referenceBlock>
+		
+		
+		<referenceBlock name="authentication" remove="true"/>
+		
+		<referenceBlock name="minicart" remove="false"/>
+		<referenceContainer name="header.panel" remove="false"/>
+		<referenceBlock name="top.search" remove="false"/>
+		<referenceBlock name="catalog.compare.link" remove="false"/>
+		<referenceBlock name="catalog.topnav" remove="false"/>
+		<!--<referenceContainer name="content">
+			<block class="Mageplaza\SocialLogin\Block\Form\Login" before="-" name="popup-authentication" ifconfig="sociallogin/general/is_enabled" template="Mageplaza_SocialLogin::popup/form/authentication.phtml" />
+		</referenceContainer>-->
        <referenceContainer name="footer-container" remove="false"/>
        <move element="logo" destination="checkout.header.wrapper"/>
    </body>

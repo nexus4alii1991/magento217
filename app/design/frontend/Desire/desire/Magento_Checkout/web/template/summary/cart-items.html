@@ -5,59 +5,122 @@
  */
 -->
 <!-- ko ifnot: isItemsBlockExpanded() -->
-<div class="block items-in-cart active" data-bind="mageInit: {'collapsible':{'openedState': 'active'}}">
-    <div class="title" data-role="title">
-        <strong role="heading"><span data-bind="text: getItemsQty()"></span>
-            <!-- ko if: getItemsQty() == 1 -->
-            <!-- ko i18n: 'Item in Cart' --><!-- /ko -->
-            <!-- /ko -->
-            <!-- ko if: getItemsQty() > 1 -->
-            <!-- ko i18n: 'Items in Cart' --><!-- /ko -->
-            <!-- /ko -->
-        </strong>
-    </div>
+<div class="block items-in-cart">
     <div class="content minicart-items" data-role="content">
         <div class="minicart-items-wrapper overflowed">
-            <ol class="minicart-items">
-                <!-- ko foreach: getItems() -->
-                <li class="product-item">
+            <div class="minicart-items">
+                <div class="product-item">
                     <div class="product">
-                        <!-- ko foreach: $parent.elems() -->
-                        <!-- ko template: getTemplate() --><!-- /ko -->
-                        <!-- /ko -->
+						<div class="product-item-details">
+							<table class="ord_summary">
+								<thead class="summ-head">
+									<tr>
+										<th>Product</th>
+										<th>Price</th>
+										<th>Qty</th>
+										<th>Subtotal</th>
+									</tr>
+								</thead>
+								<tbody>
+								<!-- ko foreach: getItems() -->
+						
+									<!-- ko foreach: $parent.elems() -->
+									<!-- ko template: getTemplate() --><!-- /ko -->
+									<!-- /ko -->
+								
+								 <!-- /ko -->
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="lite-text" >Subtotal</span>
+										</td>
+										<td colspan="1">
+											<span class="clear-text">1234567890</span>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="lite-text" >Shipping</span>
+										</td>
+										<td colspan="1">
+											<span class="clear-text">0</span>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="red">Total</span>
+										</td>
+										<td colspan="1">
+											<span class="red">901234456</span>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
                     </div>
-                </li>
-                <!-- /ko -->
-            </ol>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <!-- /ko -->
 <!-- ko if: isItemsBlockExpanded() -->
-<div class="block items-in-cart" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'active': true}}">
-    <div class="title" data-role="title">
-        <strong role="heading"><span data-bind="text: getItemsQty()"></span>
-            <!-- ko if: getItemsQty() == 1 -->
-            <!-- ko i18n: 'Item in Cart' --><!-- /ko -->
-            <!-- /ko -->
-            <!-- ko if: getItemsQty() > 1 -->
-            <!-- ko i18n: 'Items in Cart' --><!-- /ko -->
-            <!-- /ko -->
-        </strong>
-    </div>
+<div class="block items-in-cart active" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'active': true}}">
     <div class="content minicart-items" data-role="content">
         <div class="minicart-items-wrapper overflowed">
-            <ol class="minicart-items">
-                <!-- ko foreach: getItems() -->
-                <li class="product-item">
+            <div class="minicart-items">
+                <div class="product-item">
                     <div class="product">
-                        <!-- ko foreach: $parent.elems() -->
-                        <!-- ko template: getTemplate() --><!-- /ko -->
-                        <!-- /ko -->
+						<div class="product-item-details">
+							<table class="ord_summary">
+								<thead class="summ-head">
+									<tr>
+										<th>Product</th>
+										<th>Price</th>
+										<th>Qty</th>
+										<th>Subtotal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<!-- ko foreach: getItems() -->
+										<!-- ko foreach: $parent.elems() -->
+										<!-- ko template: getTemplate() --><!-- /ko -->
+										<!-- /ko -->
+									 <!-- /ko -->
+									 
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="lite-text" >Subtotal</span>
+										</td>
+										<td colspan="1">
+											<span class="clear-text">1234567890</span>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="lite-text" >Shipping</span>
+										</td>
+										<td colspan="1">
+											<span class="clear-text">0</span>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right">
+											<span class="red">Total</span>
+										</td>
+										<td colspan="1">
+											<span class="red">901234456</span>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
                     </div>
-                </li>
-                <!-- /ko -->
-            </ol>
+                </div>
+            </div>
         </div>
     </div>
 </div>
