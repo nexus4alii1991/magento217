@@ -1,0 +1,42 @@
+ require([ 'jquery', 'jquery/ui'], function($){
+  jQuery(document).ready(function(){  
+  var count="";
+  var city = "";
+  var country = "";
+  var state = "";
+  var jui = "";
+    jQuery(document).on('change','input[name="postcode"]',function(){
+		var tyu = $('input[name="postcode"]').val();
+		 $.ajax({
+                                showLoader: false,
+                                url: "https://maps.googleapis.com/maps/api/geocode/json?address="+tyu+"&sensor=true",
+                                data: "",
+                                type: "POST"
+                            }).done(function (data) {
+								var arr = $.map(data, function(el) { return el });
+								var arr1 = arr[0]['address_components'];
+								 for(count = 0; count <= arr1.length -1; count++){
+								   jui = arr1[count]['types'][0];
+								   if(jui == 'locality' || jui == 'administrative_area_level_2'){ 
+								   city = arr1[count]['long_name'];
+									}else if(jui == 'administrative_area_level_1'){
+										state = arr1[count]['long_name'];
+										short_state = arr1[count]['short_name'];
+									}else if(jui == 'country'){
+										country = arr1[count]['short_name'];
+									}
+								 }
+								jQuery("select[name='country_id'] option[value="+country+"]").prop('selected', 'selected');
+							    jQuery("select[name='country_id']").trigger("change");
+								jQuery("select[name='region_id'] option[value="+short_state+"]").prop('selected', 'selected');
+								jQuery('input[name="region"]').val(state);
+								jQuery('input[name="city"]').val(city);
+								
+                            });
+	
+	}); 
+
+});
+  });
+
+ 

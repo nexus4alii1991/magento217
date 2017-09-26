@@ -14,10 +14,10 @@
 		<block class="Magento\Framework\View\Element\Template" name="tabs-products" template="Magento_Catalog::products/tabs-products.phtml">
 		</block>
 		
-		<block class="Magento\Framework\View\Element\Template" name="testimonial-block" template="Magento_Cms::testimonial.phtml">
+		<block class="Magento\Framework\View\Element\Template" name="awards-block" template="Magento_Cms::awards.phtml">
 		</block>
 		
-		<block class="Magento\Framework\View\Element\Template" name="awards-block" template="Magento_Cms::awards.phtml">
+		<block class="Magento\Framework\View\Element\Template" name="testimonial-block" template="Magento_Cms::testimonial.phtml">
 		</block>
 		
 	</referenceBlock>

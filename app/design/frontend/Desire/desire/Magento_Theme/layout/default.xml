@@ -3,8 +3,8 @@
         <referenceBlock name="logo">
             <arguments>
                 <argument name="logo_file" xsi:type="string">images/logo.png</argument>
-                <argument name="logo_img_width" xsi:type="number">73</argument>
-                <argument name="logo_img_height" xsi:type="number">90</argument>
+                <argument name="logo_img_width" xsi:type="number">69</argument>
+                <argument name="logo_img_height" xsi:type="number">85</argument>
             </arguments>
         </referenceBlock>
 		
@@ -34,31 +34,23 @@
 			</block>
 		</referenceBlock>
 		
+		<referenceBlock name="footer">
+			<block class="TW\CatewithimgWidget\Block\Widget\CatewithimgWidget" before="footer_links">
+				<action method="setBlocktitle">
+					  <argument name="blocktitle" xsi:type="string">footer</argument>
+				</action>
+				<action method="setTagline">
+					  <argument name="tagline" xsi:type="string">links</argument>
+				</action>
+				<action method="setType">
+					  <argument name="type" xsi:type="string">list</argument>
+				</action>
+			</block >
+		</referenceBlock>
+		
 		<referenceBlock name="header" remove="true"/>
 		<referenceBlock name="register-link" remove="true"/>
 
-		
-		<referenceContainer name="footer">
-			<block class="TW\CatewithimgWidget\Block\Widget\CatewithimgWidget" before="footer_links">
-				<action method="setType">
-					<argument name="type" xsi:type="string">list</argument>
-				</action>
-				
-				<action method="setBlocktitle">
-					<argument name="blocktitle" xsi:type="string">Category List</argument>
-				</action>
-				
-				<action method="setTagline">
-					<argument name="tagline" xsi:type="string">Category List with Image</argument>
-				</action>
-			</block >
-		</referenceContainer>
-		<!--
-		<referenceBlock name="footer">
-			<block class="TW\MS\Block\CategoriesCollection" name="footer-categories" before="footer_links" template="TW_MS::storecategories.phtml">
-			</block>
-		</referenceBlock>
-		-->
 		<!--
 		<referenceBlock name="top.search" remove="true"/>
 		<referenceBlock name="minicart" remove="true"/>

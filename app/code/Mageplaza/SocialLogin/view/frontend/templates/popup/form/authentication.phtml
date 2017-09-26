@@ -28,7 +28,8 @@
     </div>
     <div class="block social-login-customer-authentication col-mp" id="social-login-authentication">
         <div class="block-title">
-            <span id="block-customer-login-heading" role="heading" aria-level="2"><?php echo __('SIGN IN') ?></span>
+			<span id="otp-login" role="heading" aria-level="2" style="float:left; margin-right:15px;cursor:pointer;"><?php echo __('Login with OTP') ?></span>
+			
         </div>
         <div class="block-content" aria-labelledby="block-customer-login-heading">
             <form class="form-customer-login" id="social-form-login" data-mage-init='{"validation":{}}'>
@@ -37,17 +38,16 @@
                 echo __('* Required Fields') ?>">
                     <div class="field email required">
                         <div class="control">
-                            <input name="username" id="email" type="email" class="input-text"
-                                   value="<?php echo $block->escapeHtml($block->getUsername()) ?>"<?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
-                                   title="<?php echo __('Email') ?>" data-validate="{required:true, 'validate-email':true}">
-							<label class="label" for="email"><span><?php echo __('Email address / phone') ?></span></label>
+                            <input name="username" id="email" type="text" class="input-text"
+                                   title="<?php echo __('Email') ?>" data-validate="{required:true}"
+								   placeholder="<?php echo __('Email address / phone') ?>">
                         </div>
                     </div>
                     <div class="field password required">
                         <div class="control">
-                            <input name="password" id="pass" type="password" class="input-text"<?php if ($block->isAutocompleteDisabled()): ?> autocomplete="off"<?php endif; ?>
-                                   title="<?php echo __('Password') ?>" data-validate="{required:true, 'validate-password':true}">
-							<label for="pass" class="label"><span><?php echo __('Password') ?></span></label>
+                            <input name="password" id="pass" type="password" class="input-text"
+                                   title="<?php echo __('Password') ?>" data-validate="{required:true, 'validate-password':true}" 
+								   placeholder="<?php echo __('Password') ?>">
                         </div>
                     </div>
                     <?php echo $block->getChildHtml('form_additional_info'); ?>
@@ -63,21 +63,114 @@
                     </div>
                 </fieldset>
             </form>
-			<script>
-				require(['jquery'],function($){
-					$(document).ready(function($) {
-						$("#social-login-popup .input-text").focus(function(){
-							$(this).parent().addClass("move-to-top");
-						}).blur(function(){
-							if(!$(this).val()){
-								$(this).parent().removeClass("move-to-top");
-							}
-						})
-					});  
-				});
-			</script>
         </div>
+		<div class="custom-otp" style="display:none">
+			<fieldset class="fieldset login" data-hasrequired="<?php echo __('* Required Fields') ?>">
+				<div class="field required">
+					<div class="control">
+						<input name="mobile" id="mobile" type="text" class="input-text" value="" title="<?php echo __('Mobile') ?>" placeholder="<?php echo __('Mobile') ?>">
+					</div>
+				</div>
+				
+				<div class="field otp required" style="display:none">
+					<div class="control">
+						<input name="otp" id="otp" type="text" class="input-text" value="" title="<?php echo __('OTP') ?>" placeholder="<?php echo __('OTP') ?>">
+					</div>
+					<span class="resend">Resend</span>
+				</div>
+				<div class="actions-toolbar">
+					<div class="primary">
+					<button type="button" class="action" id="get-otp"><span><?php echo __('Get OTP') ?></span></button>
+					<button type="button" style="display:none" class="action" id="verify"><span><?php echo __('Verify') ?></span></button>
+					<span id="back" role="heading" style="cursor:pointer;" aria-level="2"><?php echo __('Back') ?></span>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<span style="display:none" class="not-exist" style="color: red;font-size:13px;font-family: bold;">Mobile Number not registered !!</span>
+	    <span style="display:none" class="not-match" style="color: red;font-size:13px;font-family: bold;">Please enter correct OTP !!</span>
+		<span style="display:none" class="logged" style="color: green;font-size:13px;font-family: bold;">Loggedin successfullyLoading Page...</span>
+		<span style="display:none" class="sent" style="color: green;font-size:13px;font-family: bold;">OTP has been sent successfully</span>
+		<span style="display:none" class="resent" style="color: green;font-size:13px;font-family: bold;">OTP has been resent successfully</span>
     </div>
     <?php echo $block->getChildHtml('popup.authentication.social') ?>
 </div>
+<?php
+$_objectManager = \Magento\Framework\App\ObjectManager::getInstance(); 
+$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface'); 
+$currentStore = $storeManager->getStore();
+$baseUrl = $currentStore->getCurrentUrl();
+ ?>
+ <input type="hidden" id="base_url" value="<?php $baseUrl ?>">
+<script>
+ require([ 'jquery', 'jquery/ui'], function($){
+  jQuery(document).ready(function(){  
+  var count="";
+    jQuery(document).on('click','#otp-login',function(){
+		$('.block-content').hide();
+		$('.custom-otp').show();
+	}); 
+    jQuery(document).on('click','#back',function(){
+		$('.block-content').show();
+		$('.custom-otp').hide();
+		});
+    jQuery(document).on('click','#get-otp',function(){
+	        var mobile = jQuery('#mobile').val();
+		                    $.ajax({
+                                showLoader: true,
+                                url: "<?php echo $this->getUrl('sociallogin/mobile/mobile') ?>",
+                                data: {"mobile":mobile},
+                                type: "POST"
+                            }).done(function (data) {
+							if(data == 'not'){
+							jQuery('.not-exist').show();
+							jQuery('.not-exist').delay(9000).fadeOut();
+							}else if(data == "sent"){
+							jQuery('.otp').show();
+							jQuery('.sent').show();
+							jQuery('.sent').delay(10000).fadeOut();
+							jQuery('#get-otp').hide();
+							jQuery('#verify').show();
+							}
+                            });
+    });
+	jQuery(document).on('click','.resend',function(){
+	        var mobile = jQuery('#mobile').val();
+		                    $.ajax({
+                                showLoader: true,
+                                url: "<?php echo $this->getUrl('sociallogin/mobile/mobile') ?>",
+                                data: {"mobile":mobile},
+                                type: "POST"
+                            }).done(function (data) {
+							if(data == "not"){
+							jQuery('.not-exist').show();
+							jQuery('.not-exist').delay(4000).fadeOut();
+							}else if(data == "sent"){
+							jQuery('.resent').show();
+							jQuery('.resent').delay(4000).fadeOut();
+							}
+                            });
+    });
+	jQuery(document).on('click','#verify',function(){
+	        var mobile = jQuery('#mobile').val();
+			var otp = jQuery('#otp').val();
+			var base_url = jQuery('#base_url').val();
+		                    $.ajax({
+                                showLoader: true,
+                                url: "<?php echo $this->getUrl('sociallogin/verify/verify') ?>",
+                                data: {"mobile":mobile,"otp":otp},
+                                type: "POST"
+                            }).done(function (data) {
+							if(data == "not matched"){
+							jQuery('.not-match').show();
+							jQuery('.not-match').delay(4000).fadeOut();
+							}else if(data == "matched"){
+							jQuery('.logged').show();
+							window.location.href = base_url;
+							}
+                            });
+    });
+});
+  });
 
+ </script>

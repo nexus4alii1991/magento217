@@ -7,66 +7,43 @@
 // @codingStandardsIgnoreFile
 
 ?>
-<?php /** @var $block \Magento\Sales\Block\Order\Info */ ?>
-<?php //$_order = $block->getOrder() ?>
+<?php  /**@var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php $_order = $block->getOrder(); 
+$items = $_order->getAllItems();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+$orderDetail = $objectManager->create('Magento\Sales\Model\Order')->load(14);
+$value['qty_ordered'] = 1;
+if ($orderDetail->canCancel()) {
+    $orderItems = $orderDetail->getAllItems();        
+    foreach ($orderItems as $value) {
+    	echo $value['product_id'];
+        if($value['product_id']==55)
+        {    
+            //$value->isDeleted(true);
+            //$value->save();  
 
-<!--
-<div class="block block-order-details-view">
-    <div class="block-title">
-        <strong><?php /* @escapeNotVerified */ //echo __('Order Information') ?></strong>
-    </div>
-    <div class="block-content">
-    <?php //if (!$_order->getIsVirtual()): ?>
-        <div class="box box-order-shipping-address">
-            <strong class="box-title"><span><?php /* @escapeNotVerified */ //echo __('Shipping Address') ?></span></strong>
-            <div class="box-content">
-                <address><?php /* @escapeNotVerified */ //echo $block->getFormattedAddress($_order->getShippingAddress()); ?></address>
-            </div>
-        </div>
+        }
+        else
+        {
+         continue;
+        }
+    }
+    //$orderDetail->save();
+}
 
-        <div class="box box-order-shipping-method">
-            <strong class="box-title">
-                <span><?php /* @escapeNotVerified */ //echo __('Shipping Method') ?></span>
-            </strong>
-            <div class="box-content">
-            <?php //if ($_order->getShippingDescription()): ?>
-                <?php //echo $block->escapeHtml($_order->getShippingDescription()) ?>
-            <?php //else: ?>
-                <?php /* @escapeNotVerified */ //echo __('No shipping information available'); ?>
-            <?php //endif; ?>
-            </div>
-        </div>
-    <?php //endif; ?>
-
-        <div class="box box-order-billing-address">
-            <strong class="box-title">
-                <span><?php /* @escapeNotVerified */ //echo __('Billing Address') ?></span>
-            </strong>
-            <div class="box-content">
-                <address><?php /* @escapeNotVerified */ //echo $block->getFormattedAddress($_order->getBillingAddress()); ?></address>
-            </div>
-        </div>
-        <div class="box box-order-billing-method">
-            <strong class="box-title">
-                <span><?php /* @escapeNotVerified */ //echo __('Payment Method') ?></span>
-            </strong>
-            <div class="box-content">
-                <?php //echo $block->getPaymentInfoHtml() ?>
-            </div>
-        </div>
-    </div>
-</div>
--->
-
-<!--*****************************************************-->
-<!-- Please Remove top coommented code After integration -->
+?>
 
 <div class="col-lg-12 col-xs-12 shipping-details-container section-container">
 	<div class="row">
 		<div class="shipping-details">
 			<div class="col-lg-12 col-xs-12 shipping-labels">
-				<span class="order">2 SHIPMENTS </span>
+				<span class="order"><?php echo count($items);?> SHIPMENTS </span>
 			</div>
+
+			<?php foreach($items as $item) {
+				$product = $item->getProduct();?>
+				
 			<div class="col-lg-12 col-xs-12 shipping-content first">
 				<div class="row">
 					<div class="order-content">
@@ -77,7 +54,7 @@
 										Order date
 									</span><br>
 									<span class="clear-text">
-										29 Oct 2017
+									<?php echo $_order->getCreatedAt(); ?>
 									</span>
 								</div>
 								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
@@ -94,7 +71,7 @@
 										Total
 									</span><br>
 									<span class="clear-text">
-										Rs.2000
+										<?php echo $_order->getSubtotal();?>
 									</span>
 								</div>
 								
@@ -103,7 +80,7 @@
 										Ship to
 									</span><br>
 									<span class="ordered-customer-name">
-										Mankesh
+										<?php echo $_order->getCustomerName(); ?>
 									</span>
 								</div>
 								
@@ -120,11 +97,13 @@
 									</div>
 									<div class="col-lg-5 col-md-5 col-xs-12 table-cell">
 										<span class="clear-text product-name">
-											The Trabola
+											<?php echo $product->getName();?>
 										</span><br>
 										<span class="lite-text">
-											Order Summary Order SummaryOrder SummaryOrder Summary
-											Order SummaryOrder SummaryOrder SummaryOrder Summary
+											<?php $productbysku = $myBlock->getProductBySku($product->getSku());
+											echo $productbysku->getData('short_description');
+											?>
+										
 										</span>
 									</div>
 									<div class="col-lg-5 col-xs-12 table-cell">
@@ -136,7 +115,7 @@
 												<button class="review" type="button">write a review</button>
 											</div>
 											<div class="button-container">
-												<button class="return" type="button">cancel or return order</button>
+												<button class="return" onclick="location.href = 'https://next.desiredesire.com/cancel/index/index';">cancel or return order</button>
 											</div>
 										</div>
 									</div>
@@ -146,88 +125,9 @@
 					</div>
 				</div>
 			</div>
-			
-			
-			<div class="col-lg-12 col-xs-12 shipping-content">
-				<div class="row">
-					<div class="order-content">
-						<div class="col-lg-12 col-xs-12">
-							<div class="row">
-								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
-									<span class="lite-text">
-										Order date
-									</span><br>
-									<span class="clear-text">
-										29 Oct 2017
-									</span>
-								</div>
-								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
-									<span class="lite-text">
-										Delivery
-									</span><br>
-									<span class="clear-text green">
-										delivered to gatekepper
-									</span>
-								</div>
-								
-								<div class="order-date col-lg-1 col-sm-4 col-md-3 col-xs-6">
-									<span class="lite-text">
-										Total
-									</span><br>
-									<span class="clear-text">
-										Rs.2000
-									</span>
-								</div>
-								
-								<div class="order-date col-lg-1 col-sm-4 col-md-3 col-xs-6">
-									<span class="lite-text">
-										Ship to
-									</span><br>
-									<span class="ordered-customer-name">
-										Mankesh
-									</span>
-								</div>
-								
-							</div>
-						</div>
-						
-						<div class="col-lg-12 col-xs-12">
-							<div class="row">
-								<div class="order-details-content table">
-									<div class="col-lg-2 col-sm-4 col-md-3  col-xs-12 table-cell">
-										<div class="product-image">
-											<img src="<?php echo $this->getViewFileUrl('images/product.jpg');?>">
-										</div>
-									</div>
-									<div class="col-lg-5 col-md-5 col-xs-12 table-cell">
-										<span class="clear-text product-name">
-											The Trabola
-										</span><br>
-										<span class="lite-text">
-											Order Summary Order SummaryOrder SummaryOrder Summary
-											Order SummaryOrder SummaryOrder SummaryOrder Summary
-										</span>
-									</div>
-									<div class="col-lg-5 col-xs-12 table-cell">
-										<div class="action">
-											<div class="button-container">
-												<button class="track" type="button">Track Order</button>
-											</div>
-											<div class="button-container">
-												<button class="review" type="button">write a review</button>
-											</div>
-											<div class="button-container">
-												<button class="return" type="button">cancel or return order</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+	
+	<?php }?>
+	
 		</div>
 	</div>
 </div>
-

@@ -8,7 +8,13 @@
 
 /** @var $block \Magento\Checkout\Block\Cart\Sidebar */
 ?>
+<?php 
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+	$totalItems = $cart->getQuote()->getItemsCount();
+?>
 
+<?php if($totalItems > 0) { ?>
 <div data-block="minicart" class="minicart-wrapper">
     <a class="action showcart" href="<?php /* @escapeNotVerified */ echo $block->getShoppingCartUrl(); ?>"
        data-bind="scope: 'minicart_content'">
@@ -57,4 +63,4 @@
     </script>
 </div>
 
-
+<?php } ?>

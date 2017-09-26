@@ -9,35 +9,32 @@
 		<span class="red">Your orders & details</span>
 	</div>
 	<div class="opc-row estimate">
-		<span class="lite-text">Estimated Delivery : </span>
-		<span class="clear-text green">Sun, 3rd October 2017</span>
+		<span class="lite-text">Estimated Delivery :</span>
+		<span class="clear-text green" id="demo"></span>
 		<span class="clear-text right black"><a href="#">pincode</a></span>
-	</div>
-	<div class="opc-row">
-		<span class="lite-text">Email : </span>
-		<span class="clear-text">treemankesh@gmail.com</span>
-		<span class="clear-text right black"><a href="#">change login</a></span>
-	</div>
-	<div class="opc-row">
-		<span class="lite-text">Ship to :</span>
-		<span class="clear-text">HSR Layout bangalore</span>
-		<span class="clear-text right black"><a href="#">change address</a></span>
-	</div>
-	<div class="opc-row">
-		<span class="lite-text">Payment Method :</span>
-		<span class="clear-text">Cash On Delivery</span>
-		<span class="clear-text right black"><a href="#">change</a></span>
-	</div>
-</div>
-<div class="opc-order-details-gift">
-	<div class="opc-gift-row">
-		<span class="clear-text">Gift</span>
-		<input type="text" name="gift" placeholder="Gift" class="input-text gift">
 	</div>
 </div>
 <div class="opc-block-summary" data-bind="blockLoader: isLoading">
-    <!--<span data-bind="i18n: 'Order Summary'" class="title"></span>-->
     <!-- ko foreach: elems() -->
         <!-- ko template: getTemplate() --><!-- /ko -->
     <!-- /ko -->
 </div>
+
+<script type="text/javascript">
+/*	require([ 'jquery', 'jquery/ui'], function($){
+jQuery(document).ready(function(){ 
+var today = new Date();
+var dd = today.getDate();
+alert("hello");
+alert(dd);
+});
+})
+	
+var ViewModel = function(first) {
+    this.delivery = ko.observable(first); 
+    this.delivery = ko.computed(function() {
+        return this.delivery();
+    }, this);
+};
+ko.applyBindings(new ViewModel(dd));*/
+</script>

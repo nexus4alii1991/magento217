@@ -1,158 +1,54 @@
+<?php 
+ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+$Block = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\ProductCollection');
+
+$currentProduct = $myBlock->getCurrentProduct();
+//$Productcollection = $Block->getProducts();
+//if ($currentProduct = $myBlock->getCurrentProduct()) {
+if(!empty($currentProduct)){
+    $upSellProducts = $currentProduct->getUpSellProducts();}
+    if(empty($upSellProducts)){
+    $upSellProducts = $Block->getProducts();
+    }
+//}
+?>
+<?php //if ( empty($upSellProducts)){  ?>
 <div class="may-like-slider">
 	<div class="maylike-heading">You may also like</div>
 	<div class="owl-carousel-loaded owl-theme">
+	
+		<?php foreach ($upSellProducts as $upSellProduct) { //print_r($upSellProduct->getData()); 
+
+            $sku = $upSellProduct->getSku();
+            $id = $upSellProduct->getEntityId(); 
+            $product = $objectManager->create('Magento\Catalog\Model\Product')->load($id);
+           
+            $imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+            $image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->getUrl();
+            $likedproducts = $myBlock->getProductBySku($sku); 
+           
+			?>
 		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
+			<a href="<?php echo $product->getProductUrl();?>" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $image_url;?>">
 			</a>
 			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
+				<a href="<?php echo $product->getProductUrl();?>" title=""><?php echo $likedproducts->getName(); ?></a>
 			</h3>
 			<div class="price-box">
 				<p class="special-price">
 					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
+						<span class="CurrencySymbol">₹</span><?php echo $product->getFinalPrice();?>
 					</span>
 				</p>
 			</div>
 		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
-		<div class="item">
-			<a href="#" title="" class="slider-product-image">
-				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_thumbnail_img.jpg');?>">
-			</a>
-			<h3 class="product-name">
-				<a href="#" title="">VolksWagen 'Hipple' Camper</a>
-			</h3>
-			<div class="price-box">
-				<p class="special-price">
-					<span class="price color-red">
-						<span class="CurrencySymbol">₹</span>18,968
-					</span>
-				</p>
-			</div>
-		</div>
+       <?php }
+  // }?>
 	</div>
 </div>
+<?php// }?>
 <script>
 require(['jquery','owl_carousel'],function($){
 	$(document).ready(function() {

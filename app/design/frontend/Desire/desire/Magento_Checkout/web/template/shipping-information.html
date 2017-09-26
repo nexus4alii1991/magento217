@@ -10,17 +10,17 @@
     <div class="ship-to">
         <div class="shipping-information-title">
             <span data-bind="i18n: 'Ship To:'"></span>
-            <button class="action action-edit" data-bind="click: back">
-                <span data-bind="i18n: 'edit'"></span>
-            </button>
         </div>
         <div class="shipping-information-content">
             <!-- ko foreach: getRegion('ship-to') -->
             <!-- ko template: getTemplate() --><!-- /ko -->
             <!--/ko-->
         </div>
+		<button class="action action-edit" data-bind="click: back">
+			<span data-bind="i18n: 'edit'"></span>
+		</button>
     </div>
-    <div class="ship-via">
+    <div class="ship-via" style="display:none">
         <div class="shipping-information-title">
             <span data-bind="i18n: 'Shipping Method:'"></span>
             <button class="action action-edit" data-bind="click: backToShippingMethod">

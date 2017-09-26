@@ -1,4 +1,42 @@
 require(['jquery','owl_carousel'],function($){
+	
+	(function($){
+		$(function(){	
+				var scroll = $(document).scrollTop();
+				var headerHeight = $('.page-header').outerHeight();
+				//console.log(headerHeight);
+				
+				$(window).scroll(function() {
+					// scrolled is new position just obtained
+					var scrolled = $(document).scrollTop();
+									
+					// optionally emulate non-fixed positioning behaviour
+				
+					if (scrolled > headerHeight){
+						$('.page-header').addClass('off-canvas');
+						$('#search-content').addClass('off-canvas');
+					} else {
+						$('.page-header').removeClass('off-canvas');
+						$('#search-content').removeClass('off-canvas');
+					}
+
+					if (scrolled > scroll){
+						 // scrolling down
+						 $('.page-header').removeClass('fixed');
+						 $('#search-content').removeClass('fixed');
+					  } else {
+						  //scrolling up
+						  $('.page-header').addClass('fixed');
+						  $('#search-content').addClass('fixed');
+					}
+					scroll = $(document).scrollTop();	
+				 });
+		
+		
+		});
+	})(jQuery);  
+	
+	
 	$(document).ready(function($) {
 		$("#social-login-popup .input-text").focus(function(){
 			$(this).parent().addClass("move-to-top");
@@ -15,6 +53,21 @@ require(['jquery','owl_carousel'],function($){
 		nav:true,
 		dots:false,
 		items:1
+	});
+	/********** Search Button JS ***********/
+
+	$("#search-icon").click(function(){
+		$("#search-content").toggleClass("active");
+	});
+	
+	$(".block.block-search").click(function(e) {
+		e.stopPropagation();
+
+	});
+	
+	$(document).click(function() {
+		// hide search box
+		$("#search-content").removeClass("active");
 	});
 	
 });

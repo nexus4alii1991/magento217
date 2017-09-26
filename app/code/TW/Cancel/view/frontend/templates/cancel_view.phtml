@@ -1,0 +1,174 @@
+	<div class="return-header-container">
+		<div class="container">
+			<h3>Cancel or Return order</h3>
+			<p>Select orders you want to cancel or return</p>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="return-banner-left">
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<h4>Order #:<span> 1032000322</span></h4>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-6">
+							<h4 class="text-right">Order Date:<span> 3 Aug 2017</span></h4>
+						</div>
+					</div>
+					<div class="return-banner-left-desciption">
+						<div class="row">
+							<div class="col-md-4">
+								<img src="<?php echo $this->getViewFileUrl('TW_Cancel::images/m-holder.png');?>">
+							</div>
+							<div class="col-md-8">
+								<h3>The Trobla</h3>
+								<h4>When sound meets sophistication</h4>
+								<h5>Rs. 5,500</h5>
+							</div>
+						</div>
+						<div class="return-banner-bottom">
+							<div class="row">
+								<div class="col-md-6 col-sm-6 col-xs-6">
+									<input name="cancel-or-return" type="radio">Return Order
+								</div>
+								<div class="col-md-6 text-right col-sm-6 col-xs-6">
+									<input name="cancel-or-return" type="radio">Cancel Order
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<div class="return-banner-second">
+					<div class="return-banner-left">
+						<div class="row">
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<h4>Order #:<span> 1032000322</span></h4>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<h4 class="text-right">Order Date:<span> 3 Aug 2017</span></h4>
+							</div>
+						</div>
+						<div class="return-banner-left-desciption">
+							<div class="row">
+								<div class="col-md-4">
+									<img src="<?php echo $this->getViewFileUrl('TW_Cancel::images/m-holder.png');?>">
+								</div>
+								<div class="col-md-8">
+									<h3>The Trobla</h3>
+									<h4>When sound meets sophistication</h4>
+									<h5>Rs. 5,500</h5>
+								</div>
+							</div>
+							<div class="return-banner-bottom">
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-6">
+										<input name="cancel-or-return2" type="radio">Return Order
+									</div>
+									<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+										<input name="cancel-or-return2" type="radio">Cancel Order
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="return-banner-second">
+					<div class="return-banner-left">
+						<div class="row">
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<h4>Order #:<span> 1032000322</span></h4>
+							</div>
+							<div class="col-md-6 col-sm-6 col-xs-6">
+								<h4 class="text-right">Order Date:<span> 3 Aug 2017</span></h4>
+							</div>
+						</div>
+						<div class="return-banner-left-desciption">
+							<div class="row">
+								<div class="col-md-4">
+									<img src="<?php echo $this->getViewFileUrl('TW_Cancel::images/m-holder.png');?>">
+								</div>
+								<div class="col-md-8">
+									<h3>The Trobla</h3>
+									<h4>When sound meets sophistication</h4>
+									<h5>Rs. 5,500</h5>
+								</div>
+							</div>
+							<div class="return-banner-bottom">
+								<div class="row">
+									<div class="col-md-6 col-sm-6 col-xs-6">
+										<input name="cancel-or-return3" type="radio">Return Order
+									</div>
+									<div class="col-md-6 col-sm-6 col-xs-6 text-right">
+										<input name="cancel-or-return3" type="radio">Cancel Order
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="return-banner-right">
+					<h3>Why are you returning or cancelling this?</h3>
+					<p>Choose your response</p>
+					<div class="center">
+					  <div class="custom-select-wrapper">
+					  	<div class="custom-select-wrapper"><select name="sources" id="sources" class="custom-select sources" placeholder="Fault Product" style="display: none;">
+						    <option value="profile">Fault Product</option>
+						    <option value="word">Fault Product</option>
+						    <option value="hashtag">Fault Product</option>
+					  	</select><div class="custom-select sources"><span class="custom-select-trigger">Fault Product</span><div class="custom-options"><span class="custom-option undefined" data-value="profile">Fault Product</span><span class="custom-option undefined" data-value="word">Fault Product</span><span class="custom-option undefined" data-value="hashtag">Fault Product</span></div></div></div>
+					  	</div>
+					</div>
+					<a href="#">Continue</a>
+					<div class="return-banner-right-bottom">
+						<p>Returnable Until: <span>3 Aug 2017</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script type="text/javascript">
+require(['jquery'],function($){
+	$(".custom-select").each(function() {
+  var classes = $(this).attr("class"),
+      id      = $(this).attr("id"),
+      name    = $(this).attr("name");
+  var template =  '<div class="' + classes + '">';
+      template += '<span class="custom-select-trigger">' + $(this).attr("placeholder") + '</span>';
+      template += '<div class="custom-options">';
+      $(this).find("option").each(function() {
+        template += '<span class="custom-option ' + $(this).attr("class") + '" data-value="' + $(this).attr("value") + '">' + $(this).html() + '</span>';
+      });
+  template += '</div></div>';
+  
+  $(this).wrap('<div class="custom-select-wrapper"></div>');
+  $(this).hide();
+  $(this).after(template);
+});
+$(".custom-option:first-of-type").hover(function() {
+  $(this).parents(".custom-options").addClass("option-hover");
+}, function() {
+  $(this).parents(".custom-options").removeClass("option-hover");
+});
+$(".custom-select-trigger").on("click", function() {
+  $('html').one('click',function() {
+    $(".custom-select").removeClass("opened");
+  });
+  $(this).parents(".custom-select").toggleClass("opened");
+  event.stopPropagation();
+});
+$(".custom-option").on("click", function() {
+  $(this).parents(".custom-select-wrapper").find("select").val($(this).data("value"));
+  $(this).parents(".custom-options").find(".custom-option").removeClass("selection");
+  $(this).addClass("selection");
+  $(this).parents(".custom-select").removeClass("opened");
+  $(this).parents(".custom-select").find(".custom-select-trigger").text($(this).text());
+});
+})
+</script>

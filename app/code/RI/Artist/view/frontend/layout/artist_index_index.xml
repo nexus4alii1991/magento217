@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<body>
+	<referenceContainer name="page.top">
+        <block class="RI\Artist\Block\Artist" name="artist_banner" template="RI_Artist::artist_banner.phtml" />
+    </referenceContainer>
+    <referenceContainer name="content">
+        <block class="RI\Artist\Block\Artist" name="artist_info" template="RI_Artist::artist_info.phtml" />
+		<block class="RI\Artist\Block\Artist" name="artist_design" template="RI_Artist::artist_design.phtml" />
+    </referenceContainer>
+</body>
+</page>

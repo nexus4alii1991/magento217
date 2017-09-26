@@ -1,0 +1,23 @@
+{
+    "name": "prince/module-buynow",
+    "description": "Magento 2 add buyNow button extension",
+    "license": "proprietary",
+    "type": "magento2-module",
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "Prince Patel",
+            "email": "7pprince@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Prince\\Test\\": ""
+        }
+    }
+}

@@ -1,0 +1,82 @@
+<div class="may-like-slider-2">
+	<div class="owl-carousel owl-theme">
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-1.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-2.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-1.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-2.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-1.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-2.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-1.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-2.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-1.jpg');?>">
+			</a>
+		</div>
+		<div class="item">
+			<a href="#" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/carousal-2.jpg');?>">
+			</a>
+		</div>
+	</div>
+</div>
+<script>
+require(['jquery','owl_carousel'],function($){
+	$(document).ready(function() {
+	  $('.may-like-slider-2 .owl-carousel').owlCarousel({
+		loop: true,
+		margin: 10,
+		responsiveClass: true,
+		//stagePadding:50,
+		responsive: {
+		  0: {
+			items: 2,
+			nav: true
+		  },
+		  600: {
+			items: 3,
+			nav: false
+		  },
+		  1000: {
+			items: 5,
+			nav: true,
+			loop: false,
+			margin: 20
+		  }
+		}
+	  })
+	})
+});
+</script>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+		<referenceBlock name="page.main.title" remove="true"/>
+		<referenceBlock name="page.top">
+           <block class="Magento\Framework\View\Element\Template" name="dashboard_navigation" template="Magento_Customer::account/top_navigation.phtml"></block>
+        </referenceBlock>
+		<referenceBlock name="content.top">
+           <block class="Magento\Framework\View\Element\Template" name="dashboard_cutomer_info" template="Magento_Customer::account/dashboard/customer_welcome.phtml"></block>
+		   <block class="Magento\Framework\View\Element\Template" name="dashboard_recent_oreder" template="Magento_Customer::account/recent_order.phtml"></block>
+        </referenceBlock>
+		<move element="wishlist_sidebar" destination="content.bottom" />
+    </body>
+</page>

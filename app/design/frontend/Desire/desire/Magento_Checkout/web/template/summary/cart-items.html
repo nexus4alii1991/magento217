@@ -9,117 +9,54 @@
     <div class="content minicart-items" data-role="content">
         <div class="minicart-items-wrapper overflowed">
             <div class="minicart-items">
-                <div class="product-item">
-                    <div class="product">
-						<div class="product-item-details">
-							<table class="ord_summary">
-								<thead class="summ-head">
-									<tr>
-										<th>Product</th>
-										<th>Price</th>
-										<th>Qty</th>
-										<th>Subtotal</th>
-									</tr>
-								</thead>
-								<tbody>
-								<!-- ko foreach: getItems() -->
-						
-									<!-- ko foreach: $parent.elems() -->
-									<!-- ko template: getTemplate() --><!-- /ko -->
-									<!-- /ko -->
-								
-								 <!-- /ko -->
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="lite-text" >Subtotal</span>
-										</td>
-										<td colspan="1">
-											<span class="clear-text">1234567890</span>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="lite-text" >Shipping</span>
-										</td>
-										<td colspan="1">
-											<span class="clear-text">0</span>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="red">Total</span>
-										</td>
-										<td colspan="1">
-											<span class="red">901234456</span>
-										</td>
-									</tr>
-								</tfoot>
-							</table>
+				<div class="ord_summary table">
+					<div class="thead">
+						<div class="table-row">
+							<div class="table-cell lite-text">Image</div>
+							<div class="table-cell lite-text">Name</div>
+							<div class="table-cell lite-text">Qty</div>
+							<div class="table-cell lite-text">Subtotal</div>
 						</div>
-                    </div>
-                </div>
+					</div>
+					<div class="tbody">
+					<!-- ko foreach: getItems() -->
+						<div class="table-row">
+							<!-- ko foreach: $parent.elems() -->
+							<!-- ko template: getTemplate() --><!-- /ko -->
+							<!-- /ko -->
+						</div>
+					<!-- /ko -->
+					</div>
+				</div>
             </div>
         </div>
     </div>
 </div>
 <!-- /ko -->
 <!-- ko if: isItemsBlockExpanded() -->
-<div class="block items-in-cart active" data-bind="mageInit: {'collapsible':{'openedState': 'active', 'active': true}}">
+<div class="block items-in-cart">
     <div class="content minicart-items" data-role="content">
         <div class="minicart-items-wrapper overflowed">
             <div class="minicart-items">
-                <div class="product-item">
-                    <div class="product">
-						<div class="product-item-details">
-							<table class="ord_summary">
-								<thead class="summ-head">
-									<tr>
-										<th>Product</th>
-										<th>Price</th>
-										<th>Qty</th>
-										<th>Subtotal</th>
-									</tr>
-								</thead>
-								<tbody>
-									<!-- ko foreach: getItems() -->
-										<!-- ko foreach: $parent.elems() -->
-										<!-- ko template: getTemplate() --><!-- /ko -->
-										<!-- /ko -->
-									 <!-- /ko -->
-									 
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="lite-text" >Subtotal</span>
-										</td>
-										<td colspan="1">
-											<span class="clear-text">1234567890</span>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="lite-text" >Shipping</span>
-										</td>
-										<td colspan="1">
-											<span class="clear-text">0</span>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3" align="right">
-											<span class="red">Total</span>
-										</td>
-										<td colspan="1">
-											<span class="red">901234456</span>
-										</td>
-									</tr>
-								</tfoot>
-							</table>
+				<div class="ord_summary table">
+					<div class="thead">
+						<div class="table-row">
+							<div class="table-cell lite-text">Image</div>
+							<div class="table-cell lite-text">Name</div>
+							<div class="table-cell lite-text">Qty</div>
+							<div class="table-cell lite-text">Subtotal</div>
 						</div>
-                    </div>
-                </div>
+					</div>
+					<div class="tbody">
+						<!-- ko foreach: getItems() -->
+						<div class="table-row">
+							<!-- ko foreach: $parent.elems() -->
+							<!-- ko template: getTemplate() --><!-- /ko -->
+							<!-- /ko -->
+						</div>
+						<!-- /ko -->
+					</div>
+				</div>
             </div>
         </div>
     </div>

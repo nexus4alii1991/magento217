@@ -6,7 +6,11 @@
 */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		<script src="Magento_Checkout::js/custom-one.js"/>
+	</head>
    <body>
+   
 		<referenceBlock name="page.top">
 			<block class="Magento\Framework\View\Element\Template" name="new-progressbar" template="Magento_Checkout::progressbar.phtml">
 			</block>
@@ -50,18 +54,11 @@
                    </argument>
                </arguments>
 		</referenceBlock>
-		
-		
-		<referenceBlock name="authentication" remove="true"/>
-		
 		<referenceBlock name="minicart" remove="false"/>
 		<referenceContainer name="header.panel" remove="false"/>
 		<referenceBlock name="top.search" remove="false"/>
 		<referenceBlock name="catalog.compare.link" remove="false"/>
 		<referenceBlock name="catalog.topnav" remove="false"/>
-		<!--<referenceContainer name="content">
-			<block class="Mageplaza\SocialLogin\Block\Form\Login" before="-" name="popup-authentication" ifconfig="sociallogin/general/is_enabled" template="Mageplaza_SocialLogin::popup/form/authentication.phtml" />
-		</referenceContainer>-->
        <referenceContainer name="footer-container" remove="false"/>
        <move element="logo" destination="checkout.header.wrapper"/>
    </body>
