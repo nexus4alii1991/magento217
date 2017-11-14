@@ -1,0 +1,217 @@
+<?php 
+/******Here getting Order Data *****/
+$_order = $block->getOrder();
+$product_data = $block->getOrderItems();
+
+$payment = $_order->getPayment();
+$method = $payment->getMethodInstance();
+$methodTitle = $method->getTitle();
+
+//echo '<pre>';
+//print_r($_order->getData());
+//echo count($product_data);
+/*foreach ($product_data as $key => $value) {
+	print_r($value->getName());
+	print_r($value->getData());
+	echo '</br>';
+}*/
+//echo "</pre>";
+
+/******** Here Getting Shipping Address **********/
+$shippingAddress = $_order->getShippingAddress();
+?>
+
+<div class="checkout-success" id="desktop">
+	<div class="checkout-success-content">
+		<?php if ($block->getOrderId()):?>
+		<div class="success-header">
+			<h1 class="success-page-heading"><?php /* @escapeNotVerified */ echo __('Thank you for shopping!') ?></h1>
+		</div>
+		
+		<div class="order-masseges">
+			
+			<p class="clear-text"><?php /* @escapeNotVerified */ echo __('Your order has been placed successfully!') ?></p>
+			<p class="clear-text"><?php /* @escapeNotVerified */ echo __('Now sit back and relax while the good folks at out warehouse work there magic!') ?></p>
+			<p class="red"><?php /* @escapeNotVerified */ echo __('We will send you an email/sms confirmation within 15 minutes.') ?></p>
+			
+			<?php 
+			$i = 0;
+			foreach ($product_data as $key => $value) { 
+			?>
+				    <?php 
+					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$product = $objectManager->create('Magento\Catalog\Model\Product')->loadByAttribute('sku', $value->getSku());
+					$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+					$image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->resize(125,100)->getUrl();
+					
+
+					/****** Here is the logic for estimated delivery ******/
+					$estdays = $product->getAttributeText('dispatch_eta') + 5 ;
+					$order_date = strtotime($_order->getUpdatedAt());
+					$order_date = strtotime("+".$estdays." day", $order_date);
+					$newDate = date('d M Y',$order_date);
+
+					?>
+					<div class="order-item-table">
+						<div class="table-cell left">
+							<?php if($i == 0) { ?>
+								<span class="clear-text"><?php /* @escapeNotVerified */ echo __('Order Number: ') ?></span><span class="red"><?php echo $block->escapeHtml($block->getOrderId()); ?></span><br/>
+							<?php } ?>
+							
+							<span class="clear-text"><?php /* @escapeNotVerified */ echo __($value->getName().' will delivered to ') ?></span>
+							<div class="success-page-order-info" >
+								<span class="red"><?php echo $shippingAddress->getFirstName();?></span>
+								
+								<div class="leave-order">
+									<div class="leave-box">
+										<div class="col-xs-12 customer-name">
+											<strong><?php echo $shippingAddress->getFirstName();?></strong><span class="home-or-office" style="display:none">Home</span>
+										</div>
+										<div class="col-xs-12 customer-address">
+											<?php $street = $shippingAddress->getStreet();?>
+											<?php echo $street[0]." ".$shippingAddress->getCity()." ".$shippingAddress->getState()." ".$shippingAddress->getCountry()." ".$shippingAddress->getPostCode();?>
+										</div>
+										<div class="col-xs-12 payment-method" style="display:none">
+											<span class="lite-text">Payment Method</span><br/>
+											<span class="clear-text"><?php echo $methodTitle; ?></span>
+										</div>
+										
+										<div class="col-xs-12 leave-massege" style="display:none">
+											<span class="clear-text">Leave the order with neighbours</span><span class="red"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+										</div>
+										<div class="col-xs-12 leave-massege-input" style="display:none">
+											<input type="text" name="leave-parcel-to"></input>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<br/>
+							<span class="clear-text"><?php /* @escapeNotVerified */ echo __('Guarantee Delivery date: ') ?></span><span class="red"><?php echo $newDate;?></span><br/>
+
+							<div class="review action">
+								<a href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account') ?>"><?php /* @escapeNotVerified */ echo __('review or edit your order >') ?></a>
+							</div>
+						</div>
+						<div class="table-cell right">
+							<img src="<?php echo $image_url;?>">
+						</div>
+					</div>
+					<?php $i++; ?>
+					
+			<?php } ?>
+			
+			<div class="table width-100" style="display:none">
+				<div class="table-cell left"></div>
+				<div class="table-cell right">
+					<a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> <span><?php /* @escapeNotVerified */ echo __('share it with your friends') ?></span></a>
+				</div>
+			</div>
+		</div>
+	<?php endif;?>
+		<?php //echo $block->getAdditionalInfoHtml() ?>
+	</div>
+</div>
+<div class="checkout-success" id="mobile">
+	<div class="checkout-success-content">
+		<?php if ($block->getOrderId()):?>
+		<div class="success-header-block">
+			<div class="success-bg">
+				<div class="success-header">
+					<h1 class="success-page-heading"><?php /* @escapeNotVerified */ echo __('Order Placed') ?></h1>
+				</div>
+				<p class="white"><?php /* @escapeNotVerified */ echo __('Your order has been placed successfully!') ?></p>
+				<p class="white"><?php /* @escapeNotVerified */ echo __('Now sit back and relax while the good folks at out warehouse work there magic!') ?></p>
+				
+				<div class="order-total-amt">
+					<strong class="strong white">Total price : <?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($_order->getGrandtotal(),true,false);?></strong>
+				</div>
+				<div class="view-details-button">
+					<div class="review action">
+						<a  href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account') ?>"><strong class="white"><?php /* @escapeNotVerified */ echo __('View Details >') ?></strong></a>
+					</div>
+					<div class="order-id">
+						<strong class="white"><?php echo $block->escapeHtml($block->getOrderId()); ?></strong>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="estimate-massege">
+			<p class="clear-text"><?php /* @escapeNotVerified */ echo __('We will send you an email/sms<br/>confirmation within 15 minutes.') ?></p>
+		</div>
+		
+		<div class="success-shippingAddress">
+			<div class="leave-order">
+				<div class="leave-box">
+					<div class="col-xs-12 success-customer-name">
+						<strong class="red"><?php echo $shippingAddress->getFirstName();?></strong>
+						<span class="home-or-office" style="display:none">Home</span>
+					</div>
+					<div class="col-xs-12 customer-address">
+						<?php $street = $shippingAddress->getStreet();?>
+						<?php echo $street[0]." ".$shippingAddress->getCity()." ".$shippingAddress->getState()." ".$shippingAddress->getCountry()." ".$shippingAddress->getPostCode();?>
+					</div>
+					<div class="col-xs-12 payment-method" style="display:none">
+						<span class="lite-text">Payment Method</span><br/>
+						<span class="clear-text"><?php echo $methodTitle; ?></span>
+					</div>
+					
+					<div class="col-xs-12 leave-massege" style="display:none">
+						<span class="clear-text">Leave the order with neighbours</span><span class="red"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+					</div>
+					<div class="col-xs-12 leave-massege-input" style="display:none">
+						<input type="text" name="leave-parcel-to"></input>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="order-masseges">
+			<?php 
+			$i = 0;
+			foreach ($product_data as $key => $value) { 
+			?>
+				    <?php 
+					$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$product = $objectManager->create('Magento\Catalog\Model\Product')->loadByAttribute('sku', $value->getSku());
+					$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+					$image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->resize(125,100)->getUrl();
+					
+
+					/****** Here is the logic for estimated delivery ******/
+					$estdays = $product->getAttributeText('dispatch_eta') + 5 ;
+					$order_date = strtotime($_order->getUpdatedAt());
+					$order_date = strtotime("+".$estdays." day", $order_date);
+					$newDate = date('d M Y',$order_date);
+
+					?>
+					<div class="ss-estimate-delivery">
+						<p class="clear-text"><?php /* @escapeNotVerified */ echo __('Est. Delivery') ?>: <span class="green"><?php echo $newDate;?></span></p>
+					</div>
+					
+					<div class="order-item-table">
+						<div class="table-cell">
+							<span class="clear-text"><?php /* @escapeNotVerified */ echo __($value->getName().' will delivered to ') ?>
+								<strong class="red"><?php echo $shippingAddress->getFirstName();?></strong>
+							</span>
+						</div>
+						<div class="table-cell">
+							<img src="<?php echo $image_url;?>">
+						</div>
+					</div>
+					<?php $i++; ?>
+					
+			<?php } ?>
+			
+			<div class="table width-100" style="display:none">
+				<div class="table-cell left"></div>
+				<div class="table-cell right">
+					<a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> <span><?php /* @escapeNotVerified */ echo __('share it with your friends') ?></span></a>
+				</div>
+			</div>
+		</div>
+	<?php endif;?>
+		<?php //echo $block->getAdditionalInfoHtml() ?>
+	</div>
+</div>
+
+

@@ -35,6 +35,7 @@ class orderCommitAfter implements ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('came inside execute function');
         if ("0" == $this->scopeConfig->getValue('pickrr_magento2/general/automatic_shipment_enable', \Magento\Store\Model\ScopeInterface::SCOPE_STORE))
           return NULL;
         $invoice = $observer->getEvent()->getInvoice();
@@ -57,9 +58,12 @@ class orderCommitAfter implements ObserverInterface
         else
             $cod_amount = 0.0;
 
-        if ($order->getState() != Order::STATE_NEW && $order->getState() != Order::STATE_PENDING_PAYMENT )
-           return NULL;
+/* For razorpay order syncing  to cmw, have commented below line */
 
+        // if ($order->getState() != Order::STATE_NEW && $order->getState() != Order::STATE_PENDING_PAYMENT )
+        //    return NULL;
+
+/* finished*/
         $auth_token = $this->scopeConfig->getValue('pickrr_magento2/general/auth_token', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
          
         $pickup_time = $this->scopeConfig->getValue('pickrr_magento2/shipment_details/pickup_time', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
@@ -75,5 +79,6 @@ class orderCommitAfter implements ObserverInterface
         $from_address = $this->scopeConfig->getValue('pickrr_magento2/cmw_shipment_details/cmw_from_address', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
         }
        $this->helper->createOrderShipment($auth_token, $order, $from_name, $from_phone_number, $from_pincode, $from_address, $pickup_time, $cod_amount);
+       \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('helper createOrderShipment got called');
     }
 }

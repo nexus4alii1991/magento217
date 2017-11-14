@@ -22,16 +22,16 @@ class SendSMS implements \Magento\Framework\Event\ObserverInterface
 			    $product = $product_names[0];
 			  }
 			if($status == 'Pending'){
-	        $message = "Hi!, Your order $otp for $product has been successfully placed. It will be shipped in 2-15 working days";
+	        $message = "Hi! your order $otp for $product has been successfully placed. It will be shipped in 2-15 days.";
 			}
 			else if($status == 'Processing'){
-			$message = "Hi!, Your Order No. $otp is processing";
+			$message = "Hi! your order $otp for $product has been successfully placed. It will be shipped in 2-15 days.";
 			}
 			else if($status == 'Complete'){
-			$message = "Hi! your order $otp for $product has been shipped";
+			$message = "Hi! your order $otp for $product has been shipped, you can track the order from your account.";
 			}
 			else if($status == 'Canceled'){
-			$message = "Hi! your order $otp has been canceled";
+			$message = "Hi!, your order $otp has been successfully cancelled.";
 			}
 			$apiKey = rawurlencode('pNgD+phaB+0-QzhVw3TJlXLw7X9GcO8364Hrs7wqxJ');
 			$sender = rawurlencode('DESIRE');

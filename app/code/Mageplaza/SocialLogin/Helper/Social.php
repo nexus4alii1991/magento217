@@ -21,6 +21,11 @@
 namespace Mageplaza\SocialLogin\Helper;
 
 use Mageplaza\SocialLogin\Helper\Data as HelperData;
+use Razorpay\Api\Api;
+use Razorpay\Api\Request;
+
+
+
 
 /**
  * Class Social
@@ -169,5 +174,77 @@ class Social extends HelperData
 		}
 
 		return $scope;
+	}
+
+	public function refund($orderId,$itemId,$itemPrice,$comments)
+	{
+		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		$connection = $resource->getConnection();
+		$tableName = $resource->getTableName('sales_order_item_canceled');
+        $orderDetail = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+        $razorpayKeyID = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/razorpay/key_id');
+        $razorpayKeySecret = $objectManager->get('Magento\Framework\App\Config\ScopeConfigInterface')->getValue('payment/razorpay/key_secret');
+   
+			if ($orderDetail->canCancel()) {
+			    $orderItems = $orderDetail->getAllItems();       
+			   	$itemCount = 0;
+			   	$canceledItems = 0;
+			    foreach ($orderItems as $value) {
+			    $product = $value->getProduct();
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+			    
+			        $product = $value->getProduct();
+							$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+							
+							if(($value->getProductType() == 'simple') && isset($parent[0])){
+								continue;
+			        		}
+			        if($value->getId() == $itemId){ 
+			           $value->setQtyCanceled($value['qty_ordered']);
+			           $value->save();
+			           $orderDetail->save(); 
+			           		if(($value->getProductType() == 'simple') && isset($parent[0])){
+								continue;
+						    }else{
+						    	$itemCount++;
+						    	if($value->getStatus() == "Canceled"){
+						        $canceledItems++;
+						    	}
+						    } 
+			        }else{
+			         continue;
+			        }
+			        
+			    }
+			    /*echo $itemCount;
+			    echo $canceledItems;exit;*/
+			    /*if($itemCount == $canceledItems){
+			    	$orderDetail->setState(Order::STATE_CANCELED)->setStatus(Order::STATE_CANCELED);
+					$orderDetail->save();
+			    }*/
+			   
+			    if($orderDetail->save()){ 
+				$sql = "Insert Into " . $tableName . " (order_id, item_id, qty_canceled, comments) Values (".$orderId.",".$itemId.",".$value['qty_ordered'].",'".$comments."')";
+				$connection->query($sql);
+				$select = $connection->select()
+			    ->from(
+			        ['ce' => 'sales_payment_transaction'],
+			        ['txn_id']
+			    )
+			    ->where('order_id = '.$orderId.''); 
+				$data = $connection->fetchAll($select);
+				if(!empty($data)){ 
+				$txn_id = $data[0]['txn_id'];
+				$api = new Api($razorpayKeyID, $razorpayKeySecret);
+				$refundAmount = round($itemPrice * 100 * $value['qty_ordered']);
+				if($refundAmount != 0){
+				$payment = $api->payment->fetch($txn_id);
+				$refund = $payment->refund(array('amount' => $refundAmount )); //for partial refund
+				}
+				}
+				}
+			}
+
 	}
 }

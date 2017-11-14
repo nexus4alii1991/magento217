@@ -19,19 +19,22 @@
  */
 .white-popup {position: relative; background: #FFF; padding: 0; width: auto; max-width: 560px; margin: 0 auto; }
 #social-login-popup .block-container {width: 100%; display: table; }
-#social-login-popup .social-login-title {padding: 0 0 30px 10px; background-color: #3399cc; width: 45%; display: table-cell; vertical-align: middle;}
-#social-login-popup .social-login-title .small-white{padding-left:15px; font-size:13px; color:#fff; margin-top: 15px;}
-#social-login-popup .block-container .block {padding: 20px 25px; margin: 0; width: 100%;}
-#social-login-popup .block-container.authentication .block {padding-bottom: 20px;}
+#social-login-popup .social-login-title {padding: 0 10px; background-color: #3399cc; width: 45%; display: table-cell; vertical-align: middle;}
+#social-login-popup .social-login-title .small-white{padding-left:15px; font-size:14px; color:#fff; margin-top: 15px;}
+#social-login-popup .block-container .block {padding: 40px 25px; margin: 0; width: 100%;}
+#social-login-popup .block-container div#social-login-authentication{padding-bottom:0;}
 .social-login-ajax-loading {width: 100%; height: 100%; position: absolute; opacity: 0.6; background: #fbfaf6; background-image: url('images/ajax-loader.gif'); background-repeat: no-repeat; background-position: center center; }
-#social-login-popup .block-container .block .block-title {padding-bottom: 10px; margin-bottom: 20px; font-family: Affogato Medium; color: #888;}
+#social-login-popup .block-container .block .block-title {padding-bottom: 20px;float:left;width:100%;color: #494949;}
 #social-login-popup .fieldset {margin: 0 0 20px;}
-.actions-toolbar {float: left;margin-bottom: 7px;}
-.actions-toolbar > span {line-height: 32px;}
-.account-social-login .actions-toolbar.social-btn {width: 215px;}
+#social-login-popup .actions-toolbar {float: left;margin-bottom: 7px;}
+#social-login-popup .actions-toolbar > span {line-height: 32px;}
+#social-login-popup .account-social-login .actions-toolbar.social-btn {width: 215px;}
 #social-login-popup .actions-toolbar > .secondary .action.back {display: block;}
 .social-login-title h2 {margin: 0; padding-left: 15px; background-position: 12px center; background-repeat: no-repeat; color: #ffffff;}
 .social-login-title h3 {margin: 0; padding-left: 15px; background-position: 12px center; background-repeat: no-repeat; color: #ffffff; font-size: 16px; letter-spacing: 2px;}
+.login-head {float: left;margin: 0;font-family: 'Affogato Medium';font-weight:normal;color: #494949;font-size: 16px;}
+#otp-login {font-size: 16px;cursor: pointer;margin-right: 0px;float: right;font-family: 'Affogato Medium';color: #ff685b;line-height: normal;font-weight: normal;}
+span#otp-login:after {content: ">"; margin-left: 11px;}
 /*.social-login-title .login-title {background-image: url(images/login-title.png);}
 .social-login-title .create-account-title {background-image: url(images/create-account-title.png);}
 .social-login-title .forgot-pass-title {background-image: url(images/forgot-pass-title.png);}*/
@@ -46,7 +49,7 @@
 #social-login-popup .move-to-top label{bottom: 30px;}
 #social-login-popup .social-login #bnt-social-login-authentication, #social-login-popup .social-login .create.primary{padding: 10px 70px;width: 100%; border-radius: 20px;}
 .social-login-authentication-channel{padding-bottom: 10px;}
-.social-login-authentication-channel .block-content { margin: 0 auto; width: 154px;}
+.social-login-authentication-channel .block-content { margin: 0 auto; width: 114px;}
 
 /* Authentication Popup */
 .social-login-authentication-popup {width: 100% !important;}
@@ -65,6 +68,58 @@
 #group-button{width: 48.8%; /*margin-left: 37px;*/ /*margin-top: 0px;*/ float:right; clear:none;}
 #group-button .block.social-login-authentication-channel.col-mp.mp-5 {margin-bottom: 2px;}
 
+span#block-customer-login-heading {
+    font-size: 16px;
+    font-family: affogato Medium;
+    font-weight: normal;
+}
+#social-login-popup input[type="radio"]{
+	margin:0px 5px 0 0;
+}
+#social-login-popup .gender .gender {
+    float: left;
+    margin-right: 15px;
+}
+span#sent-success {
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    color: lightgreen;
+	display: none;
+}
+span#sent-success.fa-times {
+    color: #ff685b;
+}
+#social-login-popup .disable {
+    pointer-events: none;
+    background: no-repeat;
+    color: #ddd;
+    border-color: #ddd;
+    box-shadow: none;
+}
+#social-login-popup span#back {
+    text-align: right;
+    position: absolute;
+    right: 25px;
+    top: 40px;
+    color: #ff685b;
+}
+#social-login-popup span#back:before {
+    content: "<";
+    margin-right: 10px;
+}
+#social-login-popup fieldset.fieldset .field {
+    position: relative;
+}
+span.resend {
+   /* position: absolute;*/
+    right: 10px;
+    bottom: 5px;
+    text-decoration: underline;
+}
+.social-login-customer-authentication .block-content {
+    clear: both;
+}
 .mfp-zoom-in {/* start state */ /* animate in */ /* animate out */}
 .mfp-zoom-in .mfp-with-anim {opacity: 0; transition: all 0.2s ease-in-out; transform: scale(0.8);}
 .mfp-zoom-in.mfp-bg {opacity: 0; transition: all 0.3s ease-out;}

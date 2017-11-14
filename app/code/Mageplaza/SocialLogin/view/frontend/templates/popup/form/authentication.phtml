@@ -22,13 +22,14 @@
 <div class="social-login block-container authentication">
     <div class="social-login-title">
         <h3 class="login-title">
-            <?php echo __('Login') ?>
+            <?php echo __('Log in') ?>
         </h3>
-		<p class="small-white"><?php echo __('Get access to your Orders,');?><br/><?php echo __('Whishlist and Recommendations.');?></p>
+		<p class="small-white"><?php echo __('Good to see you back.');?><br/><?php echo __('Log in to access your Orders,');?><br/><?php echo __('Wishlist and recommendations.');?></p>
     </div>
     <div class="block social-login-customer-authentication col-mp" id="social-login-authentication">
         <div class="block-title">
-			<span id="otp-login" role="heading" aria-level="2" style="float:left; margin-right:15px;cursor:pointer;"><?php echo __('Login with OTP') ?></span>
+			<h3 class="login-head">Log in</h3>
+			<span id="otp-login" role="heading" aria-level="2"><?php echo __('Log in with OTP') ?></span>
 			
         </div>
         <div class="block-content" aria-labelledby="block-customer-login-heading">
@@ -40,7 +41,7 @@
                         <div class="control">
                             <input name="username" id="email" type="text" class="input-text"
                                    title="<?php echo __('Email') ?>" data-validate="{required:true}"
-								   placeholder="<?php echo __('Email address / phone') ?>">
+								   placeholder="<?php echo __('Email') ?>">
                         </div>
                     </div>
                     <div class="field password required">
@@ -54,44 +55,52 @@
                     <?php echo $block->getChildHtml('login.captcha') ?>
                     <div class="actions-toolbar">
                         <div class="primary">
-                            <button type="button" class="action login primary" id="bnt-social-login-authentication"><span><?php echo __('continue') ?></span></button>
+                            <button type="button" class="action login primary" id="bnt-social-login-authentication"><span><?php echo __('Continue') ?></span></button>
                         </div>
-                        <div class="secondary"><a class="action remind" href="#"><span><?php echo __('Forgot Your Password?') ?></span></a></div>
+                        <div class="secondary"><a class="action remind" href="#"><span><?php echo __('Forgot your password?') ?></span></a></div>
                     </div>
                     <div class="actions-toolbar">
-                        <div class="primary">New to Desire desire <a class="action create" href="#"><span><?php echo __('Sign Up') ?></span></a></div>
+                        <div class="primary">New to Desire Desire? <a class="action create" href="#"><span><?php echo __('Sign up') ?></span></a></div>
                     </div>
                 </fieldset>
             </form>
         </div>
 		<div class="custom-otp" style="display:none">
-			<fieldset class="fieldset login" data-hasrequired="<?php echo __('* Required Fields') ?>">
-				<div class="field required">
-					<div class="control">
-						<input name="mobile" id="mobile" type="text" class="input-text" value="" title="<?php echo __('Mobile') ?>" placeholder="<?php echo __('Mobile') ?>">
+			<span id="back" class="right" role="heading" style="cursor:pointer;" aria-level="2"><?php echo __('Back') ?></span>
+			<div class="form-customer-login" id="social-form-login">
+				<fieldset class="fieldset login" data-hasrequired="<?php echo __('* Required Fields') ?>">
+					<div class="field required">
+						<div class="control">
+							<input name="mobile" id="mobile1" type="text" class="input-text" title="<?php echo __('Mobile') ?>" placeholder="<?php echo __('Mobile') ?>">
+							<span id="sent-success"class="fa fa-check" aria-hidden="true"></span>
+						</div>
 					</div>
-				</div>
-				
-				<div class="field otp required" style="display:none">
-					<div class="control">
-						<input name="otp" id="otp" type="text" class="input-text" value="" title="<?php echo __('OTP') ?>" placeholder="<?php echo __('OTP') ?>">
+					
+					<div class="field otp required" style="display:none">
+						<div class="control">
+							<input name="otp" id="otp" type="text" class="input-text" value="" title="<?php echo __('OTP') ?>" placeholder="<?php echo __('CODE') ?>">
+						</div>
+						<span class="resend">Resend</span>
 					</div>
-					<span class="resend">Resend</span>
-				</div>
-				<div class="actions-toolbar">
-					<div class="primary">
-					<button type="button" class="action" id="get-otp"><span><?php echo __('Get OTP') ?></span></button>
-					<button type="button" style="display:none" class="action" id="verify"><span><?php echo __('Verify') ?></span></button>
-					<span id="back" role="heading" style="cursor:pointer;" aria-level="2"><?php echo __('Back') ?></span>
+					<div class="actions-toolbar width-100">
+						<div class="primary">
+							<button type="button" class="action disable" id="get-otp" ><span><?php echo __('Get OTP') ?></span></button>
+							<button type="button" style="display:none" class="action" id="verify"><span><?php echo __('Verify') ?></span></button>
+							
+							<span style="display:none" class="otp-msg not-exist" style="color: red;font-size:13px;font-family: bold;">Number not registered !</span>
+							<span style="display:none" class="otp-msg not-match" style="color: red;font-size:13px;font-family: bold;">Enter correct OTP !</span>
+							<span style="display:none" class="otp-msg logged" style="color: green;font-size:13px;font-family: bold;">Logged in successfully !</span>
+							<span style="display:none" class="otp-msg sent" style="color: green;font-size:13px;font-family: bold;">OTP, sent.</span>
+							<span style="display:none" class="otp-msg resent" style="color: green;font-size:13px;font-family: bold;">OTP, resent.</span>
+						</div>
 					</div>
-				</div>
-			</fieldset>
+					<div class="actions-toolbar">
+						<div class="primary">New to Desire Desire? <a class="action create" href="#"><span><?php echo __('Sign up') ?></span></a></div>
+					</div>
+				</fieldset>
+			</div>
 		</div>
-		<span style="display:none" class="not-exist" style="color: red;font-size:13px;font-family: bold;">Mobile Number not registered !!</span>
-	    <span style="display:none" class="not-match" style="color: red;font-size:13px;font-family: bold;">Please enter correct OTP !!</span>
-		<span style="display:none" class="logged" style="color: green;font-size:13px;font-family: bold;">Loggedin successfullyLoading Page...</span>
-		<span style="display:none" class="sent" style="color: green;font-size:13px;font-family: bold;">OTP has been sent successfully</span>
-		<span style="display:none" class="resent" style="color: green;font-size:13px;font-family: bold;">OTP has been resent successfully</span>
+		
     </div>
     <?php echo $block->getChildHtml('popup.authentication.social') ?>
 </div>
@@ -104,18 +113,46 @@ $baseUrl = $currentStore->getCurrentUrl();
  <input type="hidden" id="base_url" value="<?php $baseUrl ?>">
 <script>
  require([ 'jquery', 'jquery/ui'], function($){
+	/*********** Keyup Funtion For Mobile No Count ************/
+	 $('#mobile1').keyup(function () {
+		  var max = 10;
+		  var len = $(this).val().length;
+		  if (len >= max) {
+			  if(len == max){
+				$('#sent-success').show();
+				$('button#get-otp').removeClass("disable");
+				$('#sent-success').addClass('fa-check');
+				$('#sent-success').removeClass('fa-times');
+			  }else{
+				$('#sent-success').show();
+				$('#sent-success').removeClass('fa-check');
+				$('#sent-success').addClass('fa-times');
+				$('button#get-otp').addClass("disable");
+			  }
+		  }else{
+			$('#sent-success').hide();
+			$('button#get-otp').addClass("disable");
+		  }
+	});
+	 
   jQuery(document).ready(function(){  
   var count="";
+  var mobile="";
     jQuery(document).on('click','#otp-login',function(){
-		$('.block-content').hide();
+		$('.social-login-customer-authentication .block-content').hide();
+		$('#otp-login').hide();
+		$('.login-head').replaceWith('<h3 class="login-head">Login with OTP</h3>');
 		$('.custom-otp').show();
-	}); 
+	});
+	
     jQuery(document).on('click','#back',function(){
-		$('.block-content').show();
+		$('.social-login-customer-authentication .block-content').show();
+		$('#otp-login').show();
 		$('.custom-otp').hide();
-		});
+		$('.login-head').replaceWith('<h3 class="login-head">Log in</h3>');
+	});
     jQuery(document).on('click','#get-otp',function(){
-	        var mobile = jQuery('#mobile').val();
+	        mobile = jQuery('#mobile1').val();
 		                    $.ajax({
                                 showLoader: true,
                                 url: "<?php echo $this->getUrl('sociallogin/mobile/mobile') ?>",
@@ -135,7 +172,7 @@ $baseUrl = $currentStore->getCurrentUrl();
                             });
     });
 	jQuery(document).on('click','.resend',function(){
-	        var mobile = jQuery('#mobile').val();
+	        var mobile = jQuery('#mobile1').val();
 		                    $.ajax({
                                 showLoader: true,
                                 url: "<?php echo $this->getUrl('sociallogin/mobile/mobile') ?>",
@@ -151,22 +188,27 @@ $baseUrl = $currentStore->getCurrentUrl();
 							}
                             });
     });
+    function loadPage(){
+    var base_url = jQuery('#base_url').val();
+    window.location.href = base_url;
+    }
 	jQuery(document).on('click','#verify',function(){
-	        var mobile = jQuery('#mobile').val();
+	        var mobile = jQuery('#mobile1').val();
 			var otp = jQuery('#otp').val();
-			var base_url = jQuery('#base_url').val();
+			
 		                    $.ajax({
                                 showLoader: true,
                                 url: "<?php echo $this->getUrl('sociallogin/verify/verify') ?>",
                                 data: {"mobile":mobile,"otp":otp},
                                 type: "POST"
                             }).done(function (data) {
+                            	console.log(data);
 							if(data == "not matched"){
 							jQuery('.not-match').show();
 							jQuery('.not-match').delay(4000).fadeOut();
 							}else if(data == "matched"){
 							jQuery('.logged').show();
-							window.location.href = base_url;
+							setTimeout(loadPage,4000)
 							}
                             });
     });

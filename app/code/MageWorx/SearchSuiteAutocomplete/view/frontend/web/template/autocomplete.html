@@ -8,25 +8,7 @@
 <div id="searchsuite-autocomplete" class="searchsuite-autocomplete" data-bind="visible: showPopup()">
 
     <div data-bind="visible: anyResultCount()">
-        <div class="suggest" data-bind="visible: result.suggest.data().length > 0">
-            <div class="title"><!-- ko i18n: 'Suggested'--><!-- /ko --></div>
-            <ul id="suggest" role="listbox" data-bind="foreach: result.suggest.data">
-                <li >
-                    <a data-bind="attr: { href: url, title: title }">
-                        <span data-bind="text: title"></span> (<span data-bind="text: num_results"></span>)
-                    </a>
-                </li>
-            </ul>
-        </div>
-
         <div class="product" data-bind="visible: result.product.data().length > 0">
-            <div class="title">
-                <!-- ko i18n: 'Products'--><!-- /ko -->
-                <a class="see-all" data-bind="attr: {href: result.product.url}">
-                    <!-- ko i18n: 'See All' --><!-- /ko -->
-                    <span data-bind="text: result.product.size"></span>
-                </a>
-            </div>
             <ul id="product" role="listbox" data-bind="foreach: result.product.data">
                 <li>
                     <div class="qs-option-image" data-bind="visible: image">
@@ -38,8 +20,8 @@
                         <div class="qs-option-title" data-bind="visible: name">
                             <a data-bind="attr: { href: url, title: name }, text: name"></a>
                         </div>
-                        <div class="qs-option-reviews" data-bind="html: reviews_rating, visible: reviews_rating"></div>
-                        <div class="qs-option-sku" data-bind="visible: sku"><!-- ko i18n: 'SKU'--><!-- /ko -->: <span data-bind="text: sku"></span></div>
+                        <!--<div class="qs-option-reviews" data-bind="html: reviews_rating, visible: reviews_rating"></div>
+                        <div class="qs-option-sku" data-bind="visible: sku">--><!--<!-- ko i18n: 'SKU'--><!-- /ko --><!--:<span data-bind="text: sku"></span></div>
                         <div class="qs-option-shortdescription" data-bind="text: short_description, visible: short_description"></div>
                         <div class="qs-option-description" data-bind="text: description, visible: description"></div>
                         <div class="qs-option-price" data-bind="html: price, visible: price"></div>
@@ -52,10 +34,17 @@
                                     <span> Add to Cart </span>
                                 </button>
                             </form>
-                        </div>
+                        </div>-->
                     </div>
                 </li>
             </ul>
+			<div class="title">
+                <!-- ko i18n: 'Products'--><!-- /ko -->
+                <a class="see-all" data-bind="attr: {href: result.product.url}">
+                    <!-- ko i18n: 'See All' --><!-- /ko -->
+                    <span data-bind="text: result.product.size"></span>
+                </a>
+            </div>
         </div>
     </div>
 

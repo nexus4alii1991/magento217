@@ -54,18 +54,8 @@ class Topmenu extends \Magento\Theme\Block\Html\Topmenu
             if (count($colBrakes) && $colBrakes[$counter]['colbrake']) {
                 $html .= '</ul></li><li class="column"><ul>';
             }
-            $catId = explode("-",$child->getId());
-            $categoryId = end($catId);
-            $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-            $object_manager = $_objectManager->create('Magento\Catalog\Model\Category')
-            ->load($categoryId);
-            $categoryDetails = $object_manager->getData();
-            $urlKey = $categoryDetails['url_key'];
-            if($urlKey == "phone-cases"){
-                $childUrl = "".$child->getUrl()."?case_type=29";  
-            }else{
+            
                 $childUrl = $child->getUrl();
-            }
 
             $html .= '<li ' . $this->_getRenderedMenuItemAttributes($child) . '>';
             $html .= '<a href="' . $childUrl . '" ' . $outermostClassCode . '><span>' . $this->escapeHtml(

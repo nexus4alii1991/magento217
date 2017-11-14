@@ -3,6 +3,7 @@ namespace Hiddentechies\Bizkick\Observer;
 class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 {
     public function execute(\Magento\Framework\Event\Observer $observer){ 
+   \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('coming inside function');
     	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $invoice = $observer->getEvent()->getInvoice();
 		$order = $invoice->getOrder();
@@ -14,6 +15,7 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 			    if($spli2[0] == "desiredesire"){
 			    	$spli2[0] = "DD2";
 			    }
+	    \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($orderIncrementId);
         $_order = $objectManager->create('\Magento\Sales\Model\Order')->load($order->getId());
 		$image = "https://desiredesire.com/skin/frontend/arw_sebian/default/images/media/logo.png";
 		$ProdustSeller = array();
@@ -43,6 +45,7 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 		}
 		$shippingAddress = $_order->getShippingAddress();
 		$billingAddress = $_order->getBillingAddress();
+		\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($_order->getPayment()->getMethodInstance()->getCode());
 		$html = '<!DOCTYPE html>
 			<html lang="en">
 			  <head>
@@ -247,6 +250,7 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 							<th style="width:100px">GST AMT.</th>
 					  </tr>
 					</thead>';
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('first break');
 					$producLine = '';
 					$subtotal = 0;
 					$grandTotal = 0;
@@ -279,7 +283,7 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 						
 							$grossTotalAmount += $grossAmount;
 							$netTotalAmount += $netAmount;
-							
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('net total amount'.$netTotalAmount);	
 						   $producLine .= '<tr>
 							<td class="service">'.$item->getName().'</td>
 							<td class="sku">'.$item->getSku().'</td>
@@ -351,18 +355,22 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 				</footer>
 			  </body>
 			</html>';
-
+\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('html finished');
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $directory = $objectManager->get('\Magento\Framework\Filesystem\DirectoryList');
 		$rootPath  =  $directory->getRoot();
 		$path_dir = $rootPath;
 		$shipNamePdf = '/pub/media/invoices/invoice_'.$orderIncrementId.'.pdf';
 	    try { 
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug('coming inside try');
 	    	$result1 = count($ProdustSeller1);
 			  require_once($rootPath.'/lib/internal/mpdf60/mpdf.php');
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($rootPath.'/lib/internal/mpdf60/mpdf.php');
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($path_dir.$shipNamePdf);
 					$mpdf = new \mPDF('utf-8', 'A4-L');
                     $mpdf->WriteHTML($html);
-					$mpdf->Output($path_dir.$shipNamePdf, 'F');				
+					$mpdf->Output($path_dir.$shipNamePdf, 'F');	
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($path_dir.$shipNamePdf);		
 		            $url= "http://api.b2b.casemyway.com/v1/Order/UploadOrderData/"; //live cmw url
 		            //$url= "http://api.b2btest.casemyway.com/v1/Order/UploadOrderData/"; // test cmw url
 				    $token= "0A688CAD8E14B689830C3669C1A1886F390C3998";
@@ -378,11 +386,12 @@ class CaseInvoice implements \Magento\Framework\Event\ObserverInterface
 						  'file' => $cfile //'@' . realpath($shipNamePdf)
 						)
 			        );
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($path_dir.$shipNamePdf);
 					curl_setopt($request, CURLOPT_SAFE_UPLOAD, true);
 					curl_setopt($request, CURLOPT_HTTPHEADER, array('X-Token:'.$token,'Content-type: multipart/form-data'));
 					curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
 					$response =  curl_exec($request);
-					\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("atul is".$response);
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("final response is".$response);
 					curl_close($request);
 				}}
 		    }catch (Exception $e){

@@ -1,0 +1,113 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$redirect = $objectManager->get('\Magento\Framework\App\Response\Http');
+$context = $objectManager->get('Magento\Framework\App\Http\Context');
+$isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
+if(!$isLoggedIn)
+        {
+           $redirect->setRedirect('/');
+        }
+?>
+<div class="orders-recent">
+        <?php //echo $block->getChildHtml()?>
+</div>
+<div class="orderFilter-container">
+	<div class="order-filter-title">
+		<span><i class="fa fa-filter"></i> Filter</span>
+	</div>
+	<div class="order-filter-content">
+		<form>
+			<ul style="list-style-type: none;">
+
+				<li class="pending">
+					<input type="radio" name="filter" class="filt" id="all"> <label class="label" for="all">Orders</label><br>
+				</li>
+				<li class="open_orders">
+					<input type="radio" name="filter"name class="filt" id="pending"> <label class="label" for="pending">Open Orders</label><br>
+				</li>
+				<li class="complete">
+					<input type="radio" name="filter" class="filt" id="complete"> <label class="label" for="complete">Completed</label><br>
+				</li>
+				<li class="cancel">
+					<input type="radio" name="filter" class="filt" id="cancel" name="cancel" value="cancel"> <label class="label" for="cancel">Cancelled</label><br>
+				</li>
+				<li class="clear">
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
+<script>
+require([ 'jquery', 'jquery/ui'], function($){
+ $( document ).ready(function() {
+      localStorage.removeItem('status');
+
+       function orderFilter() { 
+			$(".order-filter-content").fadeOut();
+            var order_status = localStorage.getItem('status');
+            if(order_status == 'Complete'){
+               $( "#complete" ).addClass( "active" );
+               $( "#pending" ).removeClass( "active" );
+               $( "#cancel" ).removeClass( "active" );
+            }else if(order_status == 'Pending'){
+                $( "#pending" ).addClass( "active" );
+                $( "#complete" ).removeClass( "active" );
+                $( "#cancel" ).removeClass( "active" );
+            }else if(order_status == 'Canceled'){
+                $( "#cancel" ).addClass( "active" );
+                $( "#complete" ).removeClass( "active" );
+                $( "#pending" ).removeClass( "active" );
+            }else if(order_status == 'All'){
+                $( "#cancel" ).removeClass( "active" );
+                $( "#complete" ).removeClass( "active" );
+                $( "#pending" ).removeClass( "active" );
+                $( "#all" ).addClass( "active" );
+            }
+            if(order_status == null){
+                order_status = 'not';
+            }else{
+            //$('.clear').html('<a class="action view all_clear" href="#">Clear Filter</a>');
+            }
+            $.ajax({
+                showLoader: true,
+                url: "<?php echo $this->getUrl('sociallogin/filter/mobilefilter') ?>",
+                data: {"ord_status":order_status},
+                type: "POST"
+            }).done(function (response) {
+             $('.orders-recent').html(response.data);
+            });
+    
+ }
+ orderFilter();
+     jQuery(document).on('change','#complete',function(){
+        stat = "Complete";
+        localStorage.setItem('status', stat);
+        orderFilter();
+    }); 
+     jQuery(document).on('change','#pending',function(){
+        stat = "Pending";
+        localStorage.setItem('status', stat);
+        orderFilter();
+    });
+     jQuery(document).on('change','#cancel',function(){
+        stat = "Canceled";
+        localStorage.setItem('status', stat);
+        orderFilter();
+    });
+     jQuery(document).on('change','#all',function(){
+        stat = "All";
+        localStorage.setItem('status', stat);
+        orderFilter();
+    }); 
+   });
+   
+   
+   /*********/
+	$(".order-filter-title").click(function(){
+		$(".order-filter-content").fadeToggle();
+	})
+   
+   
+})
+</script>

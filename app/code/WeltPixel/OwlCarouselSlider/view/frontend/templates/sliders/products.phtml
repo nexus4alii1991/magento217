@@ -29,7 +29,10 @@ $breakpoint   = $this->getBreakpointConfiguration();
 
             <?php
             $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-            $productImage = $_imagehelper->init($product, 'category_page_list')->resize(640,512)->getUrl();
+            //$productImage = $_imagehelper->init($product, 'category_page_list')->resize(640,512)->getUrl();
+            $productImage   = $_imagehelper->init($product, 'product_base_image')->resize(640,512)->getUrl();
+                                
+
             $productUrl   =  $product->getUrlModel()->getUrl($product);
             ?>
 
@@ -45,11 +48,44 @@ $breakpoint   = $this->getBreakpointConfiguration();
 					<div class="actions-secondary" data-role="add-to-links">
 						<?php if ($showWishlist || $showCompare): ?>
 							<div class="secondary-addto-links actions-secondary" data-role="add-to-links">
-								<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
-										<a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($product); ?>'  class="action towishlist" data-action="add-to-wishlist" title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
-											<span class="fa fa-heart-o"></span>
+								<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): 
+
+                                /*get wishlist product collection*/
+                                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+
+                                $om = \Magento\Framework\App\ObjectManager::getInstance();
+                                $customerSession = $om->create('Magento\Customer\Model\Session');
+                                $arrOfProductIds=array();  
+                                if($customerSession->isLoggedIn()) {
+                                    
+                                    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                                    //Load product by product id
+                                    $collection = $objectManager->create('Magento\Wishlist\Model\ResourceModel\Item\CollectionFactory')->create();
+                                    //print_r($collection); exit();
+                                    $collection->addCustomerIdFilter( $customerSession->getCustomer()->getId());
+                                     foreach ($collection as $item) {
+                                            $arrOfProductIds[] = $item->getProductId();
+                                        } 
+                                }
+                                $currentProduct = json_decode($block->getAddToWishlistParams($product));
+                                $currentProductId = $currentProduct->data->product;
+
+                                if( !in_array($currentProductId, $arrOfProductIds)){
+
+                                /*get wishlist product collection-ends*/
+                                ?>
+										<a href="#" id="loginpopup" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($product); ?>'  class="action towishlist" data-action="add-to-wishlist" title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
+											<span id="fillin" class="fa fa-heart-o"></span>
 										</a>
-								<?php endif; ?>
+								<?php } else{?>
+
+                                        <a href="#" id="loginpopup" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($product); ?>'  class="action towishlist" data-action="add-to-wishlist" title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
+                                            <span id="fillin" class="fa fa-heart"></span>
+                                        </a>
+
+                                <?php }
+                                endif; ?>
 
 								<?php if ($block->getAddToCompareUrl() && $showCompare): ?>
 									<?php
@@ -68,10 +104,10 @@ $breakpoint   = $this->getBreakpointConfiguration();
 					<?php
 						$product_name = strip_tags($product->getName());
 
-						if (strlen($product_name) > 45) {
-							$stringCut = substr($product_name, 0, 45);
-							$product_name = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
-						}
+						// if (strlen($product_name) > 45) {
+						// 	$stringCut = substr($product_name, 0, 45);
+						// 	$product_name = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+						// }
 					?>
 					
 					<div class="product-details">
@@ -93,8 +129,8 @@ $breakpoint   = $this->getBreakpointConfiguration();
 								type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
 							<span><?php /* @escapeNotVerified */ echo __('Add to cart') ?></span>
 						</button> -->
-                        <button class="fill add-to-cart fixed left" onclick="window.location.href='<?php echo $productUrl; ?>'">Add to cart</button>
-						<button class="view-more-button right fixed" onclick="window.location.href='<?php echo $productUrl; ?>'">Explore</button>
+                        <!-- <button class="fill add-to-cart fixed left" onclick="window.location.href='<?php echo $productUrl; ?>'">Add to cart</button>
+						<button class="view-more-button right fixed" onclick="window.location.href='<?php echo $productUrl; ?>'">Explore</button> -->
 					</div>
 				</div>
 			</div>

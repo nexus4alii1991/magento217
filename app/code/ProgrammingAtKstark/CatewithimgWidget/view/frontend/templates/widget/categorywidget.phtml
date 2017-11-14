@@ -1,52 +1,130 @@
 <?php
     $categories = $this->getCategoryCollection();
     $categoryHelper = $this->getCategoryHelper();
+   // print_r($categories); exit;
 ?>
 
 <?php if($this->getViewType() != "list"){ ?>
 <div class="category-container section-cotainer">
 	<div class="category-main-title">
-		<h3>Categories</h3>
-	</div>
-    <div class="columns-grid grid-3" id="homepage-category-carousel">
-        <?php
-        foreach($categories as $category):
+		<h3>Desireables</h3>
+	</div> 
+    <div class="columns-grid grid-2" id="homepage-category-carousel">
+        <?php 
+        $sortrder = array(5,3,10,11);
+       $data = array();
+        foreach($categories as $category){ 
+
             $cat = $this->getCategorymodel($category->getId());
-            $image = $cat->getImageUrl();
-            if($image != null):
-			?>
-				<div class="grid">
-					<div class="category-box" style="background-image: url(<?php echo $image;?>)">
-						<div class="category-img">
-							<img src="<?php echo $image;?>" alt="<?php echo $cat->getName()?>"/>
-						</div>
-						<div class="category-title">
-                            <?php $_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-                                  $object_manager = $_objectManager->create('Magento\Catalog\Model\Category')
-                                        ->load($category->getId());
-                                  $categoryDetails = $object_manager->getData();
-                                  $urlKey = $categoryDetails['url_key'];?>
-							<a href="<?php if($urlKey == "phone-cases"){echo "".$cat->getUrl()."?case_type=29";}else{echo $cat->getUrl();}?>"><h4 class="category-name"><?php echo wordwrap($cat->getName(), 8, "<br>\n", false); ?></h4></a>
-						</div>
-					</div>
-				</div>
-			<?php 
-			endif;
-		endforeach;?> 
+            $data['imageurl'] = $cat->getImageUrl();
+            $data['name'] = $cat->getName();
+            $data['url'] = $cat->getUrl();
+            $datacollection[] = $data;
+
+        }?>
+
+       <?php //if($image != null): ?>
+                <div class="grid">
+                    <div class="category-box" style="background-image: url(<?php echo $datacollection[1]['imageurl'];?>)">
+                        <div class="category-img">
+                            <img src="<?php echo $datacollection[1]['imageurl'];?>" alt="<?php echo $datacollection[1]['name']?>"/>
+                        </div>
+                        <div class="category-title">
+                            <a href="<?php echo $datacollection[1]['url'];?>"><h4 class="category-name"><?php echo wordwrap($datacollection[1]['name'], 8, "<br>\n", false); ?></h4></a>
+                        </div>
+                    </div>
+                </div>
+            <?php 
+           // endif;?>
+             <?php //if($image != null): ?>
+                <div class="grid">
+                    <div class="category-box" style="background-image: url(<?php echo $datacollection[3]['imageurl'];?>)">
+                        <div class="category-img">
+                            <img src="<?php echo $datacollection[3]['imageurl'];?>" alt="<?php echo $datacollection[3]['name']?>"/>
+                        </div>
+                        <div class="category-title">
+                            <a href="<?php echo $datacollection[3]['url'];?>"><h4 class="category-name"><?php echo wordwrap($datacollection[3]['name'] , 8, "<br>\n", false);?></h4></a>
+                        </div>
+                    </div>
+                </div>
+            <?php 
+           // endif;?>
+             <?php //if($image != null): ?>
+                <div class="grid">
+                    <div class="category-box" style="background-image: url(<?php echo $datacollection[0]['imageurl'];?>)">
+                        <div class="category-img">
+                            <img src="<?php echo $datacollection[0]['imageurl'];?>" alt="<?php echo $datacollection[0]['name']?>"/>
+                        </div>
+                        <div class="category-title">
+                            <a href="<?php echo $datacollection[0]['url'];?>"><h4 class="category-name"><?php echo wordwrap($datacollection[0]['name'] , 8, "<br>\n", false);?></h4></a>
+                        </div>
+                    </div>
+                </div>
+            <?php 
+            //endif;?>
+             <?php //if($image != null): ?>
+                <div class="grid">
+                    <div class="category-box" style="background-image: url(<?php echo $datacollection[2]['imageurl'];?>)">
+                        <div class="category-img">
+                            <img src="<?php echo $datacollection[2]['imageurl'];?>" alt="<?php echo $datacollection[2]['name']?>"/>
+                        </div>
+                        <div class="category-title">
+                            <a href="<?php echo $datacollection[2]['url'];?>"><h4 class="category-name"><?php echo wordwrap($datacollection[2]['name'] , 8, "<br>\n", false);?></h4></a>
+                        </div>
+                    </div>
+                </div>
+            <?php 
+           // endif;?>
+            
+
+           
+
+    
+
 	</div>
 </div>
-<?php }else{?>
+<?php }else{
+    foreach($categories as $category){ 
+     $cat = $this->getCategorymodel($category->getId());
+           
+            $data['name'] = $cat->getName();
+            $data['url'] = $cat->getUrl();
+            $datacollection[] = $data;
+    }
+    ?>
 	<ul class="footer links categories-links">
+
+        <li>
+            <a href="<?php echo $datacollection[1]['url'];?>">
+                    <span><?php echo $datacollection[1]['name']; ?></span>
+                </a>
+        </li>
+         <li>
+            <a href="<?php echo $datacollection[3]['url'];?>">
+                    <span><?php echo $datacollection[3]['name']; ?></span>
+                </a>
+        </li>
+        <li>
+            <a href="<?php echo $datacollection[0]['url'];?>">
+                    <span><?php echo $datacollection[0]['name']; ?></span>
+                </a>
+        </li>
+         <li>
+            <a href="<?php echo $datacollection[2]['url'];?>">
+                    <span><?php echo $datacollection[2]['name']; ?></span>
+                </a>
+        </li>
 	<?php
-        foreach($categories as $category):
-            $cat = $this->getCategorymodel($category->getId());
+        //foreach($categories as $category):
+          //  $cat = $this->getCategorymodel($category->getId());
         ?>
-			<li>
-				<a href="<?php if($category->getId() == 5){echo "".$cat->getUrl()."?case_type=29";}else{echo $cat->getUrl();} ?>">
-					<span><?php echo $cat->getName(); ?></span>
+			<!-- li>
+				<a href="<?php //echo $cat->getUrl(); ?>">
+					<span><?php //echo $cat->getName(); ?></span>
 				</a>
-			</li>
-    <?php endforeach; ?>
+			</li> -->
+
+    <?php //endforeach; ?>
 	</ul>
 <?php } ?>
 

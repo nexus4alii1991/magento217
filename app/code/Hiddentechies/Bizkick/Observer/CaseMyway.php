@@ -5,7 +5,8 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 {
     public function execute(\Magento\Framework\Event\Observer $observer){
 	        
-	    try {  /* parameters can be change according to requirment */
+	    try {  
+	    	/* parameters can be change according to requirment */
 	    	    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		        $order = $observer->getEvent()->getOrder();
 				$order_id = $order->getIncrementId();
@@ -15,7 +16,7 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 			    $base_url = $storeManager->getStore()->getBaseUrl();
 			    $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
 			    $spli = explode("//",$base_url);
-			    $spli2 = explode(".",$spli[1]);
+			    $spli2 = explode(".",$spli[1]); 
 			    if($spli2[0] == "desiredesire"){
 			    	$spli2[0] = "DD2";
 			    }
@@ -36,11 +37,14 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 
                 $ProdustSeller = array();
 				foreach($order->getAllItems() as $item){
-                $product = $objectManager->create('Magento\Catalog\Model\Product')->load($item->getProductId());
+			    $product = $objectManager->create('Magento\Catalog\Model\Product')->load($item->getProductId());
+			    if($product->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+                 // YOUR CODE HERE
+               }else{
                 $base_img = $product->getData('image');
                 $sku = $product->getSku();
 				$seller = $product->getData('seller');
-				$brand = $product->getData('brand');
+				$brand = $product->getData('brand');	
 				$brand_attr = $product->getResource()->getAttribute('brand')->setStoreId(0);
 				 if ($brand_attr->usesSource()) {
 				            $brand = $brand_attr->getSource()->getOptionText($brand);
@@ -50,8 +54,8 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 				 if ($finish_attr->usesSource()) {
 				       $finish = $finish_attr->getSource()->getOptionText($finish);
 				 }
-				$model = $product->getData('model');
-				$model_attr = $product->getResource()->getAttribute('model')->setStoreId(0);
+				$model = $product->getData('cmw_model');
+				$model_attr = $product->getResource()->getAttribute('cmw_model')->setStoreId(0);
 				 if ($model_attr->usesSource()) {
 				          $model = $model_attr->getSource()->getOptionText($model);
 				 }
@@ -69,11 +73,11 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 				}
 			   }
 			        $item_data= array('Id'=>0);
-					$item_data['Brand'] = "Apple"; //$brand
-					$item_data['Model'] = "iPhone 7"; //$model
+					$item_data['Brand'] = $brand; // "Apple"
+					$item_data['Model'] = $model; // "iPhone 7"
 					$item_data['MaterialType'] = "Plastic";
 					$item_data['CaseType'] = $case_type;
-					$item_data['FinishMaterial'] = "Matte"; //$finish
+					$item_data['FinishMaterial'] = $finish; // "Matte"
 					$item_data["DocketNo"] = "";
 				    $item_data["OrderStatus"] = "0";
                     $item_data["Quantity"] = $item->getQtyOrdered();;
@@ -81,12 +85,14 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
                     $item_data["ShippingCompany"] = "Pickrr";
                     $item_data["ShippingService"] ="Air";
 				    $item_data["InvoiceNo"] = null;
-				    $item_data["ImageUrl"]= $mediaUrl."catalog/product".$product->getData('cmw_print_file');
-				    $item_data["PreviewImageUrl"]= $mediaUrl."catalog/product".$product->getData('cmw_preview_file'); 
+				    $item_data["ImageUrl"] = $mediaUrl."cmw/print/".$product->getSku().".jpg";
+				    $item_data["PreviewImageUrl"] = $mediaUrl."cmw/preview/".$product->getSku().".jpg"; 
 				    $params['OrderItems'][] = $item_data;
+    \Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("sku is".$product->getSku());
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("print file".$item_data["ImageUrl"]);
+	\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("print file".$item_data["PreviewImageUrl"]);
 				}
-\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("Print Image is".$mediaUrl."catalog/product".$product->getData('cmw_print_file'));
-\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("Preview Image is".$mediaUrl."catalog/product".$product->getData('cmw_preview_file'));
+			}
 				$result = count($ProdustSeller);	
 				if($result == 1){
                  if(in_array($cmw, $ProdustSeller)){					
@@ -95,18 +101,41 @@ class CaseMyway implements \Magento\Framework\Event\ObserverInterface
 				$token= "0A688CAD8E14B689830C3669C1A1886F390C3998";
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
-				//curl_setopt($ch,CURLOPT_HEADER);
 				curl_setopt($ch, CURLOPT_POSTFIELDS,json_encode($params));
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('X-Token:'.$token,'Content-Type:application/json'));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 				$response = curl_exec($ch);
-			\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($response);
+				$rty = '"Order placed successfully"';
+				$cookieManager = $objectManager->get('Magento\Framework\Stdlib\CookieManagerInterface');
+				$writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
+				$logger = new \Zend\Log\Logger();
+				$logger->addWriter($writer);
+				$logger->info("CMW Sync response for order no. ".$order->getIncrementId()." is ".$response);
+                $otp = $order->getIncrementId();
+				/** SMS Send for CMW Sync response**/
+
+                $message = "Hi! your order $otp coudn't be synced to CaseMyWay due to some technical issues.";
+				if ($response != $rty){
+				$number = "9611416448,8088715972";
+		        $apiKey = rawurlencode('pNgD+phaB+0-QzhVw3TJlXLw7X9GcO8364Hrs7wqxJ');
+				$sender = rawurlencode('DESIRE');
+				$message = rawurlencode($message);
+				$data = array();
+		        $data = 'apikey=' . $apiKey . '&numbers=' . $number . "&sender=" . $sender . "&message=" . $message;
+				$ch = curl_init('https://api.textlocal.in/send/?' . $data);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$response = curl_exec($ch); 
+				\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($response);
+	            }
+
+                /** SMS Send for CMW Sync response**/
+
 				curl_close($ch);
 				}
 				}
 		   } catch (Exception $e) { 
-		   		\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug($e->getMessage());
+		   		\Magento\Framework\App\ObjectManager::getInstance()->get('Psr\Log\LoggerInterface')->debug("my response".$e->getMessage());
 		   }
 	    }
 

@@ -254,7 +254,7 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
 */            }      
             
         }
-
+      //print_r($_collection); exit;
         $_collection->getSelect()
             ->join(['bestsellers' => $_collection->getTable('sales_bestsellers_aggregated')],
                 'e.entity_id = bestsellers.product_id AND bestsellers.store_id = '.$this->getStoreId(),

@@ -22,9 +22,9 @@ class InstallData implements InstallDataInterface
         $entityTypeId = $categorySetup->getEntityTypeId(\Magento\Catalog\Model\Category::ENTITY);
         $attributeSetId = $categorySetup->getDefaultAttributeSetId($entityTypeId);
         $categorySetup->removeAttribute(
-            \Magento\Catalog\Model\Category::ENTITY, 'category_thumbnail' );
+            \Magento\Catalog\Model\Category::ENTITY, 'thumbnail' );
         $categorySetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY, 'category_thumbnail', [
+            \Magento\Catalog\Model\Category::ENTITY, 'thumbnail', [
                 'type' => 'varchar',
                 'label' => 'Featured Image',
                 'input' => 'image',

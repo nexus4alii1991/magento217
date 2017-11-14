@@ -21,8 +21,8 @@
 ?>
 <div class="social-login block-container create" style="display: none">
     <div class="social-login-title">
-        <h3 class="create-account-title"><?php echo __('Signup') ?></h3>
-		<p class="small-white"><?php echo __('We do not share your');?><br/><?php echo __('personal details with anyone');?></p>
+        <h3 class="create-account-title"><?php echo __('Sign up') ?></h3>
+		<p class="small-white"><?php echo __('Helps you save wishlists,');?><br/><?php echo __('stay clued in on launches and do a lot more.');?></p>
     </div>
     <div class="block col-mp mp-12">
 		<div class="block-title">
@@ -36,13 +36,7 @@
                     <input type="hidden" name="success_url" value="<?php echo $block->getSuccessUrl() ?>" />
                     <input type="hidden" name="error_url" value="<?php echo $block->getErrorUrl() ?>" />
                     <?php echo $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Name')->setObject($block->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
-                    <div class="field required">
-                        <div class="control">
-                            <input type="email" name="email" id="email_address" value="<?php echo $block->escapeHtml($block->getFormData()->getEmail()) ?>"
-                                   title="<?php echo __('Email') ?>" class="input-text"
-                                   data-validate="{required:true, 'validate-email':true}" placeholder="<?php echo __('Email') ?>"/>
-                        </div>
-                    </div>
+                    
                     <?php if ($block->isNewsletterEnabled()): ?>
                         <?php /*
 						<div class="field choice newsletter">
@@ -61,11 +55,24 @@
                     <?php if ($_taxvat->isEnabled()): ?>
                         <?php echo $_taxvat->setTaxvat($block->getFormData()->getTaxvat())->toHtml() ?>
                     <?php endif ?>
-                    <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
-                    <?php if ($_gender->isEnabled()): ?>
-                        <?php echo $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
-                    <?php endif ?>
+                   
                 </fieldset>
+				<fieldset class="fieldset">
+                    <div class="field mobile">
+                        <div class="control">
+                            <input type="text" name="mobile" id="mobile" title="<?php echo __('Mobile') ?>" class="input-text cont" placeholder="<?php echo __('Mobile') ?>" data-validate="{required:true}"/>
+                        </div>
+						<span style="display:none" style="color:red;font-size:13px;font-family: bold;" class="mob-error">Mobile Number already exists !! </span>
+                    </div>
+					<div class="field required">
+                        <div class="control">
+                            <input type="email" name="email" id="email_address" value="<?php echo $block->escapeHtml($block->getFormData()->getEmail()) ?>"
+                                   title="<?php echo __('Email') ?>" class="input-text"
+                                   data-validate="{required:true, 'validate-email':true}" placeholder="<?php echo __('Email') ?>"/>
+                        </div>
+                    </div>
+                </fieldset>
+				
                 <?php if ($block->getShowAddressFields()): ?>
                     <fieldset class="fieldset address">
                         <legend class="legend"><span><?php echo __('Address Information') ?></span></legend><br>
@@ -142,42 +149,62 @@
                         <input type="hidden" name="default_shipping" value="1">
                     </fieldset>
                 <?php endif; ?>
-				<fieldset class="fieldset">
-                    <div class="field mobile">
-                        <div class="control">
-                            <input type="text" name="mobile" id="mobile" title="<?php echo __('Mobile') ?>" class="input-text cont" placeholder="<?php echo __('Mobile') ?>"/>
-                        </div>
-						<span style="display:none" style="color:red;font-size:13px;font-family: bold;" class="mob-error">Mobile Number already exists !! </span>
-                    </div>
-                </fieldset>
+				
 				
                 <fieldset class="fieldset create account" data-hasrequired="<?php echo __('* Required Fields') ?>">
                     <div class="field password required">
                         
                         <div class="control">
-                            <input type="password" name="password" id="password-social" title="<?php echo __('Password') ?>" class="input-text" data-validate="{required:true, 'validate-password':true}" autocomplete="off" placeholder="<?php echo __('Password') ?>" />
+                            <input type="password" name="password" id="password-social" title="<?php echo __('Password') ?>" class="input-text" data-validate="{required:true, 'validate-password':true}" autocomplete="off" placeholder="<?php echo __('Password ( At least 6 characters)') ?>" />
                         </div>
                     </div>
                     <div class="field confirmation required">
-                        
                         <div class="control">
-                            <input type="password" name="password_confirmation" title="<?php echo __('Confirm Password') ?>" id="password-confirmation-social" class="input-text" data-validate="{required:true, equalTo:'#password-social'}" autocomplete="off" placeholder="<?php echo __('Confirm Password') ?>" />
+                            <input type="password" name="password_confirmation" title="<?php echo __('Confirm password') ?>" id="password-confirmation-social" class="input-text" data-validate="{required:true, equalTo:'#password-social'}" autocomplete="off" placeholder="<?php echo __('Confirm password') ?>" />
                         </div>
                     </div>
                     <?php echo $block->getChildHtml('form_additional_info'); ?>
                     <?php echo $block->getChildHtml('create.captcha'); ?>
                 </fieldset>
+				
+				<fieldset class="fieldset">
+                    <div class="field">
+						 <?php $_gender = $block->getLayout()->createBlock('Magento\Customer\Block\Widget\Gender') ?>
+						<?php if ($_gender->isEnabled()): ?>
+							<?php echo $_gender->setGender($block->getFormData()->getGender())->toHtml() ?>
+						<?php endif ?>
+					</div>
+                </fieldset>
+				
+				
                 <div class="actions-toolbar">
                     <div class="primary">
-                        <button type="button" class="action create primary" title="<?php echo __('Create an Account') ?>"><span><?php echo __('continue') ?></span></button>
+                        <button type="button" class="action create primary" title="<?php echo __('Create an Account') ?>"><span><?php echo __('Continue') ?></span></button>
                     </div>
                 </div>
 				<div class="actions-toolbar">
 					<div class="primary">
-						<div class="primary">Existing User? <a class="action back" href="#"><span><?php echo __('Log in') ?></span></a></div>
+						<div class="primary">Existing user ? <a class="action back" href="#"><span><?php echo __('Log in') ?></span></a></div>
 					</div>
 				</div>
             </form>
+            <div class="social-login-authentication-channel col-mp mp-12">
+        <div class="block-content">
+			<div class="actions-toolbar">
+				<span>Or use</span>
+			</div>
+                            <div class="actions-toolbar social-btn facebook-login">
+                    <a class="btn btn-block btn-social" id="cust-fb">
+                        <span class="fa fa-facebook"></span>
+                                            </a>
+                </div>
+                            <div class="actions-toolbar social-btn google-login">
+                    <a class="btn btn-block btn-social" id="cust-google">
+                        <span class="fa fa-google"></span>
+                                            </a>
+                </div>
+                    </div>
+    </div>
             <script>
                 require([
                     'jquery',
@@ -230,6 +257,12 @@
 <script>
  require([ 'jquery', 'jquery/ui'], function($){
  $( document ).ready(function() {
+ 	$(document).on('click','#cust-fb',function(){
+    jQuery('.btn-facebook').click();
+  })
+ 	$(document).on('click','#cust-google',function(){
+    jQuery('.btn-google').click();
+  })
   $(document).on('change','#mobile',function(){
 		var mob = $('.cont').val();
 			$.ajax({
@@ -253,3 +286,5 @@
    
   })
   </script>
+  <style>
+</style>

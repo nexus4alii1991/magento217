@@ -36,6 +36,7 @@ form.minisearch.loading .control input[type="text"] {
     border: 1px solid #c2c2c2;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
     margin-top: 4px;
+	width:675px;
     position: absolute;
     z-index: 9999999;
 }
@@ -55,16 +56,17 @@ form.minisearch.loading .control input[type="text"] {
 }
 
 .searchsuite-autocomplete .title {
-    padding: 10px;
-    margin-bottom: 5px;
-    background: #f0f0f0;
+    padding: 10px 20px;
+    margin-bottom: 0;
+    width: 100%;
+    float: left;
     color: #575757;
 }
 
 .searchsuite-autocomplete .title .see-all {
     display: inline-block;
     float: right;
-    color: #909090;
+    color: #ff685b;
     cursor: pointer;
 }
 
@@ -76,9 +78,9 @@ form.minisearch.loading .control input[type="text"] {
 }
 
 .searchsuite-autocomplete ul {
-    padding: 0 10px;
+    padding: 10px;
     margin-bottom: 0;
-	max-height: 300px;
+	max-height: 375px;
     overflow-y: scroll;
     list-style-type: none;
 }
@@ -94,7 +96,19 @@ form.minisearch.loading .control input[type="text"] {
 }
 
 .searchsuite-autocomplete .product ul li {
-    border-bottom: 1px solid #D4D2D2;
+    display: flex;
+    align-items: center;
+	height:82px;
+}
+.searchsuite-autocomplete .title > span {
+    display: none;
+}
+.searchsuite-autocomplete ul li a {
+    cursor: pointer;
+    color: #494949;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-family: 'Affogato';
 }
 .searchsuite-autocomplete .product ul li:last-child {
     border-bottom: none;

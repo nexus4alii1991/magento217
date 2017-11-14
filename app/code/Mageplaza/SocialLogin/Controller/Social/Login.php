@@ -261,9 +261,14 @@ class Login extends Action
 	 * @return mixed
 	 */
 	protected function _loginPostRedirect()
-	{
+	{	
+		/*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		$cookieManager = $objectManager->get('Magento\Framework\Stdlib\CookieManagerInterface');
+		$writer = new \Zend\Log\Writer\Stream(BP . '/var/log/test.log');
+		$logger = new \Zend\Log\Logger();
+		$logger->addWriter($writer);
+		$logger->info(print_r($cookieManager->getCookie('beflogin')),true);*/
 		$url = $this->urlBuilder->getUrl('customer/account');
-
 		if ($this->_request->getParam('authen') == 'popup') {
 			$url = $this->urlBuilder->getUrl('checkout');
 		} else {
