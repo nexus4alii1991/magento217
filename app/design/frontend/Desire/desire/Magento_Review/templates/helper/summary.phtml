@@ -22,7 +22,7 @@
     <?php endif;?>
     <div class="reviews-actions">
         <a class="action view" href="<?php /* @escapeNotVerified */ echo $url ?>"><span itemprop="reviewCount"><?php /* @escapeNotVerified */ echo $block->getReviewsCount() ?></span>&nbsp;<span><?php /* @escapeNotVerified */ echo($block->getReviewsCount() == 1) ? __('Review') : __('Customer reviews') ?></span></a>
-        <!--<a class="action add" href="<?php /* @escapeNotVerified */ echo $urlForm ?>"><?php /* @escapeNotVerified */ echo __('Add Your Review') ?></a>-->
+       <a class="action add" href="<?php /* @escapeNotVerified */ echo $urlForm ?>"><?php /* @escapeNotVerified */ echo __('Add Your Review') ?></a>
     </div>
 </div>
 <?php elseif ($block->getDisplayIfEmpty()): ?>

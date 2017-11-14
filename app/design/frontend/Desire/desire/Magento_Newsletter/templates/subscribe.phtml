@@ -18,13 +18,11 @@
             id="newsletter-validate-detail">
             <div class="field newsletter">
                 <label class="newsletter-large-text" for="newsletter">
-					<strong class="large-text"><?php /* @escapeNotVerified */ echo __('Signup for the latest') ?></strong><br/>
-					<span><?php /* @escapeNotVerified */ echo __('Get on our exclusive list of offers new alerts and more') ?></span>
+					<strong class="large-text"><?php /* @escapeNotVerified */ echo __('BE THE FIRST!') ?></strong><br/>
+					<span><?php /* @escapeNotVerified */ echo __('Sign up, get on our exclusive list for offers, launch alerts and more.') ?></span>
 				</label>
                 <div class="control">
-                    <input name="email" type="email" id="newsletter"
-                                placeholder="<?php /* @escapeNotVerified */ echo __('enter email') ?>"
-                                data-validate="{required:true, 'validate-email':true}"/>
+                    <input name="email" type="email" id="newsletter" onfocus="this.placeholder = ''" onblur="this.placeholder = 'enter email'" placeholder="<?php /* @escapeNotVerified */ echo __('enter email') ?>" data-validate="{required:true, 'validate-email':true}"/>
                 </div>
             </div>
             <div class="actions">

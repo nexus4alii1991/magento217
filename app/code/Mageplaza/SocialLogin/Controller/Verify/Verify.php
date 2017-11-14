@@ -39,7 +39,7 @@ class Verify extends \Magento\Framework\App\Action\Action {
 		if(empty($result)){
 		echo "not matched";
 		}else{
-		$sql2 = "Select entity_id FROM customer_entity_text where attribute_id='155' AND value=".$mobile;
+		$sql2 = "Select entity_id FROM customer_entity_text where attribute_id='151' AND value=".$mobile;
         $result2 = $connection->fetchAll($sql2);
 		$ent_id = $result2[0]['entity_id'];
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();

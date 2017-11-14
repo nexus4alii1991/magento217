@@ -1,0 +1,71 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Magento\Theme\Block\Html\Title
+ */
+ 
+
+ 
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Catalog\Block\Product\View');
+$_product = $myBlock->getProduct();
+$cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : '';
+$title = '';
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$catIds = $_product->getCategoryIds(); //print_r($catIds); exit;
+        if(count($catIds) ){
+           foreach($catIds as $Id){
+            $category = $objectManager->create('Magento\Catalog\Model\category')->load($Id);
+            $categoryDetails = $category->getData();
+            if($categoryDetails['level'] == 2){
+                $urlKey = $categoryDetails['url_key'];
+            }
+           }
+        }     
+$productattributes = $objectManager->get('Magento\Catalog\Model\Product')->load($_product->getId());
+if(!empty($urlKey) && ($urlKey == "phone-cases")){ 
+    $design = $productattributes->getData('product_design');
+}else{
+    $design = $_product->getName();
+
+}
+if (trim($design)) {
+    $title = '<span class="base" data-ui-id="page-title-wrapper" ' .  $block->getAddBaseAttribute() . '>'
+        . $block->escapeHtml($_product->getName()) . '</span>';
+}
+?>
+<?php if ($title): ?>
+<div class="page-title-wrapper<?php /* @escapeNotVerified */ echo $cssClass; ?> product">
+    <h1 class="page-title"
+        <?php if ($block->getId()): ?> id="<?php /* @escapeNotVerified */ echo $block->getId();?>" <?php endif; ?>
+        <?php if ($block->getAddBaseAttributeAria()): ?>
+            aria-labelledby="<?php /* @escapeNotVerified */ echo $block->getAddBaseAttributeAria(); ?>"
+        <?php endif; ?>>
+        <?php /* @escapeNotVerified */ echo $title ?>
+    </h1>
+	<h5 class="artist_sec"><span class="title_creason"><?php if(!empty($_product)){ echo $productattributes->getData('tag_line');}?></span>
+        <?php if(!empty($urlKey) && ($urlKey == "phone-cases")){ ?>
+
+    <!--<span class="artist_name"><?php $artist = $productattributes->getData('about_the_artist'); if(!empty($artist)){  echo"By:".$artist."";} ?></span>-->
+	</h5>
+    <?php 
+        $model = $productattributes->getResource()->getAttribute('model')->getFrontend()->getValue($_product);
+        $attribute_model = explode("-", $model);//print_r($attribute_model);
+        if(!empty($attribute_model[1])){
+        $attribute_model = $attribute_model[1];} else {
+        $attribute_model =  $model;
+        }
+    ?>
+	<!--<span class="model_name">
+		<?php // echo"Type: ".$productattributes->getResource()->getAttribute('case_type')->getFrontend()->getValue($_product)." Case For ".$productattributes->getResource()->getAttribute('brand')->getFrontend()->getValue($_product)."  ".$attribute_model.""?>
+	</span> -->
+	<?php }?>
+    <?php echo $block->getChildHtml(); ?>
+</div>
+<?php endif; ?>

@@ -34,7 +34,7 @@ class Mobile extends \Magento\Framework\App\Action\Action {
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
 		$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
 		$connection = $resource->getConnection();
-        $sql = "Select value FROM customer_entity_text where attribute_id=155 AND value=".$mobile;
+        $sql = "Select value FROM customer_entity_text where attribute_id=151 AND value=".$mobile;
         $result = $connection->fetchAll($sql);
 		if(empty($result)){
 		echo 'not';

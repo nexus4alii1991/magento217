@@ -8,10 +8,11 @@
 
 /** @var \Magento\Customer\Block\Account\Dashboard\Address $block */
 ?>
-<div class="block block-dashboard-addresses" id="page3">
-	<a name="addressbook"></a>
-	<div class="dash-info-title"><h3><?php /* @escapeNotVerified */ echo __('Address Book') ?></h3></div>
-	<div class="title-address-book">
+<div class="block-dashboard-addresses get_link" id="addressbook">
+	<div class="dash-info-title">
+		<h3><img class="heding-icon" src="<?php echo $this->getViewFileUrl('Magento_Customer::images/address-book.png');?>" alt="image"><?php /* @escapeNotVerified */ echo __('Address Book') ?></h3>
+	</div>
+	<!-- <div class="title-address-book">
 		<div class="title-address-container">
 			<h3><?php /* @escapeNotVerified */ echo __('Default Address') ?></h3>
 		</div>
@@ -26,17 +27,18 @@
 					?>
 				</h3>
 			</div>
-			<div class="col-md-6">
-				<p><?php echo $block->getPrimaryBillingAddressHtml() ?></p>
+			<div class="col-md-6"> -->
+				<!-- <div class="address-location defaul-add">Home</div> -->
+		<!-- 		<p class="whole-add"><?php echo $block->getPrimaryBillingAddressHtml() ?></p>
 			</div>
 			<div class="col-md-2">
 				
 			</div>
 			<div class="col-md-2">
-				<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryBillingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-chevron-right" aria-hidden="true"></i></a></h4>
+				<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryBillingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="title-address-book-second">
 		<div class="row title-address-description">
 			<div class="col-md-2">
@@ -50,36 +52,21 @@
 				</h3>
 			</div>
 			<div class="col-md-6">
-				<p><?php echo $block->getPrimaryShippingAddressHtml() ?></p>
+				<!-- <div class="address-location other-add">Tom's Office</div> -->
+				<p class="whole-add"><?php echo $block->getPrimaryShippingAddressHtml() ?></p>
 			</div>
 			<div class="col-md-2">
-				<h4>Make it default <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
+				<!-- <h4><a href="">Make it default <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4> -->
 			</div>
 			<div class="col-md-2">
-				<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryShippingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-chevron-right" aria-hidden="true"></i></a></h4>
-			</div>
-		</div>
-	</div>
-	<div class="title-address-book-second">
-		<div class="row title-address-description">
-			<div class="col-md-2">
-				<h3>Tom Jose</h3>
-			</div>
-			<div class="col-md-6">
-				<p>#22, Haskar Hosur Road, 2nd Floor, Opp. Adugodi police station, Bangalore, Karnataka 560 030</p>
-			</div>
-			<div class="col-md-2">
-				<h4>Make it default <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
-			</div>
-			<div class="col-md-2">
-				<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryBillingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-chevron-right" aria-hidden="true"></i></a></h4>
+				<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryShippingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4>
 			</div>
 		</div>
 	</div>
 	<div class="title-address-book-second">
 		<div class="title-address-description-last">
 			<a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getAddressBookUrl() ?>">
-			<img src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/images/.png');?>" alt="image"> 
+			<img src="<?php echo $this->getViewFileUrl('images/add-new.png');?>" alt="image"> 
 			<p>Add new address</p></a>
 		</div>
 	</div>

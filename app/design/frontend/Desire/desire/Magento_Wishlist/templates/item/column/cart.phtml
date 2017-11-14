@@ -1,0 +1,55 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart */
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+<?php foreach ($block->getChildNames() as $childName): ?>
+    <?php /* @escapeNotVerified */ echo $block->getLayout()->renderElement($childName, false); ?>
+<?php endforeach;?>
+<div class="col-lg-1 col-md-1 wish_product_qty recent-orders-footer-description">
+    <?php 
+    
+    echo "<span class='qty'>1</span>";
+
+     ?>
+<!--     <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
+        <div class="field qty">
+            <label class="label" for="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number" data-role="qty" id="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]" class="input-text qty" data-validate="{'required-number':true,'validate-greater-than-zero':true}"
+               name="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]" value="<?php /* @escapeNotVerified */ echo $block->getAddToCartQty($item) * 1 ?>">
+            </div>
+        </div>
+    <?php endif; ?> -->
+</div>
+<div class="col-lg-2 col-md-2 wish_product_add_cart recent-orders-footer-btn">
+    <?php if ($product->isSaleable()): ?>
+    <div class="product-item-actions">
+        <div class="actions-primary">
+            <a href=" <?php echo $product->getProductUrl(); ?>">
+            <button type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>" class="action tocart primary">
+                <span><?php /* @escapeNotVerified */ echo __('Add to Cart') ?></span>
+            </button>
+        </a>
+        </div>
+    </div>
+    <?php else: ?>
+        <?php if ($product->getIsSalable()): ?>
+            <p class="available stock" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
+            </p>
+        <?php else: ?>
+            <p class="unavailable stock" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+                <span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+            </p>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>

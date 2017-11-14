@@ -1,0 +1,64 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<div id="review_section" class="review_section">
+	<div class="block-title">
+        <strong><?php /* @escapeNotVerified */ echo __('Reviews') ?></strong>
+    </div>
+	<div class="review_rating_upper_sec">
+		<div class="product_all_rating">
+			<div class="rating_points">4.2 <span class="rating_star"><i class="fa fa-star" aria-hidden="true"></i></span></div>
+			<div class="rating_txt">Based on 22 ratings &amp; reviews</div>
+		</div>
+		<div class="rating_lines">
+			<div class="rating_line">
+				<span class="rating_num"><span class="rate_num">5</span><i class="fa fa-star" aria-hidden="true"></i></span>
+				<span class="rate_line"><span class="excelent_rating"></span></span>
+			</div>
+			<div class="rating_line">
+				<span class="rating_num"><span class="rate_num">4</span><i class="fa fa-star" aria-hidden="true"></i></span>
+				<span class="rate_line"><span class="high_rating"></span></span>
+			</div>
+			<div class="rating_line">
+				<span class="rating_num"><span class="rate_num">3</span><i class="fa fa-star" aria-hidden="true"></i></span>
+				<span class="rate_line"><span class="good_rating"></span></span>
+			</div>
+			<div class="rating_line">
+				<span class="rating_num"><span class="rate_num">2</span><i class="fa fa-star" aria-hidden="true"></i></span>
+				<span class="rate_line"><span class="low_rating"></span></span>
+			</div>
+			<div class="rating_line">
+				<span class="rating_num"><span class="rate_num">1</span><i class="fa fa-star" aria-hidden="true"></i></span>
+				<span class="rate_line"><span class="very_low_rating"></span></span>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="write-review-button">
+<span>Write a review</span>
+</div>
+<div id="product-review-container" data-role="product-review"></div>
+<?php echo $block->getChildHtml(); ?>
+<script>
+	require(['jquery'],function($){
+		$(document).ready(function() {
+			$( ".write-review-button span" ).click(function() {
+			  $( ".review-add" ).slideToggle( "slow", function() {
+				// Animation complete.
+			  });
+			});
+		})
+	});
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Review/js/process-reviews": {
+                "productReviewUrl": "<?php /* @escapeNotVerified */ echo $block->getProductReviewUrl();?>"
+            }
+        }
+    }
+</script>

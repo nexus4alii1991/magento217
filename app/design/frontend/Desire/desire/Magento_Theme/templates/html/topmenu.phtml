@@ -16,10 +16,61 @@
 ?>
 <?php $columnsLimit = $block->getColumnsLimit() ?: 0; ?>
 <?php $_menu = $block->getHtml('level-top', 'submenu', $columnsLimit) ?>
+<script>
+	require([
+		'jquery'
+	], function ($) {
+		
+		$( ".menu > ul > li" )
+		.mouseover(function(e) {
+			$(".menu > ul > li > ul").fadeOut(150);
+			$(this).children("ul").stop(true, false).fadeIn(150);
+			e.preventDefault();
+		})
+		.mouseout(function() {
+			$(".menu > ul > li > ul").fadeOut(150);
+		});
 
-<nav class="navigation" data-action="navigation">
-    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
-        <?php /* @escapeNotVerified */ echo $_menu; ?>
-        <?php /* @escapeNotVerified */ echo $block->getChildHtml(); ?>
-    </ul>
+		$(".navigation ul > li > ul.level0.submenu > li > a").click(function (e) {
+			if($(this).parent().find('ul.submenu').length != 0){
+				e.preventDefault();
+				$('.navigation ul > li > ul.level0.submenu > li').removeClass('active');
+				$(this).parent().addClass('active');
+				$('.navigation .level0 .submenu .submenu').fadeOut(150);
+				$(this).next("ul").fadeToggle(150);
+			}
+		});
+
+		$(function () {
+			$(".menu > ul > li").on('mouseenter mouseleave', function (e) {
+				if ($('ul', this).length) {
+					var elm = $('ul:first', this);
+					var off = elm.offset();
+					var l = off.left;
+					var w = elm.width();
+					var docH = $(".menu").height();
+					var docW = $(".menu").width();
+
+					var isEntirelyVisible = (l + w <= docW);
+
+					if (!isEntirelyVisible) {
+						$(this).addClass('edge');
+					}
+				}
+			});
+		});
+		
+		$(document).ready(function($) {
+			$('.navigation ul > li > ul.level0.submenu > li:first-child').addClass('active');
+		});
+
+	});
+</script>
+<nav class="navigation">
+	<div class="menu" id="om">
+		<ul>
+			<?php /* @escapeNotVerified */ echo $_menu; ?>
+			<?php /* @escapeNotVerified */ echo $block->getChildHtml(); ?>
+		</ul>
+	</div>
 </nav>

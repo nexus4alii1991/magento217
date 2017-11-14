@@ -1,0 +1,317 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php  /**@var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php 
+$Entity_id = $this->getRequest()->getParam('order_id'); 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->get("\Magento\Store\Model\StoreManagerInterface");
+$baseurl = $storeManager->getStore()->getBaseUrl();
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('sales_order_item_canceled');
+$tableName1 = $resource->getTableName('sales_payment_transaction'); 
+$_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id);
+$product_design_type1="";
+$finish1="";
+$color1="";
+$case_type1="";
+foreach ($_order->getAllVisibleItems() as $item) {
+	$my_prod = $objectManager->create('Magento\Catalog\Model\Product')->loadByAttribute('sku', $item->getSku());
+    $finish = $my_prod->getData("finish");
+    $color = $my_prod->getData("color");
+    $case_type = $my_prod->getData("case_type");
+    $design_type = $my_prod->getData("product_design");
+    $image_url = $imageHelper->init($my_prod, 'product_page_image_small')->setImageFile($my_prod->getFile())->resize(172,160)->getUrl();
+    $finish_attr = $my_prod->getResource()->getAttribute("finish");
+     if ($finish_attr->usesSource()) {
+          $finish1 = $finish_attr->getSource()->getOptionText($finish);
+     }
+     $color_attr = $my_prod->getResource()->getAttribute("color");
+     if ($color_attr->usesSource()) {
+          $color1 = $color_attr->getSource()->getOptionText($color);
+     }
+     $case_attr = $my_prod->getResource()->getAttribute("case_type");
+     if ($case_attr->usesSource()) {
+          $case_type1 = $case_attr->getSource()->getOptionText($case_type);
+     }
+     $design_attr = $my_prod->getResource()->getAttribute("product_design");
+     if ($design_attr->usesSource()) {
+          $product_design_type1 = $design_attr->getSource()->getOptionText($design_type);
+     }
+}
+$_order->getRealOrderId(); 
+$order_id = $_order->getEntityId();
+$timestamp = strtotime($_order->getCreatedAt());
+$newDate = date('d M Y', $timestamp);
+$items = $_order->getAllItems();
+
+
+if (!empty($_POST)){ 	
+    $this->helper('Mageplaza\SocialLogin\Helper\Social')->refund($_POST['orderid'],$_POST['itemid'],$_POST['itemprice']);
+    $_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id); 
+    $items = $_order->getAllItems(); ?>
+	<script type="text/javascript">
+	alert('Your item has been cancelled and refund is initiated');
+    </script>  
+<?php }
+?>
+
+<div class="col-lg-12 col-xs-12 shipping-details-container section-container" id=status>
+	<div class="row">
+		<div class="shipping-details">
+			<div class="col-lg-12 col-xs-12 shipping-labels">
+				<?php 
+				$itemCount=0;
+				$canceledItems=0;
+
+					foreach ($items as $value) {
+					    $product = $value->getProduct();
+					    if($product != null || $product!= ""){
+						$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+						    if(($value->getProductType() == 'simple') && isset($parent[0])){
+											continue;
+						    }else{
+						    	$itemCount++;
+						    	if($value->getStatus() == "Canceled"){
+						        $canceledItems++;
+						    	}
+						    } 
+                        }
+					}
+				?>
+				<span class="order"><?php echo $itemCount; ?> SHIPMENTS </span>
+			</div>
+
+			<?php
+			$item_id = "";
+			$item_price = "";
+			$item_url = "";
+ 				foreach($items as $item){ 
+				$product = $item->getProduct();
+				if($product !=null || $product!=""){
+				$_product = $objectManager->create('Magento\Catalog\Model\Product')->load($item->getProduct()->getId());
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+				if(($item->getProductType() == 'simple') && isset($parent[0])){
+					continue;
+        		}
+        		$productbysku = $myBlock->getProductBySku($product->getSku());
+				$item_id = $item->getId();
+				$item_price = $item->getPrice();
+				$item_url = $_product->getProductUrl();
+				}
+				
+				?>
+				
+			<div class="col-lg-12 col-xs-12 shipping-content first">
+				<div class="row">
+					<div class="order-content">
+						<div class="col-lg-12 col-xs-12">
+							<div class="row">
+								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Order date
+									</span><br>
+									<span class="clear-text">
+									<?php echo $newDate; ?>
+									</span>
+								</div>
+								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Delivery
+									</span><br>
+									<span class="clear-text green">
+										<?php echo $_order->getCustomerName(); ?>
+									</span>
+								</div>
+								
+								<div class="order-date col-lg-1 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Total
+									</span><br>
+									<span class="clear-text">
+										<?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($_order->getSubtotal(),true,false);?>
+									</span>
+								</div>
+								
+								<div class="order-date col-lg-1 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Ship to
+									</span><br>
+									<span class="ordered-customer-name">
+										<?php echo $_order->getCustomerName(); ?>
+									</span>
+								</div>
+								
+							</div>
+						</div>
+						
+						<div class="col-lg-12 col-xs-12">
+							<div class="row">
+								<div class="order-details-content table">
+									<div class="col-lg-2 col-sm-4 col-md-3  col-xs-12 table-cell">
+										<div class="product-image">
+										<a href="<?php echo $item_url; ?>">
+											<img src="<?php echo $image_url; ?>">
+										</a>
+										</div>
+									</div>
+									<div class="col-lg-5 col-md-5 col-xs-12 table-cell">
+										<span class="clear-text product-name">
+											<?php
+											 echo "<a href='".$item_url."'>".$item->getName()."</a>";
+											 if(!$finish1 == ""){
+                                     		?>
+                                    <p>Finish : <?php  echo $finish1 ?></p>
+                                    <?php } 
+                                     if(!$color1 == ""){
+                                    ?>
+                                    <p>Color : <?php  echo $color1 ?></p>
+                                    <?php }
+                                     if(!$case_type1 == ""){
+                                     	?>
+                                     <p>Case Type : <?php  echo $case_type1 ?></p>
+                                     <?php }
+                                     if(!$product_design_type1 == ""){
+                                     	?>
+                                     <p>Design Type : <?php echo $product_design_type1 ?></p>
+                                     <?php }?>
+										</span><br>
+										<span class="lite-text">
+											<?php $productbysku = $myBlock->getProductBySku($product->getSku());
+											echo $item->getData('short_description');echo "</br>"; 
+											?>
+										
+										</span>
+									</div>
+									<div class="col-lg-5 col-xs-12 table-cell">
+										<div class="action">
+									<?php if($_order->hasShipments()){ ?>
+											<div class="button-container">
+                                            <a href="<?php echo $baseurl.'track-order/?id='.$_order->getIncrementId()?>" >
+											<button class="track" type="button">Track Order</button></a>
+											</div>
+											<?php } ?>
+											<!-- <div class="button-container">
+												<button class="review" type="button">write a review</button>
+											</div> -->
+											<div id="notification" style="display: none;">
+											  <span class="dismiss"><a title="dismiss this notification"></a></span>
+											</div>
+											<div class="button-container">
+												<?php if($_order->getState() == "Complete"){?>
+												<button class="return">Return Item</button>
+												<?php } 
+												
+												if(($_order->getState() != "Complete") || ($_order->getState() != "Shipped")){
+													if(($_order->getStatus() != "canceled")) {
+														if(($item->getStatus() == "Ordered")) { 	
+														?>
+														<button type="button" data-price="<?php echo $item_price ?>" data-item="<?php echo $item_id; ?>" data-order="<?php echo $order_id; ?>" data-toggle="modal" data-target="#myModal" id="beforecancel" class="return cancle-ordr">Cancel Item </button>
+
+													<?php }
+												} else if (($item->getStatus() == "Canceled")){?>
+														<span id="success_msg" style="display:none">Item Cancelled Successfully</span>
+														<button id="itemcanceled">Item Canceled</button>
+													<?php }
+													if (($item->getStatus() == "Invoiced")){?>
+
+												 		<button>Item Invoiced</button>
+												 	<?php }	
+											
+												}
+												?>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+	<?php }?>
+	
+		</div>
+	</div>
+</div>
+
+<!-- popup -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Are you sure?</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="itemcancel" action="">
+		<input type="hidden" id="orderid" name="orderid" />
+		<input type="hidden" id="itemid" name="itemid" />
+		<input type="hidden" id="itemprice" name="itemprice" />
+			<h3>Why are you returning or cancelling this?</h3>
+			<input type="Text" name="comments" required/>
+			<button class="return" id="CancelItem" value="Cancel">Cancel Item </button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+    	</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<style>
+.sales-order-view.modal-open .modal-backdrop.in{display:none;}
+.sales-order-view.modal-open .modal {
+    overflow-x: hidden;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+</style>
+
+<script type="text/javascript">
+require(['jquery'],function($){
+$(document).ready(function() {
+		$( ".cancle-ordr" ).on( "click", function() {
+		var order = $(this).data('order');
+		var item = $(this).data('item');      
+        var itemprice = $(this).data('price');
+        $("#itemid").val(item);
+        $("#itemprice").val(itemprice);
+        $("#orderid").val(order);
+		$("#myModal").appendTo("body").modal('show');
+		
+	});
+
+	
+	$('#CancelItem').on('click', function(){
+		$('#itemcancel').submit(function() {
+			$("#notification").fadeIn("slow").append('Cancelling your item');
+			$(".dismiss").click(function(){
+       	    $("#notification").fadeOut("slow");
+       	    window.location.reload();
+	});
+
+    });
+	});
+});
+});
+</script>
+
+
+
+

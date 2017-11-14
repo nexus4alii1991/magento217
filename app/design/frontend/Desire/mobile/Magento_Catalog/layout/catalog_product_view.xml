@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <!-- <link src="Magento_Catalog::js/preselect.js"/> -->
+        <css src="mage/gallery/gallery.css"/>
+        <css src="Magebuzz_Socialshare::css/socialshare.css"/>
+    </head>
+    <body>
+		
+		<referenceBlock name="product.info.stock.sku" remove="true"/>
+		
+		<referenceBlock name="product.info.upsell" remove="true"/>
+		
+		
+		<move element="socialshare" destination="product.info.main" after="product.info.price"/>
+		<move element="product.info.review" destination="product.info.main" after="product.info.price"/>
+		
+		<move element="view.addto.wishlist" destination="product.info.main" after="product.info.review"/>
+		
+		<move element="change_pin" destination="product.info.main" before="product.info.details"/>
+		
+		<block class="Magento\Catalog\Block\Product\View" name="change_pin" template="Magento_Catalog::product/view/change_pin.phtml" before="product.info.details"></block>
+		
+		<referenceBlock name="page.main.title" remove="true"/>
+		
+		<referenceBlock name="product.info.main">
+			<block class="Magento\Catalog\Block\Product\View" name="product_name" template="Magento_Catalog::product/view/product_name.phtml" before="-"></block>
+		</referenceBlock>
+		<referenceBlock name="product.info.options.wrapper">
+			<block class="Magento\Catalog\Block\Product\View" name="product_brand" template="Magento_Catalog::product/view/product_brand.phtml" before="product.info.options"></block>
+		</referenceBlock>
+		<referenceBlock name="page.bottom">
+			<block class="Magento\Catalog\Block\Product\View" name="look_deeper_product" template="Magento_Catalog::product/view/look_deeper.phtml" before="-"></block>
+			<move element="reviews.tab" destination="page.bottom" after="look_deeper_product"/>
+			<!--<block class="Magento\Catalog\Block\Product\View" name="product_specification" template="Magento_Catalog::product/product_specification.phtml"></block>
+			<block class="Magento\Framework\View\Element\Template" name="product_show_video" template="Magento_Catalog::product/product_show_video.phtml"></block>
+			<block class="Magento\Catalog\Block\Product\View" name="product_show_details" template="Magento_Catalog::product/product_show_details.phtml"></block>-->
+			
+			<!-- <block class="Magento\Framework\View\Element\Template" name="may-like-slider" template="Magento_Catalog::product/may-like-slider.phtml"></block> -->
+			
+			<block class="Magento\Framework\View\Element\Template" name="related_items_slider" template="Magento_Catalog::product/related_items_slider.phtml"></block>
+			
+			<!--<block class="Magento\Framework\View\Element\Template" name="brought-together" template="Magento_Catalog::product/brought-together.phtml"></block>-->
+		</referenceBlock>
+    </body>
+</page>

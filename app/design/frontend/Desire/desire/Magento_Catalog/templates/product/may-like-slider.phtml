@@ -1,19 +1,19 @@
 <?php 
- $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 $myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
 $Block = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\ProductCollection');
 
 $currentProduct = $myBlock->getCurrentProduct();
-//$Productcollection = $Block->getProducts();
-//if ($currentProduct = $myBlock->getCurrentProduct()) {
+$Productcollection = $Block->getProducts();
+if ($currentProduct = $myBlock->getCurrentProduct()) {
 if(!empty($currentProduct)){
     $upSellProducts = $currentProduct->getUpSellProducts();}
     if(empty($upSellProducts)){
     $upSellProducts = $Block->getProducts();
     }
-//}
+}
 ?>
-<?php //if ( empty($upSellProducts)){  ?>
+<?php if (!empty($upSellProducts)){  ?>
 <div class="may-like-slider">
 	<div class="maylike-heading">You may also like</div>
 	<div class="owl-carousel-loaded owl-theme">
@@ -25,16 +25,24 @@ if(!empty($currentProduct)){
             $product = $objectManager->create('Magento\Catalog\Model\Product')->load($id);
            
             $imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
-            $image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->getUrl();
+            $image_url = $imageHelper->init($product, 'category_page_list')->setImageFile($product->getFile())->getUrl();
             $likedproducts = $myBlock->getProductBySku($sku); 
            
+			?>
+			<?php
+				$product_name = strip_tags($likedproducts->getName());
+
+				if (strlen($product_name) > 45) {
+					$stringCut = substr($product_name, 0, 45);
+					$product_name = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+				}
 			?>
 		<div class="item">
 			<a href="<?php echo $product->getProductUrl();?>" title="" class="slider-product-image">
 				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $image_url;?>">
 			</a>
 			<h3 class="product-name">
-				<a href="<?php echo $product->getProductUrl();?>" title=""><?php echo $likedproducts->getName(); ?></a>
+				<a href="<?php echo $product->getProductUrl();?>" title=""><?php echo $product_name; ?></a>
 			</h3>
 			<div class="price-box">
 				<p class="special-price">
@@ -45,10 +53,9 @@ if(!empty($currentProduct)){
 			</div>
 		</div>
        <?php }
-  // }?>
+   }?>
 	</div>
 </div>
-<?php// }?>
 <script>
 require(['jquery','owl_carousel'],function($){
 	$(document).ready(function() {

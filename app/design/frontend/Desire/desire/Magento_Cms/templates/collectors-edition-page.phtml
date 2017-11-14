@@ -1,0 +1,192 @@
+<?php /*<!-- Collectores  Edition Page -->*/ ?>
+<?php 
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance(); 
+$productCollectionFactory = $objectManager->get('\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+$collection = $productCollectionFactory->create();
+$collection->addAttributeToSelect('*');
+$collection->addAttributeToFilter('collectors_edition', 1);
+$collection->setPageSize(5);
+?>
+<style>
+.GalleryImagesCarousel.owl-theme .owl-dots {
+	counter-reset: slides-num; 
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: 15px;
+
+		&:after {
+			content: counter(slides-num); /* get total number of items */ 
+			display: inline-block;
+			font-size: 20px;
+			font-weight: 700;
+			vertical-align: middle;
+			padding-left: 5px;
+		}
+	}
+
+.GalleryImagesCarousel.owl-theme .owl-dots .owl-dot {
+    display: inline-block;
+	counter-increment: slides-num; /* Increment counter */
+    margin-right: 5px;
+
+		span {
+			display: none;
+		}
+
+		&.active {
+
+			&:before {
+				content:  counter(slides-num) " of" ; /* Use the same counter to get current item. */
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 20px;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+	}
+</style>
+<div class="collectores-edition-product-list">
+	<?php foreach ($collection as $_product) { ?>
+	<?php $productdata = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId()); ?>
+	<?php $images = $productdata->getMediaGalleryImages(); ?>
+	<?php
+			//$productImageAttr = $productdata->getCustomAttribute('collectors_banner');
+			$productImageAttr = $productdata->getCollectorsBanner();
+			
+			$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+			$productImage = $_imagehelper->init($productdata,'collectors_banner')
+										->setImageFile($productImageAttr)
+										->getUrl();
+			$lifestyle = $_imagehelper->init($productdata,'category_page_grid')
+										->setImageFile($productImageAttr)
+										->getUrl();
+			if(count($images) != 0){
+				$first =0;
+				foreach($images as $firstchild){
+					if($first == 0){
+						$firstimage = $firstchild->getUrl();
+					}
+					$first++;
+				}
+			}else{
+				$firstimage = $lifestyle;
+			}
+	?>
+	<div class="collectores-edition-page container"> 
+		<div class="collectors-edition-title-block">
+			<div class="collectors-edition-title" style="background-image:url(<?php echo $firstimage; ?>)">
+				<h2><?php echo $_product->getName(); ?></h2>
+			</div>
+		</div>
+
+		<div class="columns-grid grid-2">
+			<div class="grid">
+				<div class="collector-box">
+					<div class="collector-img" >
+						<div class="video-block" style="background-image:url(<?php echo $firstimage; ?>)">
+							<?php 
+							$i = 0;
+							foreach($images as $child){ ?>
+								<?php if($child->getMediaType() == "external-video") { ?>
+									<iframe class="video_iframe" id="video_iframe_<?php echo $_product->getId();?>" width="1280" height="720" src="https://www.youtube.com/embed/<?php echo basename($child->getVideoUrl());?>?rel=0&amp;controls=0&amp;showinfo=0;mute=1" frameborder="0" allowfullscreen>
+									</iframe>
+									<div class="video-block-overlay">
+										<a href="#" class="video-button video-button<?php echo $_product->getId();?>" id="video_button_<?php echo $_product->getId();?>"><span>Watch it yourself</span></a>
+										<script>
+											require(['jquery','mageplaza/core/jquery/popup'],
+												function($){
+												$('.video-button<?php echo $_product->getId();?>').magnificPopup({
+												  items: { src: 'https://www.youtube.com/watch?v=<?php echo basename($child->getVideoUrl());?>'},
+												  type: 'iframe',
+												  iframe: {
+														markup: '<div class="mfp-iframe-scaler">'+
+																'<div class="mfp-close"></div>'+
+																'<iframe class="mfp-iframe" frameborder="0" allowfullscreen></iframe>'+
+																'</div>', 
+														patterns: {
+															youtube: {
+																  index: 'youtube.com/', 
+																  id: 'v=', 
+																  src: '//www.youtube.com/embed/%id%?autoplay=1' 
+																}
+															 },
+															 srcAction: 'iframe_src', 
+													 }
+												});
+											})
+										</script>
+									</div>
+								<?php }else{ ?>
+									<?php if ($i == 0 ){ ?>
+										<div class="video-block-overlay">
+								
+										</div>
+									<?php }?>
+								<?php } ?>
+								<?php $i++; ?>
+							<?php } ?>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="grid">
+				<div class="collector-box">
+					<div class="collector-img">
+						<div class="GalleryImagesCarousel" id="GalleryImagesCarousel_<?php echo $_product->getId(); ?>">
+							<?php if(count($images) != 0){
+								$firstToSkip = 0;
+								foreach($images as $child){ ?>
+									<?php if(($child->getMediaType() == "external-video") || ($firstToSkip++ == 0)) { continue; }?>
+									<div class="items">
+										<img src="<?php echo $child->getUrl(); ?>" />
+									</div>
+								<?php } ?>
+							<?php }else{ ?>
+									<div class="items">
+										<img src="<?php echo $firstimage; ?>" />
+									</div>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+				
+				<div class="collector-box">
+					<div class="collector-text">
+						<?php
+							$product_des = strip_tags($_product->getDescription());
+
+							if (strlen($product_des) > 200) {
+								$stringCut = substr($product_des, 0, 200);
+								$product_des = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+							}
+						?>
+						<p class="sub-title"><?php echo $product_des;?></p> 
+					</div>
+					<button class="fill large" onclick="window.location.href='<?php echo $_product->getProductUrl();?>'">I DESIRE</button>
+				</div>
+			</div>
+			<script>
+				require(['jquery','owl_carousel'],
+					function($){
+					$('#GalleryImagesCarousel_<?php echo $_product->getId(); ?>').owlCarousel({
+						loop:true,
+						dots: true,
+						nav: false,
+						margin: 0,
+						items: 1,
+						autoplay:true,
+						autoplayTimeout:10000,
+						autoplayHoverPause:true,
+						responsiveClass: true
+					});
+				})
+			</script>
+		</div>
+	</div>
+	<?php } ?>
+</div>

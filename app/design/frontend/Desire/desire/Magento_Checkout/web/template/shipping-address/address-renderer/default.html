@@ -5,6 +5,9 @@
  */
 -->
 <div class="shipping-address-item" data-bind="css: isSelected() ? 'selected-item' : 'not-selected-item'">
+    <span class="mob" style="display:none">
+        <!-- ko text: address().telephone --><!-- /ko -->
+    </span>
     <!-- ko text: address().prefix --><!-- /ko --> <!-- ko text: address().firstname --><!-- /ko -->
     <!-- ko text: address().lastname --><!-- /ko --> <!-- ko text: address().suffix --><!-- /ko --><br/>
     <!-- ko text: address().street --><!-- /ko --><br/>
@@ -25,10 +28,13 @@
     <button type="button"
             class="action edit-address-link"
             data-bind="click: editAddress, visible: address().isEditable()">
-        <span data-bind="i18n: 'Edit'"></span>
+        <span><i class="fa fa-pencil" aria-hidden="true"></i></span>
     </button>
     <!-- /ko -->
     <button type="button" data-bind="click: selectAddress" class="action action-select-shipping-item">
         <span data-bind="i18n: 'Ship Here'"></span>
     </button>
+    <span class="my-zip" style="display:none">
+    <!-- ko text: address().postcode --><!-- /ko -->
+</span>
 </div>

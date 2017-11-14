@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$product1 = $objectManager->create('Magento\Catalog\Model\Product')->load($product->getId());
+?>
+<div class="col-lg-2 col-md-2 wish_product_price recent-orders-footer-description">
+	<?php
+    echo "&#8377;".$product1->getFinalPrice();
+	 // foreach ($block->getChildNames() as $childName): ?>
+			<?php /* @escapeNotVerified */ //echo $block->getLayout()->renderElement($childName, false); ?>
+	<?php //endforeach; ?>
+</div>

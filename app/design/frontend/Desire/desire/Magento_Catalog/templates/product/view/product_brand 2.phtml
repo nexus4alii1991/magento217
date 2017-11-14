@@ -1,0 +1,127 @@
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+$catIds = $product->getCategoryIds(); //print_r($catIds); exit;
+        if(count($catIds) ){
+           foreach($catIds as $Id){
+           	$category = $objectManager->create('Magento\Catalog\Model\category')->load($Id);
+        	$categoryDetails = $category->getData();
+        	if($categoryDetails['level'] == 2){
+        		$urlKey = $categoryDetails['url_key'];
+        	}
+           }
+        } 
+if(!empty($urlKey) && ($urlKey == "phone-cases")){ 
+$design = $product->getResource()->getAttribute('product_design'); 
+$brand = $product->getResource()->getAttribute('brand');
+$model = $product->getResource()->getAttribute('model');
+$casetype = $product->getResource()->getAttribute('case_type');
+if($design){
+	$attribute_design = $design->getFrontend()->getValue($product);
+}
+if($brand){
+	$attribute_brand = $brand->getFrontend()->getValue($product);
+}
+if($model){
+	$model = $model->getFrontend()->getValue($product);
+	$attribute_model = explode("-", $model);//print_r($attribute_model);
+	if(!empty($attribute_model[1])){
+	$attribute_model = $attribute_model[1];} else {
+	$attribute_model = 	$model;
+	}
+}
+if($casetype){
+	$attribute_casetype = $casetype->getFrontend()->getValue($product);
+}
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('custom_attribute_mapping');
+$select = "SELECT brand FROM " . $tableName ." WHERE design='".$attribute_design."'";
+$brands = $connection->fetchAll($select); 
+if(!empty($brands)){
+$casetype = "SELECT casetype FROM " . $tableName ." WHERE design='".$attribute_design."' AND brand='".$attribute_brand."' AND model='".$attribute_model."'";
+$casetypecollection = $connection->fetchAll($casetype); 
+foreach($brands as $brand){
+	$brandcollection[] = $brand['brand'];
+}
+if (!empty($brandcollection)){$brandcollections = array_unique($brandcollection);} //print_r($brandcollection);exit;
+foreach($casetypecollection as $casetypes){ 
+if($casetypes['casetype'] != $attribute_casetype){
+ 	$case[] = $casetypes['casetype'];
+ }
+}
+if(!empty($case)){$casetypes = array_unique($case);}else{$casetypes = array();}  
+
+?>
+<div class="brand_options">
+  <select  name="sources" id="sources" class="custom-select sources" placeholder="Apple iphone 7"> 
+  <option value="#"><?php echo "Model";?></option>
+  <?php// print_r($brandcollections); exit; ?>
+<?php if(!empty($brandcollections)){
+foreach($brandcollections as $brandname){
+	//$brandkey = $myBlock->getUrlKey($brandname);
+	?>
+<option value="" disabled="disabled"><?php echo $brandname;?></option>
+<?php $selectmodel = "SELECT model FROM " . $tableName ." WHERE design='".$attribute_design."' AND brand='".$brandname."' AND casetype='".$attribute_casetype."'";
+$modelcollection = $connection->fetchAll($selectmodel); 
+foreach($modelcollection as $model){
+//$modelkey = $myBlock->getUrlKey($model['model']);
+$attribute_design = preg_replace('/[^A-Za-z0-9\- ]/', '', $attribute_design); 
+$url = "".$storeManager->getStore()->getBaseUrl()."".(str_replace(' ', '-', strtolower($attribute_design)))."-".(str_replace(' ', '-', strtolower($attribute_casetype)))."-case-for-".(str_replace(' ', '-', strtolower($brandname)))."-".(str_replace(' ', '-', strtolower($model['model'])))."";
+if($model['model'] == $attribute_model){
+		continue;
+	}else{
+
+?>
+	<option value="<?php echo $url;?>"><?php echo $model['model'];?></option>
+<?php } }
+}
+}?>
+</select>
+</div>
+<?php
+if(!empty($casetypes)){
+    ?>
+<div class="brand_options" >
+
+<Select name="casetype" id="casetype" class="custom-select sources">
+	<option value="#"><?php echo "Case Type"?></option>
+	<?php foreach($casetypes as $casetype){
+		$attribute_design = preg_replace('/[^A-Za-z0-9\- ]/', '', $attribute_design); 
+	$casetypeurl = "".$storeManager->getStore()->getBaseUrl()."".(str_replace(' ', '-', strtolower($attribute_design))).'-'.(str_replace(' ', '-', strtolower($casetype)))."-case-for-".(str_replace(' ', '-', strtolower($attribute_brand)))."-".(str_replace(' ', '-', strtolower($attribute_model)))."";	
+	if($casetype == $attribute_casetype){ 
+		continue;
+	}else{
+	?>
+	<option value="<?php echo $casetypeurl;?>"><?php echo $casetype; ?></option>
+	
+	<?php }
+	}?>
+</Select> 	
+
+</div>
+<?php }
+}
+?>
+
+
+<script type="text/javascript">
+require(['jquery'],function($){
+
+	$("#sources").change(function() {
+		var url = $(this).val();
+		//alert(url);
+    window.location.href = $(this).val();
+});
+});
+require(['jquery'],function($){
+
+	$("#casetype").change(function() {
+		var url = $(this).val();
+		//alert(url);
+    window.location.href = $(this).val();
+});
+});
+</script>
+<?php }?>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Copyright © 2016 Magento. All rights reserved.
+* See COPYING.txt for license details.
+*/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		<script src="Magento_Checkout::js/custom-one.js"/>
+	</head>
+	<body>
+		<move element="logo" destination="header-wrapper" before="-"/>
+		<referenceBlock name="minicart" remove="true"/>
+		
+		<referenceBlock name="checkout.root">
+               <arguments>
+                   <argument name="jsLayout" xsi:type="array">
+						<item name="components" xsi:type="array">
+                           <item name="checkout" xsi:type="array">
+                               <item name="children" xsi:type="array">
+                                   <item name="authentication" xsi:type="array">
+                                       <item name="config" xsi:type="array">
+                                           <item name="componentDisabled" xsi:type="boolean">true</item>
+                                       </item>
+                                   </item>
+									<item name="steps" xsi:type="array">
+										<item name="children" xsi:type="array">
+											<item name="shipping-step" xsi:type="array">
+												<item name="children" xsi:type="array">
+													<item name="shippingAddress" xsi:type="array">
+														<item name="children" xsi:type="array">
+															<!-- The name of the form the field belongs to -->
+															<item name="shipping-address-fieldset" xsi:type="array">
+																<item name="children" xsi:type="array">
+																	<!--Remove fields-->
+																	<item name="company" xsi:type="array">
+																		<item name="visible" xsi:type="boolean">false</item>
+																	</item>
+																</item>
+															</item>
+														</item>
+													</item>
+												</item>
+											</item>
+										</item>
+									</item>
+                               </item>
+                           </item>
+                       </item>
+                   </argument>
+               </arguments>
+		</referenceBlock>
+		<referenceBlock name="footer" remove="true"/>
+	</body>
+</page>

@@ -1,0 +1,90 @@
+<?php /*<!-- Collectores  Edition Page -->*/ ?>
+<?php 
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance(); 
+$productCollectionFactory = $objectManager->get('\Magento\Catalog\Model\ResourceModel\Product\CollectionFactory');
+$collection = $productCollectionFactory->create();
+$collection->addAttributeToSelect('*');
+$collection->addAttributeToFilter('collectors_edition', 1);
+$collection->setPageSize(5);
+//$productarray = array();
+?>
+
+<div class="collectores-edition-product-list">
+	<div class="collectores-edition-page"> 
+		<?php foreach ($collection as $_product) { ?>
+		<?php 
+			$configMgr = $objectManager->get('Magento\ConfigurableProduct\Model\Product\Type\Configurable'); 
+			$childProducts = $configMgr->getUsedProducts($_product,null);   
+			$CountfirstChildProduct = 0 ;
+			foreach($childProducts as $childProduct) {
+				if($CountfirstChildProduct == 0){
+					$firstChildProductId = $childProduct->getId();
+				}
+				$CountfirstChildProduct++;
+			}
+			if($_product->getTypeId() == 'configurable'){
+				$productId = $firstChildProductId;
+			}else{
+				$productId = $_product->getId();
+			}
+		?>
+		<?php 	
+			$productdata = $objectManager->create('Magento\Catalog\Model\Product')->load($_product->getId()); 
+			$childProductOfConfig = $objectManager->create('Magento\Catalog\Model\Product')->load($productId);
+		?>
+		<?php $images = $productdata->getMediaGalleryImages(); ?>
+		<?php
+				$productImageAttr = $productdata->getCollectorsBanner();
+				$_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+				$lifestyle = $_imagehelper->init($_product,'category_page_grid')
+											->setImageFile($productImageAttr)
+											->getUrl();
+				if(count($images) != 0){
+				$first =0;
+					foreach($images as $firstchild){
+						if($first == 0){
+							$firstimage = $firstchild->getUrl();
+						}
+						$first++;
+					}
+				}else{
+					$firstimage = $lifestyle;
+				}
+		?>
+			<div class="items">
+				<div class="collector-img" >
+					<div class="collector-content">
+						<div class="product-image">
+							<a href="<?php echo $productdata->getProductUrl(); ?>" >
+								<img alt="<?php echo $_product->getName(); ?>" src="<?php echo $firstimage; ?>" />
+							</a>
+						</div>
+						
+						<div class="product-details">
+							<a class="ce-product-name left" href="<?php echo $productdata->getProductUrl();?>">
+								<h4 class="product-name"> <?php echo $_product->getName(); ?></h4>
+							</a>
+							<span class="price right">
+									<?php /* @escapeNotVerified */ echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($childProductOfConfig->getPrice(),true,false); ?>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+	</div>
+	<script>
+		require(['jquery','owl_carousel'],
+			function($){
+			$('.collectores-edition-page').owlCarousel({
+				loop: true,
+				margin: 15,
+				items: 1,
+				responsiveClass: true,
+				stagePadding:30,
+				nav:false,
+				dots:true,
+			});
+		})
+	</script>
+</div>

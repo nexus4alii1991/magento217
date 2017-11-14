@@ -1,0 +1,113 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="get_link" id="myordrs">
+	<div class="block-dashboard-orders">
+	<?php $_orders = $block->getOrders(); ?>
+		<div class="dash-info-title">
+			<ul>
+				<li>
+					<h3><img class="heding-icon" src="<?php echo $this->getViewFileUrl('Magento_Customer::images/reload.png');?>" alt="image"> Recent Orders</h3>
+				</li>
+				<li>
+					<?php if (sizeof($_orders->getItems()) > 0): ?>
+						<!-- <a class="action view" href="<?php /* @escapeNotVerified */ echo $block->getUrl('sales/order/history') ?>">
+							<?php /* @escapeNotVerified */ echo __('View All') ?>
+						</a> -->
+					<?php endif; ?>
+				</li>
+				<li>
+					<p></p>
+				</li>
+				<li class="pending">
+					<a href="#" class="filt" id="all">Orders</a>
+				</li>
+				<li class="open_orders">
+					<a href="#" class="filt" id="pending">Open Orders</a>
+				</li>
+				<li class="complete">
+					<a href="#" class="filt" id="complete">Completed</a>
+				</li>
+				<li class="cancel">
+					<a href="#" class="filt" id="cancel">Cancelled</a>
+				</li>
+				<li class="clear">
+				</li>
+			</ul>
+			
+		</div>
+		<div class="orders-recent">
+		<?php echo $block->getChildHtml()?>
+		</div>
+	</div>
+</div>
+<script>
+require([ 'jquery', 'jquery/ui'], function($){
+ $( document ).ready(function() {
+      localStorage.removeItem('status');
+
+       function orderFilter() { 
+	        var order_status = localStorage.getItem('status');
+	        if(order_status == 'Complete'){
+               $( "#complete" ).addClass( "active" );
+               $( "#pending" ).removeClass( "active" );
+               $( "#cancel" ).removeClass( "active" );
+	        }else if(order_status == 'Pending'){
+	        	$( "#pending" ).addClass( "active" );
+	        	$( "#complete" ).removeClass( "active" );
+                $( "#cancel" ).removeClass( "active" );
+	        }else if(order_status == 'Canceled'){
+	        	$( "#cancel" ).addClass( "active" );
+	        	$( "#complete" ).removeClass( "active" );
+                $( "#pending" ).removeClass( "active" );
+	        }else if(order_status == 'All'){
+	        	$( "#cancel" ).removeClass( "active" );
+	        	$( "#complete" ).removeClass( "active" );
+                $( "#pending" ).removeClass( "active" );
+                $( "#all" ).addClass( "active" );
+	        }
+	        if(order_status == null){
+	        	order_status = 'not';
+	        }else{
+            //$('.clear').html('<a class="action view all_clear" href="#">Clear Filter</a>');
+	        }
+			$.ajax({
+				showLoader: true,
+				url: "<?php echo $this->getUrl('sociallogin/filter/filter') ?>",
+				data: {"ord_status":order_status},
+				type: "POST"
+			}).done(function (response) {
+			 $('.orders-recent').html(response.data);
+			});
+	
+ }
+ orderFilter();
+     jQuery(document).on('click','#complete',function(){
+     	stat = "Complete";
+     	localStorage.setItem('status', stat);
+		orderFilter();
+	}); 
+     jQuery(document).on('click','#pending',function(){
+		stat = "Pending";
+		localStorage.setItem('status', stat);
+		orderFilter();
+	});
+     jQuery(document).on('click','#cancel',function(){
+		stat = "Canceled";
+		localStorage.setItem('status', stat);
+		orderFilter();
+	});
+     jQuery(document).on('click','#all',function(){
+     	stat = "All";
+     	localStorage.setItem('status', stat);
+		orderFilter();
+	}); 
+   });
+})
+</script>

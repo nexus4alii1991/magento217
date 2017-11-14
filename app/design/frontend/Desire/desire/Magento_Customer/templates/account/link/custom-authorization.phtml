@@ -1,0 +1,13 @@
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+?>
+
+<?php if(!$customerSession->isLoggedIn()) { ?>
+	<li class="authorization-link" data-label="or">
+		<a href="#social-login-popup" class="social-login" data-effect="mfp-zoom-in">Log In</a>
+	</li>
+	<li>
+		<a href="#social-login-popup" class="social-login" data-effect="mfp-zoom-in">Sign Up</a>
+	</li>
+<?php } ?>

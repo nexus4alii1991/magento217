@@ -9,6 +9,8 @@
 /**
  * @var $block \Magento\Theme\Block\Html\Title
  */
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Magento\Catalog\Block\Product\View');
+$_product = $myBlock->getProduct();
 $cssClass = $block->getCssClass() ? ' ' . $block->getCssClass() : '';
 $title = '';
 if (trim($block->getPageHeading())) {
@@ -25,7 +27,9 @@ if (trim($block->getPageHeading())) {
         <?php endif; ?>>
         <?php /* @escapeNotVerified */ echo $title ?>
     </h1>
-	<h5 class="artist_sec"><span class="title_creason">1980'S Casio Scientific</span><span class="artist_name">By: Sam Roy</span></h5>
+	<h5 class="artist_sec"><span class="title_creason"><?php if(!empty($_product)){echo $description = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($myBlock->getProduct(), $myBlock->getProduct()->getShortDescription(), 'short-description');}?></span>
+    <!--<span class="artist_name">By: Sam Roy</span>--></h5>
+	<span class="model_name">For: iPhone 6</span>
     <?php echo $block->getChildHtml(); ?>
 </div>
 <?php endif; ?>

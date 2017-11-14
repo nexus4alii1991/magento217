@@ -6,16 +6,70 @@
 
 // @codingStandardsIgnoreFile
 
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+$images = $_product->getMediaGallery('images');
+//print_r($images); exit;
+
+      $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+      $mediaurl = $objectManager->get('Magento\Store\Model\StoreManagerInterface')
+                    ->getStore()
+                    ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+      $lookdeeprImageUrl = $mediaurl."/lookdeeper.jpg"; 
+
+     // $hiddenImageUrl = $mediaurl."catalog/product/".$imagePath;
+
+
+ $productattributes = $objectManager->get('Magento\Catalog\Model\Product')->load($_product->getId());
+            $catIds = $_product->getCategoryIds(); //print_r($catIds); exit;
+                if(count($catIds) ){
+                           foreach($catIds as $Id){
+                            $category = $objectManager->create('Magento\Catalog\Model\category')->load($Id);
+                            $categoryDetails = $category->getData(); 
+                            if(!empty($categoryDetails)){
+                            $categories = explode("/",$categoryDetails['url_path']);
+                            $urlKey="";                            
+                            if(!empty($categories)){
+                            $urlKey = $categories[0];
+                            } 
+                            }  
+                           }
+                        } 
+
+$attribute = $_product->getResource()->getAttribute('dd_product_type');
+    if ($attribute)
+    {
+      $product_type = $attribute ->getFrontend()->getValue($_product);
+    }
+
+    if($product_type != "Show"){           
+      $productImageAttr = $_product->getCustomAttribute( 'look_deeper' );
+      if(!empty($productImageAttr)){
+      $productImage = $this->helper('Magento\Catalog\Helper\Image')
+          ->init($_product, 'look_deeper')
+          ->setImageFile($productImageAttr->getValue());
+      }
+      //print_r($productImageAttr->getValue());
 ?>
-<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):
+    if($urlKey == "phone-cases"){ ?>
+
     <div class="product info detailed">
         <?php $layout = $block->getLayout(); ?>
-		<div class="container-fluid">
-			<div class="info_heading">Look Deeper</div>
-			<div class="prod-info">
-				<img src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product-info.png');?>">
-			</div>
-		</div>
+        <div class="container-fluid">
+      <?php //if($_product->getData('look_deeper') != 'no_selection' && $_product->getData('look_deeper') != null){ 
+              
+
+        if($urlKey == "phone-cases"){ 
+        ?>
+            <div class="info_heading">Look Deeper</div>
+            <div class="prod-info">
+                <img src="<?php echo $lookdeeprImageUrl; ?>">
+            </div>
+            <?php }?>
+        </div>
+
         <!--<div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
             <?php// foreach ($detailedInfoGroup as $name):?>
                 <?php
@@ -43,4 +97,26 @@
             <?php /*endforeach;*/?>
         </div>-->
     </div>
-<?php endif; ?>
+<?php 
+    }else{
+?>
+<?php /*?>
+<div class="container-fluid product-show-video-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="product-show-video">
+          <img src="<?php echo $this->getViewFileUrl('images/product-show-video-img.jpg');?>" >
+          <a href="#">Watch it yourself <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+          </div>
+      </div>
+      <div class="col-md-6">
+        <img src="<?php echo $this->getViewFileUrl('images/product-show-video-img-2.jpg');?>" >
+      </div>
+    </div>
+  </div>
+</div>
+<?php */?>
+<?php } ?>
+<?php endif ?>
+<?php } ?>

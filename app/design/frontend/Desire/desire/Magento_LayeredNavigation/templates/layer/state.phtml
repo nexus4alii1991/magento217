@@ -15,16 +15,15 @@
 ?>
 <?php $_filters = $block->getActiveFilters() ?>
 <?php if (!empty($_filters)): ?>
-<div class="filter-current" data-mage-init='{"collapsible":{"openedState": "active", "collapsible": true, "active": false }}'>
-    <strong class="block-subtitle filter-current-subtitle"
-            role="heading"
-            aria-level="2"
-            data-role="title"
-            data-count="<?php echo count($_filters); ?>"><?php /* @escapeNotVerified */ echo __('Now Shopping by') ?></strong>
+<div class="filter-current">
     <ol class="items">
         <?php foreach ($_filters as $_filter): ?>
-            <li class="item">
-                <span class="filter-label"><?php echo $block->escapeHtml(__($_filter->getName())); ?></span>
+            <li class="item" id="<?php echo $block->escapeHtml(__($_filter->getName())); ?>_show">
+                <?php if($_filter->getName() == "Case Type"){?>
+                <span class="filter-value"><?php /* @escapeNotVerified */ echo "Slim"; ?></span>
+                <?php
+                } 
+                ?>
                 <span class="filter-value"><?php /* @escapeNotVerified */ echo $block->stripTags($_filter->getLabel()) ?></span>
                 <?php
                 $clearLinkUrl = $_filter->getClearLinkUrl();

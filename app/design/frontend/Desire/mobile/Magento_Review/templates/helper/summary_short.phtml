@@ -1,0 +1,35 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php $url = $block->getReviewsUrl() . '#reviews'; ?>
+<?php $urlForm = $block->getReviewsUrl() . '#review-form'; ?>
+<?php if ($block->getReviewsCount()): ?>
+<?php $rating = $block->getRatingSummary(); ?>
+<?php $ratingnum = $rating / 20 ;?>
+<div class="product-reviews-summary short<?php echo !$rating ? ' no-rating' : ''?>">
+    <?php if ($rating):?>
+    <div class="rating-summary">
+	
+        <span class="label"><span><?php /* @escapeNotVerified */ echo __('Rating') ?>:</span></span>
+		<span class="rating-number"><?php /* @escapeNotVerified */ echo number_format($ratingnum, 1, '.', ' '); ?></span>
+        <div class="rating-result" title="<?php /* @escapeNotVerified */ echo __('100') ?>%" style="width:12px;overflow: hidden;">
+            <span style="width:<?php /* @escapeNotVerified */ echo __('100') ?>%"><span><?php /* @escapeNotVerified */ echo __('100') ?>%</span></span>
+        </div>
+    </div>
+    <?php endif;?>
+</div>
+<?php elseif ($block->getDisplayIfEmpty()): ?>
+<div class="product-reviews-summary short empty">
+    <div class="reviews-actions">
+        <a class="action add" href="<?php /* @escapeNotVerified */ echo $urlForm; ?>">
+            <?php /* @escapeNotVerified */ echo __('Be the first to review this product') ?>
+        </a>
+    </div>
+</div>
+<?php endif; ?>

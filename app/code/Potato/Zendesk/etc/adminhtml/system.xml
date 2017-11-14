@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="potato" translate="label" sortOrder="340">
+            <label>Potatocommerce</label>
+        </tab>
+        <section id="potato_zendesk" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Zendesk</label>
+            <tab>potato</tab>
+            <resource>Potato_Zendesk::potato_zendesk</resource>
+            <group id="general" translate="label,comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General</label>
+                <field id="token" translate="label" type="label" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <label>API Token</label>
+                </field>
+                <field id="generate_token" type="button" sortOrder="10" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <frontend_model>Potato\Zendesk\Block\Adminhtml\System\Config\Field\GenerateButton</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

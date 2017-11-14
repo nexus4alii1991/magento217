@@ -1,23 +1,60 @@
-<div class="desire-pd-tab">					  
-  <input id="tab1" type="radio" name="tabs" checked>
-  <label for="tab1">Description</label>
-  <input id="tab2" type="radio" name="tabs">
-  <label for="tab2">Tech Specs </label>
-  <input id="tab3" type="radio" name="tabs">
-  <label for="tab3">About the Artist</label>
-  <section id="content1">
-	<p>
-	  Casio was established in April 1946 by Tadao Kashio, an engineer specializing in fabrication technology. Kashio's first major product was the Yubiwa Pipe, a finger ring that would hold a cigarette, allowing the wearer to smoke the cigarette down to its nub while also leaving the wearer's hands free.
-	</p>
-  </section>
-  <section id="content2">
-	<p>
-	  Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck.
-	</p>
-  </section>
-  <section id="content3">
-	<p>
-	  Bacon ipsum dolor sit amet beef venison beef ribs kielbasa. Sausage pig leberkas, t-bone sirloin shoulder bresaola. Frankfurter rump porchetta ham. Pork belly prosciutto brisket meatloaf short ribs.
-	</p>
-  </section>
+<?php
+/**
+ * 
+ */
+    $_helper = $this->helper('Magento\Catalog\Helper\Output');
+    $_product = $block->getProduct();
+    
+?>
+
+<div class="desire-pd-tab">	
+	<!--<div class="Desc-hed">Description</div>-->
+		<?php $shortDescription = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getShortDescription(), 'short-description'); ?>
+		<?php
+		$short_data = strip_tags($shortDescription);
+		if (strlen($short_data) > 300) {
+						$stringCut = substr($short_data, 0, 300);
+						$short_data = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+					}
+		 ?>
+		<div class="showing_txt"><?php echo $short_data; ?></div>
+		<span class="show_txt">Read More</span>
+		<?php $shortDescription = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getShortDescription(), 'short-description'); ?>
+		<div class="disable_txt"><?php echo $shortDescription ?></div>
+		<span class="hide_txt">Read Less</span>
 </div>
+<script type="text/javascript">
+require(['jquery'],function($){
+    jQuery(document).ready(function(){
+        
+		jQuery(".show_txt").click(function(){
+			jQuery(".show_txt").addClass('remove');
+			jQuery(".hide_txt").addClass('showthis');
+			jQuery(".showing_txt").slideUp();
+			jQuery(".disable_txt").slideDown();
+		});
+		jQuery(".hide_txt").click(function(){
+			jQuery(".hide_txt").removeClass('showthis');
+			jQuery(".disable_txt").slideUp();
+			jQuery(".showing_txt").slideDown();
+			jQuery(".show_txt").removeClass('remove');
+			
+		});
+    });
+});
+
+/*$(document).ready(function() {
+  
+    var cutCount = 2;
+  
+    $("#testID p").each(function (i) {
+        i++;
+        if(i == cutCount) {
+            $(this).append(' <a href="javascript:void(1)" onclick="$(\'#testID p\').show(); $(this).hide()">Read more</b>')   
+        }
+        if(i > cutCount) {
+           $(this).hide();
+        }
+    });*/
+    
+</script>

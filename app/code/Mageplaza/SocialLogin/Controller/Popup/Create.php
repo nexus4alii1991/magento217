@@ -155,6 +155,7 @@ class Create extends CreatePost
 	 */
 	public function execute()
 	{
+        $mobile_number = $this->getRequest()->getParam('mobile');
 		/** @var \Magento\Framework\Controller\Result\Json $resultJson */
 		$resultJson = $this->resultJsonFactory->create();
 
@@ -207,7 +208,11 @@ class Create extends CreatePost
 				if ($this->getRequest()->getParam('is_subscribed', false)) {
 					$this->subscriberFactory->create()->subscribeCustomerById($customer->getId());
 				}
-
+                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+		        $connection = $resource->getConnection();
+		        $sql = "Insert Into customer_entity_text (attribute_id, entity_id, value) Values ('151','".$customer->getId()."','".$mobile_number."')";
+		        $connection->query($sql);
 				$this->_eventManager->dispatch(
 					'customer_register_success',
 					['account_controller' => $this, 'customer' => $customer]

@@ -1,0 +1,59 @@
+<div class="brought-together container-fluid">
+	<div class="desire-pd-similar-hide">
+		<h3>Usually bought together</h3>
+		<div class="row">
+			<div class="col-lg-1 col-md-1 col-sm-4 col-xs-4"></div>
+			<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+				<div class="desire-similar-image">
+					<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/similar-1.png');?>">
+					<h4>1980'S Casio Scientific</h4>
+				</div>
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-4 col-xs-4">
+				<div class="desire-similar-image">
+					<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/similar-2.png');?>">
+					<i class="fa fa-times" aria-hidden="true"></i>
+					<h4>1980'S Casio Scientific</h4>
+				</div>
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</div>
+			<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+				<div class="desire-similar-image">
+					<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/similar-3.png');?>">
+					<i class="fa fa-times" aria-hidden="true"></i>
+					<h4>ZTYLUS Z-PRIME LENS KIT</h4>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<div class="desire-similar-price">
+					<h5>Total Price</h5>
+					<h3>₹ 15,800</h3>
+					<a href="#">Add to bag</a>
+				</div>
+			</div>
+			<div class="col-lg-1 col-md-1 col-sm-4 col-xs-4"></div>
+			<div class="desire-pd-similar-hide-hider"><i class="fa fa-times" aria-hidden="true"></i>
+			</div>
+		</div>
+	</div>
+	<!-- <div class="hidden-sm hidden-xs" style="width: 15%;"></div> -->
+</div>
+<div class="vericaltext">
+	<div class="desire-similar-price-hidder">
+		<p>Collector's Bundle</p>
+		<i class="fa fa-chevron-right" aria-hidden="true"></i>
+	</div>
+</div>
+<script> 
+require(['jquery'],function($){
+	$(document).ready(function(){
+		$(".vericaltext").on("click", function(){
+			$(".brought-together").show("slide", { direction: "left" }, 1000);
+		});
+		$(".desire-pd-similar-hide-hider").on("click", function(){
+			$(".brought-together").hide("slide", { direction: "left" }, 1000);
+		});
+	});
+});
+</script>

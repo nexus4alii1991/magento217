@@ -10,7 +10,9 @@
 		<script src="Magento_Checkout::js/custom-one.js"/>
 	</head>
    <body>
-   
+		<move element="logo" destination="header-wrapper" before="-"/>
+		<referenceBlock name="minicart" remove="true"/>
+
 		<referenceBlock name="page.top">
 			<block class="Magento\Framework\View\Element\Template" name="new-progressbar" template="Magento_Checkout::progressbar.phtml">
 			</block>
@@ -54,12 +56,6 @@
                    </argument>
                </arguments>
 		</referenceBlock>
-		<referenceBlock name="minicart" remove="false"/>
-		<referenceContainer name="header.panel" remove="false"/>
-		<referenceBlock name="top.search" remove="false"/>
-		<referenceBlock name="catalog.compare.link" remove="false"/>
-		<referenceBlock name="catalog.topnav" remove="false"/>
-       <referenceContainer name="footer-container" remove="false"/>
-       <move element="logo" destination="checkout.header.wrapper"/>
+		<referenceBlock name="footer" remove="true"/>
    </body>
 </page>

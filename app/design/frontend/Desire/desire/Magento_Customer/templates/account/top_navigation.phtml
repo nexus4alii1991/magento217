@@ -1,16 +1,69 @@
 <div class="dashboard-header-container">
 	<ul>
 		<li>
-			<a href="#">My Orders</a>
+			<a class="jumper" href="#myordrs">My Orders</a>
 		</li>
 		<li>
-			<a href="#">Account Info</a>
+			<a class="jumper" href="#accountinfo">Account Info</a>
 		</li>
 		<li>
-			<a href="#">Address Book</a>
+			<a class="jumper" href="#addressbook">Address Book</a>
 		</li>
 		<li>
-			<a href="#">Wishlist</a>
+			<a class="jumper" href="#wishlist">Wishlist</a>
 		</li>
 	</ul>
 </div>
+<div class="dashboard-header-container hidden-navigation">
+	<ul>
+		<li>
+			<a class="jumper" href="#myordrs">My Orders</a>
+		</li>
+		<li>
+			<a class="jumper" href="#accountinfo">Account Info</a>
+		</li>
+		<li>
+			<a class="jumper" href="#addressbook">Address Book</a>
+		</li>
+		<li>
+			<a class="jumper" href="#wishlist">Wishlist</a>
+		</li>
+	</ul>
+</div>
+<script>
+require(['jquery'],function($){
+$(document).ready(function() {
+	/*-------for showing Hidden Navigation-------*/
+	var toTop = jQuery('.hidden-navigation');
+	jQuery(window).scroll(function () {
+		if (jQuery(this).scrollTop() > 100) {
+			toTop.fadeIn();
+		}
+		else if(jQuery(this).scrollTop() < 100){
+			toTop.fadeOut();
+		}
+		else {
+			toTop.fadeOut();
+		}
+	});
+	
+	/*---------------------*/
+
+	$(".jumper").on("click", function( e ) {
+		
+		e.preventDefault();
+
+		$("body, html").animate({ 
+			scrollTop: $( $(this).attr('href') ).offset().top -100
+		}, 600);
+		
+	});
+	
+	/*-------------------------*/
+	
+	if ($('.orders-recent').height() > 1245) {
+		$('.orders-recent').css("height", "1240px");
+	}
+});
+});
+</script>

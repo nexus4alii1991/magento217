@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Potato\Zendesk\Api\OrderManagementInterface" type="Potato\Zendesk\Model\Management\Order" />
+    <preference for="Potato\Zendesk\Api\OrderRecentManagementInterface" type="Potato\Zendesk\Model\Management\OrderRecent" />
+    <preference for="Potato\Zendesk\Api\CustomerManagementInterface" type="Potato\Zendesk\Model\Management\Customer" />
+</config>

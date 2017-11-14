@@ -7,6 +7,15 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-		
+		<referenceBlock name="page.top">
+			<block class="Magento\Framework\View\Element\Template" name="search_result_strip" template="Magento_CatalogSearch::search_result_title_background.phtml">
+			</block>
+		</referenceBlock>
+		<referenceBlock name="content">
+			<block class="Magento\LayeredNavigation\Block\Navigation\Search" name="catalogsearch.leftnav" before="-" template="layer/view.phtml">
+            <block class="Magento\LayeredNavigation\Block\Navigation\State" name="catalogsearch.navigation.state" as="state" />
+            <block class="Magento\LayeredNavigation\Block\Navigation\FilterRenderer" name="catalogsearch.navigation.renderer" as="renderer" template="layer/filter.phtml"/>
+            </block>
+		</referenceBlock>
     </body>
 </page>

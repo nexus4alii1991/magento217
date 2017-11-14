@@ -24,8 +24,9 @@
 			<!-- /ko -->
 		</div>
 		
-		<div class="qty-block table-cell">
+		<!--<div class="qty-block table-cell">
 			<div class="details-qty qty">
+				<span class="minus">-</span>
 				<input data-bind="attr: {
 					   id: 'cart-item-'+item_id+'-qty',
 					   'data-cart-item': item_id,
@@ -36,6 +37,7 @@
 					   size="4"
 					   class="item-qty cart-item-qty"
 					   maxlength="12"/>
+					   <span class="plus">+</span>
 				<button data-bind="attr: {
 					   id: 'update-cart-item-'+item_id,
 					   'data-cart-item': item_id,
@@ -46,7 +48,7 @@
 					<span data-bind="i18n: 'Update'"></span>
 				</button>
             </div>
-		</div>
+		</div>-->
 		
         <div class="product-item-details table-cell">
             <strong class="product-item-name">
@@ -57,10 +59,30 @@
                     <!-- ko text: product_name --><!-- /ko -->
                 <!-- /ko -->
             </strong>
-
+			<div class="qty-block">
+			<div class="details-qty qty">
+				<!--<span class="minus">-</span>-->
+				<input data-bind="attr: {
+					   id: 'cart-item-'+item_id+'-qty',
+					   'data-cart-item': item_id,
+					   'data-item-qty': qty,
+					   'data-cart-item-id': product_sku
+					   }, value: qty"
+					   type="number" size="4" readonly="readonly" class="item-qty cart-item-qty" maxlength="12" />
+					   <!--<span class="plus">+</span>
+				<button data-bind="attr: {
+					   id: 'update-cart-item-'+item_id,
+					   'data-cart-item': item_id,
+					   title: $t('Update')
+					   }"
+						class="update-cart-item"
+						style="display: none">
+					<span data-bind="i18n: 'Update'"></span>
+				</button>-->
+            </div>
+		</div>
             <div class="product-item-pricing">
                 <!-- ko if: canApplyMsrp -->
-
                 <div class="details-map">
                     <span class="label" data-bind="i18n: 'Price'"></span>
                     <span class="value" data-bind="i18n: 'See price before order confirmation.'"></span>
@@ -84,7 +106,7 @@
 			<!-- /ko -->
 			<div class="secondary">
 				<a href="#" data-bind="attr: {'data-cart-item': item_id, title: $t('Remove item')}"
-				   class="action delete">
+				   class="action delete cust_delete">
 					<span data-bind="i18n: 'Remove'"></span>
 				</a>
 			</div>

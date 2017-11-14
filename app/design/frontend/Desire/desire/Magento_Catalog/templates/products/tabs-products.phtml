@@ -1,37 +1,91 @@
 <!----------------   Carousel Products tab    ------------------>
-<?php 
-// $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-// $myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\ProductCollection');
-// $currentProduct = $myBlock->getProducts();
-?>
 <div class="tabs-container section-cotainer">
 	<div class="tabs-content">
 		<div class="tab">
-		  <a class="tablinks active" onclick="openTab(event, 'bestseller')">Best Seller</a>
+		  <a class="tablinks active" onclick="openTab(event, 'bestseller')">Best Sellers</a>
 		  <a class="tablinks" onclick="openTab(event, 'featured')">New Products</a>
 		  <a class="tablinks" onclick="openTab(event, 'popular')">Popular</a>
 		</div>
 
-		<div id="bestseller" class="tabcontent" style="display:block">
+		<div id="bestseller" class="tabcontent active" style="visibility: visible;">
 			<div class="bestseller-products-container">
-				<div class="products-container" id="carousel">
-					<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('newproducts')->toHtml();?>
-				</div>
-			</div>
-		</div>
-
-		<div id="featured" class="tabcontent">
-			<div class="featured-products-container">
 				<div class="products-container" id="carousel">
 					<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('bestseller')->toHtml();?>
 				</div>
 			</div>
 		</div>
 
-		<div id="popular" class="tabcontent">
+		<div id="featured" class="tabcontent" style="visibility: hidden;">
 			<div class="featured-products-container">
 				<div class="products-container" id="carousel">
 					<?php echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('newproducts')->toHtml();?>
+				</div>
+			</div>
+		</div>
+
+		<div id="popular" class="tabcontent" style="visibility: hidden;">
+			<div class="featured-products-container">
+				<div class="products-container" id="carousel">
+					<?php //echo $block->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId('recentyviewed')->toHtml();?>
+<!-- slider -->
+
+<div class="custom-slider">
+    <div class="content-heading">
+        <h2 class="title"><?php //echo "test"; ?></h2>
+    </div>
+    <div class="products-grid grid-3 owl-carousel-products-<?php //echo $productsType;?><?php //echo count($products)== 1? '-single-item': '';?>">
+          <?php $productIds = array(1330,1220,2425,3893);
+          foreach($productIds as $id){
+          		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+          	    $productattributes = $objectManager->get('Magento\Catalog\Model\Product')->load($id);
+          	    $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+            	$productImage   = $_imagehelper->init($productattributes, 'product_base_image')->resize(640,512)->getUrl();
+                $productUrl   =  $productattributes->getUrlModel()->getUrl($productattributes);
+
+          	    ?>
+
+          
+			<div class="item">
+				<div class="product-content">
+					<div class="product-image">
+						<a href="<?php echo $productUrl; ?>" >
+							<img alt="<?php echo $productattributes->getName(); ?>" src="<?php echo $productImage; ?>" class=""
+                                    <?php //echo $sliderData['lazyLoad'] ? 'data-src="' . $productImage . '" data-src-retina="' . $productImage . '" class="owl-lazy"' : '' ?>
+                                />
+						</a>
+					</div>
+					
+					<div class="product-details">
+						<a href="<?php echo $productUrl;?>">
+							<h4 class="product-name"> <?php echo $productattributes->getName(); ?></h4>
+						</a>
+						<span class="price">
+								<?php /* @escapeNotVerified */ echo $this->getProductPrice($productattributes); ?>
+						</span>
+					</div>
+					<div class="action">
+						
+					</div>
+				</div>
+			</div>
+			<?php }?>
+		</div>
+
+    <div id="pre-div">
+        <div class="cssload-loader">
+            <div class="cssload-inner cssload-one"></div>
+            <div class="cssload-inner cssload-two"></div>
+            <div class="cssload-inner cssload-three"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- slider -->
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,48 @@
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko ifnot: isItemsBlockExpanded() -->
+<div class="items-in-cart">
+    <div class="content minicart-items" data-role="content">
+        <div class="minicart-items-wrapper overflowed">
+            <div class="minicart-items">
+				<div class="ord_summary table">
+					<div class="tbody">
+					<!-- ko foreach: getItems() -->
+						<div class="table-row">
+							<!-- ko foreach: $parent.elems() -->
+							<!-- ko template: getTemplate() --><!-- /ko -->
+							<!-- /ko -->
+						</div>
+					<!-- /ko -->
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko if: isItemsBlockExpanded() -->
+<div class="items-in-cart">
+    <div class="content minicart-items" data-role="content">
+        <div class="minicart-items-wrapper overflowed">
+            <div class="minicart-items">
+				<div class="ord_summary table">
+					<div class="tbody">
+						<!-- ko foreach: getItems() -->
+						<div class="table-row">
+							<!-- ko foreach: $parent.elems() -->
+							<!-- ko template: getTemplate() --><!-- /ko -->
+							<!-- /ko -->
+						</div>
+						<!-- /ko -->
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /ko -->

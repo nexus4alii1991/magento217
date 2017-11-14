@@ -1,0 +1,102 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/**
+ * Template for filter items block
+ *
+ * @var $block \Magento\LayeredNavigation\Block\Navigation\FilterRenderer
+ */
+?>
+<style type="text/css">
+
+#brands .show_models {
+    cursor: pointer;
+    float: left;
+}
+.hide_all {
+    display: none;
+}
+</style>
+
+
+
+<ol class="items">
+
+    <?php foreach ($filterItems as $itemName):
+     //$itemLabel = $itemName->getLabel();
+     $item = explode("-", $itemName->getLabel());
+     $itemlabel[] = $item[0];
+    endforeach; 
+    $count = sizeof($item);
+    $itemlabel1 = array_unique($itemlabel);
+    if($count > 1){
+    echo '<span class="brands_list">';
+    foreach ($itemlabel1 as $iteminfo) {
+        echo "<span class='show_models' id=".$iteminfo.">".$iteminfo."</span>";
+    }
+
+    echo '</span>';
+    }
+    ?>
+    <div class="sub_items">
+        <?php foreach ($filterItems as $filterItem):?>
+
+            <?php $item = $filterItem->getLabel();
+            $item = explode("-", $item);
+            $count = sizeof($item);
+             ?>
+
+            <?php if($count > 1) { ?>
+            <li class="item" id="brands">
+            <?php } else {?>
+            <li class="item">
+            <?php } ?>    
+                <?php if ($filterItem->getCount() > 0): ?>
+                    
+                        <?php if($count > 1) { ?>
+                        <a  class="<?php /* @escapeNotVerified */ echo $item[0]; ?> models_items hide_all" href="<?php echo $block->escapeUrl($filterItem->getUrl()) ?>">
+                            <?php /* @escapeNotVerified */ echo $item[1]; ?>
+                        <?php } else {?>
+                        <a href="<?php echo $block->escapeUrl($filterItem->getUrl()) ?>">
+                            <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
+                        <?php } ?> 
+                        <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                            <span class="count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?><span class="filter-count-label">
+                                <?php if ($filterItem->getCount() == 1):?> <?php /* @escapeNotVerified */ echo __('item')?><?php else:?> <?php /* @escapeNotVerified */ echo __('items') ?><?php endif;?></span></span>
+                        <?php endif; ?>
+                    </a>
+                <?php else:?>
+                    <?php /* @escapeNotVerified */ echo $filterItem->getLabel() ?>
+                    <?php if ($this->helper('\Magento\Catalog\Helper\Data')->shouldDisplayProductCountOnLayer()): ?>
+                        <span class="count"><?php /* @escapeNotVerified */ echo $filterItem->getCount()?><span class="filter-count-label">
+                            <?php if ($filterItem->getCount() == 1):?><?php /* @escapeNotVerified */ echo __('item')?><?php else:?><?php /* @escapeNotVerified */ echo __('items') ?><?php endif;?></span></span>
+                    <?php endif; ?>
+                <?php endif; ?>
+            </li>
+        <?php endforeach ?>
+    </div>      
+    
+</ol>
+
+
+<script type="text/javascript">
+require([ 'jquery', 'jquery/ui'], function($){
+    jQuery(".show_models").click(function(){
+
+         jQuery(".models_items").addClass("hide_all");
+
+           var current_id =  this.id;
+           jQuery("."+current_id).removeClass("hide_all");
+
+    });
+    
+ });
+ 
+</script>

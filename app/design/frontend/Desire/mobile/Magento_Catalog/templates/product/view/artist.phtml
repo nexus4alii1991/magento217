@@ -1,0 +1,49 @@
+<?php
+/**
+ * 
+ */
+    $_helper = $this->helper('Magento\Catalog\Helper\Output');
+    $_product = $block->getProduct();
+    
+?>
+<div class="desire-pd-tab">					  
+  <input id="tab1" type="radio" name="tabs" checked>
+  <label for="tab1">Description</label>
+  <input id="tab2" type="radio" name="tabs">
+  <label for="tab2">Tech Specs </label>
+  <input id="tab3" type="radio" name="tabs">
+  <label for="tab3">About the Artist</label>
+  <section id="content1">
+    
+	<p> <?php $description = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getDescription(), 'description');
+    echo substr($description, 0, 200);
+    echo "</br>";?>
+    <span class="action add"><a href="#product_spec"><?php echo "Read More";?></a></span>
+  
+	</p>
+  </section>
+  <section id="content2">
+	<p>
+	  <?php
+    $attribute = $_product->getResource()->getAttribute('tech_specs');
+      if ($attribute)
+      {
+          $attribute_value = $attribute ->getFrontend()->getValue($_product);
+          echo substr($attribute_value, 0, 200);
+      }
+      echo "</br>";?>
+    <span class="action add"><a href="#product_spec"><?php echo "Read More";?></a></span>
+	</p>
+  </section>
+  <section id="content3">
+	<p>
+	  <?php
+    $attribute = $_product->getResource()->getAttribute('about_the_artist');
+      if ($attribute)
+      {
+          echo $attribute_value = $attribute ->getFrontend()->getValue($_product);
+      }
+    ?>
+	</p>
+  </section>
+</div>

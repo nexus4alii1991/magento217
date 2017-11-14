@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../vendor/magento/framework/Module/etc/module.xsd">
+  <head>
+	<remove src="css/styles-m.css" />
+	<remove src="css/styles-l.css" />
+	<css src="css/dd-fonts.css" />
+	<css src="css/bootstrap.min.css" />
+    <css src="css/dd-styles-m.css" />
+	<link src="js/custom-two.js"/>
+  </head>
+</page>

@@ -3,51 +3,43 @@
  * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 // @codingStandardsIgnoreFile
-
 ?>
+
 <?php /** @var  $block \Magento\Sales\Block\Order\View*/?>
 <!--
 <div class="order-details-items ordered">-->
-    <?php $_order = $block->getOrder(); 
-    
-     ?>
-<!--
-    <div class="order-title">
-        <strong><?php /* @escapeNotVerified */// echo __('Items Ordered') ?></strong>
-        <?php// if ($_order->getTracksCollection()->count()) : ?>
-            <?php //echo $block->getChildHtml('tracking-info-link') ?>
-        <?php //endif; ?>
-    </div>
-
-    <?php //echo $block->getChildHtml('order_items') ?>
-
-    <?php //if ($this->helper('Magento\GiftMessage\Helper\Message')->isMessagesAllowed('order', $_order) && $_order->getGiftMessageId()): ?>
-    <div class="block block-order-details-gift-message">
-        <div class="block-title"><strong><?php /* @escapeNotVerified */ //echo __('Gift Message for This Order') ?></strong></div>
-        <?php //$_giftMessage = $this->helper('Magento\GiftMessage\Helper\Message')->getGiftMessageForEntity($_order); ?>
-        <div class="block-content">
-            <dl class="item-options">
-                <dt class="item-sender"><strong class="label"><?php /* @escapeNotVerified */ //echo __('From') ?></strong><?php //echo $block->escapeHtml($_giftMessage->getSender()) ?></dt>
-                <dt class="item-recipient"><strong class="label"><?php /* @escapeNotVerified */ //echo __('To') ?></strong><?php //echo $block->escapeHtml($_giftMessage->getRecipient()) ?></dt>
-                <dd class="item-message"><?php /* @escapeNotVerified */ //echo $this->helper('Magento\GiftMessage\Helper\Message')->getEscapedGiftMessage($_order) ?></dd>
-            </dl>
-        </div>
-    </div>
-    <?php //endif; ?>
-
-    <div class="actions-toolbar">
-        <div class="secondary">
-            <a class="action back" href="<?php /* @escapeNotVerified */// echo $block->getBackUrl() ?>">
-                <span><?php /* @escapeNotVerified */ //echo $block->getBackTitle() ?></span>
-            </a>
-        </div>
-    </div>
-</div>
--->
-
-<!-- Please Remove Top Commented code After integration -->
+    <?php  
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$Entity_id = $this->getRequest()->getParam('order_id'); 
+    $_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id);
+    $timestamp = strtotime($_order->getCreatedAt());
+    $newDate = date('d M Y', $timestamp);
+    $date = strtotime($_order->getCreatedAt());
+    $date = strtotime("+7 day", $date);
+    $delDate = date('d M Y', $date);
+	$itemCount=0;
+	$canceledItems=0;
+	$items = $_order->getAllItems();
+		foreach ($items as $value) {
+		    $product = $value->getProduct();
+		    if($product != null || $product!= ""){
+			$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+			if(($value->getProductType() == 'virtual')){
+					continue;
+				}
+			    if(($value->getProductType() == 'simple') && isset($parent[0])){
+								continue;
+			    }else{
+			    	$itemCount++;
+			    	if($value->getStatus() == "Canceled"){
+			        $canceledItems++;
+			    	}
+			    } 
+	        }
+		}
+			
+    ?>
 
 <div class="col-lg-12 col-xs-12 order-details-container section-container">
 	<div class="row">
@@ -57,12 +49,34 @@
 					<div class="col-lg-6 col-xs-6 a-left">
 						<div class="row">
 							<span class="order"><?php 
-							echo 'Order #'.$_order->getIncrementId().'';?></span>
+							echo 'Orderr #'.$_order->getIncrementId().'';?></span>
 						</div>
 					</div>
 					<div class="col-lg-6 col-xs-6 a-right">
 						<div class="row">
-							<span class="invoice">invoice</span>
+							<span class="invoice">
+								<?php if($_order->canCancel()) : 
+									if($itemCount != $canceledItems){
+								?>
+    								<button class="confirmation" onclick="callController(<?php echo $_order->getEntityId() ?>)" >Cancel Order</button>
+								<?php }?>
+								<?php 
+								endif; ?>		
+							</span>
+							<?php if($itemCount == $canceledItems){
+									  $orderDetail = $objectManager->create('Magento\Sales\Model\Order')->load($_order->getEntityId());
+     								  $comment = "Order canceled by customer";
+								      $orderDetail->setIsCustomerNotified(false);
+								      $orderDetail->setState("canceled")->setStatus("canceled");
+								      $historyItem = $orderDetail->addStatusHistoryComment($comment, "canceled");
+								      $historyItem->setIsCustomerNotified(1)->save();
+								      $orderDetail->save();
+								      $orderCommentSender = $objectManager
+								          ->create('Magento\Sales\Model\Order\Email\Sender\OrderCommentSender');
+								      $orderCommentSender->send($orderDetail, true, ' ');
+								?>
+							<button class="confirmation">Order Canceled</button>
+							<?php }?>
 						</div>
 					</div>
 				</div>
@@ -77,7 +91,7 @@
 										Order date
 									</span><br>
 									<span class="clear-text">
-										<?php echo $_order->getCreatedAt(); ?>
+										<?php echo $newDate; ?>
 									</span>
 								</div>
 								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
@@ -85,7 +99,7 @@
 										Delivery
 									</span><br>
 									<span class="clear-text">
-										29 Oct 2017
+										<?php echo $delDate; ?>
 									</span>
 								</div>
 							</div>
@@ -103,12 +117,14 @@
 											</span><br>
 											<span class="address">
 											<?php  $ShippingAddressobj = $_order->getShippingAddress();
+											if(!empty($ShippingAddressobj)){
 											$ShippingAddress = $ShippingAddressobj->getData();
 											echo $ShippingAddress['street'];echo"</br>";
 											echo $ShippingAddress['city'];echo"</br>";
 											echo $ShippingAddress['email'];echo"</br>";
 											echo $ShippingAddress['postcode'];echo"</br>";
 											echo $ShippingAddress['telephone'];
+											}
 											?><br>
 											</span>
 									</div>
@@ -128,9 +144,9 @@
 											</span>
 										<table class="order-summary-table">
 											<tbody>
-												<tr><td>Item(s) subtotal</td><td><?php echo $_order->getSubtotal();?></td></tr>
-												<tr><td>Shipping</td><td><?php echo $_order->getShippingAmount();?></td></tr>
-												<tr><td>Total</td><td><?php echo $_order->getGrandtotal();?></td></tr>
+												<tr><td>Item(s) subtotal</td><td><?php echo "&#8377;".number_format($_order->getSubtotal());?></td></tr>
+												<tr><td>Shipping</td><td><?php echo "&#8377;".number_format($_order->getShippingAmount());?></td></tr>
+												<tr><td>Total</td><td><?php echo "&#8377;".number_format($_order->getGrandtotal());?></td></tr>
 											</tbody>
 										</table>
 									</div>
@@ -143,3 +159,25 @@
 		</div>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+function callController(orderId){
+			jQuery.ajax({
+                    showLoader: true,
+                    url: "<?php echo $this->getUrl('artist/refund/index') ?>",
+                    data: {"OrderId":orderId},
+                    type: "POST",
+                    dataType: 'json',
+                    success:function(data)  
+                    {  
+                         window.location.reload();
+                         alert('Your order has been cancelled and refund is initiated.');
+                         window.location="<?php echo $this->getUrl('customer/account') ?>";
+
+  
+                        
+                    }                         
+            })
+       }
+</script>

@@ -147,7 +147,7 @@
                         <div class="control">
                             <input type="text" name="mobile" id="mobile" title="<?php echo __('Mobile') ?>" class="input-text cont" placeholder="<?php echo __('Mobile') ?>"/>
                         </div>
-						<span style="display:none" class="mob-error">Mobile Number already exists !! </span>
+						<span style="display:none" style="color:red;font-size:13px;font-family: bold;" class="mob-error">Mobile Number already exists !! </span>
                     </div>
                 </fieldset>
 				
@@ -233,19 +233,19 @@
   $(document).on('change','#mobile',function(){
 		var mob = $('.cont').val();
 			$.ajax({
-				showLoader: false,
+				showLoader: true,
 				url: "<?php echo $this->getUrl('sociallogin/index/index') ?>",
 				data: {"mobile":mob},
 				type: "POST"
 			}).done(function (data) {
 			if(data == 'no'){
 			}else if(data == "yes"){
+            jQuery('.mob-error').show();
 			setTimeout(showpanel1, 5000);		
 			}
 			});
   })
  function showpanel1() { 
-    jQuery('.mob-error').show();
 	jQuery('.mob-error').fadeOut();
 	jQuery(".cont").val('');	
  }

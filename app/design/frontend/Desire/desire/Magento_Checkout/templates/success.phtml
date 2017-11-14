@@ -1,0 +1,92 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var $block \Magento\Checkout\Block\Onepage\Success */ ?>
+
+
+<div class="checkout-success">
+	<div class="checkout-success-content">
+		<?php if ($block->getOrderId()):?>
+		<div class="success-header">
+			<h1 class="success-page-heading"><?php /* @escapeNotVerified */ echo __('Thank you for shopping!') ?></h1>
+		</div>
+		
+		<div class="order-masseges">
+			
+			<p class="clear-text"><?php /* @escapeNotVerified */ echo __('Your order has been placed successfully!') ?></p>
+			<p class="clear-text"><?php /* @escapeNotVerified */ echo __('Now sit back and relax while the good folks at out warehouse work there magic!') ?></p>
+			<p class="red"><?php /* @escapeNotVerified */ echo __('We will send you an email/sms confirmation within 15 minutes.') ?></p>
+			
+			
+			<div class="order-item-table">
+				<div class="table-cell left">
+					<span class="clear-text"><?php /* @escapeNotVerified */ echo __('Order Number : ') ?></span><span class="red"><?php echo $block->escapeHtml($block->getOrderId()); ?></span><br/>
+					<span class="clear-text"><?php /* @escapeNotVerified */ echo __('The Trobla will delivered to ') ?></span><span class="red">Tome Jose</span><br/>
+					<span class="clear-text"><?php /* @escapeNotVerified */ echo __('Guarantee Delivery date :') ?></span><span class="red">3 Sep 2017</span><br/>
+					
+					<div class="review action">
+						<a href="#"><?php /* @escapeNotVerified */ echo __('review or edit your order >') ?></a>
+					</div>
+				</div>
+				<div class="table-cell right">
+					<img src="<?php echo $this->getViewFileUrl('images/award1.jpg');?>">
+				</div>
+			</div>
+			<div class="table width-100">
+				<div class="table-cell left"></div>
+				<div class="table-cell right">
+					<a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> <span><?php /* @escapeNotVerified */ echo __('share it with ypur friend') ?></span></a>
+				</div>
+			</div>
+		</div>
+			<?php /* if ($block->getOrderId()):?>
+			<?php if ($block->getCanViewOrder()) :?>
+				<p><?php echo __('Your order number is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $block->escapeHtml($block->getViewOrderUrl()), $block->escapeHtml($block->getOrderId()))) ?></p>
+			<?php  else :?>
+				<p><?php echo __('Your order # is: <span>%1</span>.', $block->escapeHtml($block->getOrderId())) ?></p>
+			<?php endif; */?>
+				<!--<p><?php /* @escapeNotVerified */ /*echo __('We\'ll email you an order confirmation with details and tracking info.') */?></p>-->
+				
+	<?php endif;?>
+
+		<?php echo $block->getAdditionalInfoHtml() ?>
+	
+		<!--<div class="actions-toolbar">
+			<div class="primary">
+				<a class="action primary continue" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>"><span><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span></a>
+			</div>
+		</div>-->
+	</div>
+</div>
+
+
+
+<div class="leave-order" style="display:none">
+	<div class="leave-box">
+		<div class="col-xs-12 customer-name">
+			<strong>Tom Jose</strong><span class="home-or-office">Home</span>
+		</div>
+		<div class="col-xs-12 customer-address">
+			Your order has been placed successfully!
+			Now sit back and relax while the good 
+			folks at out warehouse work there magic!
+		</div>
+		<div class="col-xs-12 payment-method">
+			<span class="lite-text">Payment Method</span><br/>
+			<span class="clear-text">Mastercard end with **64</span>
+		</div>
+		
+		<div class="col-xs-12 leave-massege">
+			<span class="clear-text">Leave the order with neighbours</span><span class="red"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+		</div>
+		<div class="col-xs-12 leave-massege-input">
+			<input type="text" name="leave-parcel-to"></input>
+		</div>
+	</div>
+</div>

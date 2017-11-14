@@ -1,0 +1,71 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Items $block */
+$columns = $block->getColumns();
+?>
+
+<div class="products-grid wishlist">
+    <?php $iterator = 1; ?>
+    <?php if (count($block->getItems())): ?>
+    <div class="wish_list_product">
+        <?php foreach ($block->getItems() as $item): ?>
+        <?php /* @escapeNotVerified */ echo($iterator++ == 1) ? '<div data-row="product-item" class="recent-orders-discription ' . $item->getProductId() . '" id="item_' . $item->getId() . '"><div class="recent-orders-footer">
+			<div class="row">
+				<div class="col-md-2 col-sm-2 wish-prod-hed">
+					<h6>Product</h6>
+				</div>
+				<div class="col-lg-4 col-md-4">
+				</div>
+				<div class="col-md-2 col-sm-2 col-md-2">
+					<h6 class="hidden-xs">Price</h6>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<h6 class="hidden-xs">Qty</h6>
+				</div>
+				<div class="col-md-2 hidden-xs">
+				</div>
+			</div>
+		</div>' : '</div><div class="recent-orders-discription ' . $item->getProductId() . '" id="item_' . $item->getId() . '"><div class="recent-orders-footer">
+			<div class="row">
+				<div class="col-md-2 col-sm-2">
+					<h6>Product</h6>
+				</div>
+				<div class="col-lg-4 col-md-4">
+				</div>
+				<div class="col-md-2 col-sm-2 col-md-2">
+					<h6 class="hidden-xs">Price</h6>
+				</div>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<h6 class="hidden-xs">Qty</h6>
+				</div>
+				<div class="col-md-2 hidden-xs">
+				</div>
+			</div>
+		</div>' ?>
+            <div class="wish_list_item">
+                <?php foreach ($columns as $column): ?>
+                    <?php $column->setItem($item); echo $column->toHtml($item);?>
+                <?php endforeach; ?>
+            </div>
+        <?php echo($iterator == count($block->getItems())+1) ? '</div>' : '' ?>
+        <?php endforeach; ?>
+    </div>
+    <?php else: ?>
+        <div class="message info empty">
+            <span><?php /* @escapeNotVerified */ echo __('This Wish List has no Items');?></span>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php foreach ($columns as $column): ?>
+    <?php echo $column->getAdditionalHtml();?>
+<?php endforeach; ?>
+

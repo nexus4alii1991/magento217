@@ -1,0 +1,422 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+?>
+<?php /** @var  $block \Magento\Sales\Block\Order\View*/?>
+
+
+<?php
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+	$connection = $resource->getConnection();
+	$redirect = $objectManager->get('\Magento\Framework\App\Response\Http');
+	$context = $objectManager->get('Magento\Framework\App\Http\Context');
+	$isLoggedIn = $context->getValue(\Magento\Customer\Model\Context::CONTEXT_AUTH);
+	$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+	$baserl = $storeManager->getStore()->getBaseUrl();
+	
+	if(!$isLoggedIn)
+        {
+           $redirect->setRedirect('/');
+        }
+    $myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+    $imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+	$Entity_id = $this->getRequest()->getParam('order_id'); 
+    $_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id);
+    $orderDate = $_order->getCreatedAt();
+    $priceHelper = $objectManager->create('Magento\Framework\Pricing\Helper\Data'); // Instance of Pricing Helper
+	//$formattedPrice = $priceHelper->currency($price, true, false);
+	$items = $_order->getAllItems();
+    $status = "";
+    $ship_date = "";
+    $main_status = "";
+    /***track order api call starts *///
+   if($_order->hasShipments()){
+    $sql = "Select tracking_id FROM picker_shipping_info where Id=".$_order->getIncrementId();
+    $result = $connection->fetchAll($sql);
+	$track_id = $result[0]['tracking_id'];
+		/* API Call*/
+		$url = 'http://www.pickrr.com/api/tracking-json/';
+       $data = array (
+        'tracking_id' => $track_id
+        );
+        
+	    $params = '';
+	    foreach($data as $key=>$value)
+	                $params .= $key.'='.$value.'&';
+	        $params = trim($params, '&');
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, $url.'?'.$params ); //Url together with parameters
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Return data instead printing directly in Browser
+	    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 7); //Timeout after 7 seconds
+	    curl_setopt($ch, CURLOPT_USERAGENT , "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+	    curl_setopt($ch, CURLOPT_HEADER, 0);
+	    $result = curl_exec($ch);
+	    curl_close($ch);
+	    $json = json_decode($result, true);
+	    $main_status = $json['status']['current_status_type'];
+	    if(!$main_status == "OP"){
+			    for( $i = 0; $i<count(($json['track_arr'])); $i++ ){
+			        $status = $json['track_arr'][$i]['status_array'][0]['status_body'];  
+			     }
+	    }
+}
+	/** track order api call ends***/
+    
+if (!empty($_POST)){
+    $this->helper('Mageplaza\SocialLogin\Helper\Social')->refund($_POST['orderid'],$_POST['itemid'],$_POST['itemprice'],$_POST['comments']);
+   	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $_order = $objectManager->create('Magento\Sales\Model\Order')->load($_POST['orderid']); 
+    $items = $_order->getAllItems();?>
+	<script type="text/javascript">
+	alert('Your item has been cancelled and refund is initiated');
+	//window.location.reload();
+    </script>  
+<?php }
+			$order_id = $_order->getId();
+			$itemCount=0;
+			$canceledItems=0;		
+			foreach($items as $item) {
+				$item_price = $item->getPrice();
+				$product = $item->getProduct();
+				$item_price = $item->getPrice();
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+				if(($item->getProductType() == 'virtual')){
+					continue;
+				}	
+				if(($item->getProductType() == 'simple') && isset($parent[0])){
+					continue;
+				}else{
+				    	$itemCount++;
+				    	if($item->getStatus() == "Canceled"){
+				        $canceledItems++;
+						}
+				}
+               
+			}
+				?>
+<div class="col-lg-12 col-xs-12 order-details-container section-container">
+	<div class="row">
+		<div class="order-details">
+			<div class="order-row">
+				<div class="a-left">
+					<span class="order lite-text"><?php 
+						echo 'Order #'.$_order->getIncrementId().'';?></span>
+				</div>
+				<div class="a-right">
+					<span class="order lite-text invoice">
+								<?php if($_order->canCancel()) { 
+										if($itemCount != $canceledItems){
+										if(($_order->getState() != "complete") && ($_order->getState() != "canceled")){
+								?>
+    								<button class="confirmation" onclick="callController(<?php echo $_order->getEntityId() ?>)" >Cancel Order</button>
+    								<!-- <a class="confirmation" href="<?php //echo $this->getUrl('sales/order/invoice').'?order_id='.$_order->getEntityId(); ?>">Invoice</a> -->
+								<?php 
+								}
+								} 
+							}?>	
+							</span>
+							<?php if($itemCount == $canceledItems){
+									$orderDetail = $objectManager->create('Magento\Sales\Model\Order')->load($_order->getEntityId());
+     								  $comment = "Order canceled by customer";
+								      $orderDetail->setIsCustomerNotified(false);
+								      $orderDetail->setState("canceled")->setStatus("canceled");
+								      $historyItem = $orderDetail->addStatusHistoryComment($comment, "canceled");
+								      $historyItem->setIsCustomerNotified(1)->save();
+								      $orderDetail->save();
+								      $orderCommentSender = $objectManager
+								          ->create('Magento\Sales\Model\Order\Email\Sender\OrderCommentSender');
+								      $orderCommentSender->send($orderDetail, true, ' ');
+								?>
+							<button class="confirmation">Order Canceled</button>
+							<?php }?>
+				</div>
+			</div>
+			<?php 
+			$item_id = "";
+			$item_price = "";
+			foreach($items as $item) {
+				$item_price = $item->getPrice();
+				$product = $item->getProduct();
+				$item_price = $item->getPrice();
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());	
+				if(($item->getProductType() == 'virtual')){
+					continue;
+				}
+				if(($item->getProductType() == 'simple') && isset($parent[0])){
+					continue;
+				}
+                $image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->resize(172,160)->getUrl();
+				$productbysku = $myBlock->getProductBySku($product->getSku());
+				$item_id = $item->getId(); 
+				?>
+			
+			<div class="order-items table">
+				<div class="table-cell">
+					<div class="product-image">
+						<img src="<?php echo $image_url ?>" width="70" alt="Name"/>
+					</div>
+				</div>
+				<div class="table-cell">
+					<div class="product-name">
+						<strong class="clear-text"><?php echo $item->getName() ?></strong>
+					</div>
+					<div class="product-price">
+						 <strong class="red"><?php echo $priceHelper->currency($item->getPrice(), true, false);?></strong>
+					</div>
+					<div class="product-qty">
+						<div class="details-qty">Qty : <?php echo intval($item->getQtyOrdered()) ?></div>
+						<!-- <div class="share red">Share <i class="fa fa-share-alt" aria-hidden="true"></i></div> -->
+					</div>
+					<div class="order-date">
+						<span class="lite-text">
+							Order date
+						</span>
+						<span class="clear-text">
+						<?php echo date('d M Y' , strtotime($_order->getCreatedAt()));?>
+						</span>
+					</div>
+					<?php if(($item->getStatus() == "Canceled")) { 
+						?> 
+					<div ><?php echo $item->getStatus(); ?></div>
+					<?php }?>
+					<?php if(($_order->getState() != "complete") && ($_order->getState() != "canceled")){
+						if(($item->getStatus() == "Ordered")) { 
+						?> 
+
+					<div class="cancel-item">
+					<button type="button" data-price="<?php echo $item_price ?>" data-item="<?php echo $item_id; ?>" data-order="<?php echo $order_id; ?>" data-toggle="modal" data-target="#myModal" class="beforecancel" class="return cancle-ordr">Cancel Item</button>		
+					</div>
+					<?php }
+					}?>
+				</div>
+			</div>
+			<?php } ?>
+
+			<div class="order-content">
+				<div class="order-details-content">
+					<div class="address-block">
+						<strong class="ordered-customer-name">
+							<?php echo $_order->getCustomerName(); ?>
+						</strong><div class="home-or-office">Home</div><br>
+						<span class="address">
+							<?php  $ShippingAddressobj = $_order->getShippingAddress();
+							$ShippingAddress = $ShippingAddressobj->getData();
+							echo $ShippingAddress['street'];echo", ";
+							echo $ShippingAddress['city'];echo", ";
+							echo $ShippingAddress['email'];echo", ";
+							echo $ShippingAddress['postcode'];echo"</br></br>";
+							echo $ShippingAddress['telephone'];
+							?>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="price-details">
+				<div id="track-and-price">
+					<div data-role="collapsible" class="accordion-title track-package">
+						<div data-role="trigger">
+							<span>Track-package</span>
+						</div>
+					</div>
+					
+					<div data-role="content" class="track-package accordion-data">
+						<ul class="progress-track">
+							<li class="progress progress-done progress-current">
+								<div class="progress-data">
+									<div class="icon-wrap">
+									</div>
+									<span class="progress-text">Ordered</span><br/>
+									<span class="lite-text"><?php echo date('d M Y' , strtotime($_order->getCreatedAt()));?></span>
+								</div>
+							</li>
+                            <?php if($status == "Order cancelled"){ ?>
+                            <li class="progress progress-done progress-current">
+								<div class="progress-data">
+									<div class="icon-wrap">
+									</div>
+									<span class="progress-text">Cancelled</span><br/>
+									<span class="lite-text"></span>
+								</div>
+							</li>
+                            <?php }else{ ?>
+							<li class="progress progress-done progress-current">
+								<div class="progress-data">
+									<div class="icon-wrap">
+									</div>
+									<span class="progress-text">Processing</span><br/>
+									<span class="lite-text"></span>
+								</div>
+							</li>
+
+							<li class="progress progress-todo <?php if($main_status == 'PP'){ echo 'progress-current'; } ?>">
+								<div class="progress-data">
+									<div class="icon-wrap">
+									</div>
+									<span class="progress-text">Shipping</span><br/>
+									<span class="lite-text"><?php
+                         if(!$ship_date == ""){
+                         	echo date('d M Y' , strtotime($ship_date));
+                         }
+						 ?></span>
+								</div>
+							</li>
+							<li class="progress progress-todo">
+								<div class="progress-data">
+									<div class="icon-wrap">
+									</div>
+									<span class="progress-text">
+									<?php if($main_status == 'DL'){ ?>
+									Delivered
+									<?php }else{ ?>
+									Est. Delivery:
+									<?php } ?>
+									</span><br/>
+									<?php
+									$date = strtotime($orderDate);
+									$date = strtotime("+7 day", $date);
+			                         $tomorrow_date = date("d M Y", $date);
+			                         if($main_status != 'DL'){
+									 ?>
+									<span class="lite-text"><?php echo $tomorrow_date  ?></span>
+									<?php } ?>
+								</div>
+							</li>
+							<?php } ?>
+						</ul>
+					</div>
+					<div data-role="collapsible" class="accordion-title price-details">
+						<div data-role="trigger">
+							<span>Price Details</span>
+						</div>
+					</div>
+					<div data-role="content" class="price-details-block accordion-data">
+						<table class="order-summary-table-data">
+							<tbody>
+								<tr><td>Price( 2 Item(s) )</td><td><?php echo $priceHelper->currency($_order->getSubtotal(), true, false);?></td></tr>
+								<tr><td>Delivery</td><td><?php echo $priceHelper->currency($_order->getShippingAmount(), true, false);?></td></tr>
+								<tr><td>Total Ammount</td><td><?php echo $priceHelper->currency($_order->getGrandtotal(), true, false);?></td></tr>
+							</tbody>
+						</table>
+						<div class="payment-mode">
+							<span class="lite-text">Mode Of Payment : </span>
+							<span class="clear-text">Cash on delivery</span>
+						</div>
+					</div>			
+				</div>
+
+				<script>
+					require([
+						'jquery',
+						'accordion'], function ($) {
+						$("#track-and-price").accordion();
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- popup -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" id="model-confirm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Are you sure?</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="itemcancel" action="">
+		<input type="hidden" id="orderid" name="orderid" />
+		<input type="hidden" id="itemid" name="itemid" />
+		<input type="hidden" id="itemprice" name="itemprice" />
+			<h3>Why are you returning or cancelling this?</h3>
+			<input type="Text" name="comments" id="comments" required/>
+			<button class="return" id="CancelItem" value="Cancel">Cancel Item </button>
+    	</form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<style>
+.sales-order-view.modal-open .modal-backdrop.in{display:none;}
+.sales-order-view.modal-open .modal {
+    overflow-x: hidden;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+</style>
+
+
+
+<script type="text/javascript">
+
+require(['jquery'],function($){
+$(document).ready(function() {
+		
+	$('#CancelItem').on('click', function(){
+		$('#itemcancel').submit(function() {
+			$("#notification").fadeIn("slow").append('Cancelling your item');
+			$(".dismiss").click(function(){
+       	    $("#notification").fadeOut("slow");
+	});
+    });
+	});
+});
+});
+</script>
+
+<script type="text/javascript">
+	require(['jquery','mageplaza/core/jquery/popup'],function($){
+		$('.beforecancel').click(function () {
+			var order = $(this).data('order');
+			var item = $(this).data('item');      
+        	var itemprice = $(this).data('price');
+        	$("#itemid").val(item);
+        	$("#itemprice").val(itemprice);
+        	$("#orderid").val(order);
+			$.magnificPopup.open({
+				items: {
+					src: $('#myModal').html(),
+					type: 'inline',
+					callbacks: {
+						beforeOpen: function () {
+							if ($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#comments';
+							}
+						}
+					}
+				}
+			});
+		})
+	});
+
+	function callController(orderId){
+			jQuery.ajax({
+                    showLoader: true,
+                    url: "<?php echo $this->getUrl('artist/refund/index') ?>",
+                    data: {"OrderId":orderId},
+                    type: "POST",
+                    dataType: 'json',
+                    success:function(data)  
+                    {  
+                         alert('Your order has been cancelled and refund is initiated.');
+                         window.location="<?php echo $this->getUrl('customer/sales/order') ?>";
+  
+                        
+                    }                         
+            })
+       }
+</script>

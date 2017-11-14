@@ -14,6 +14,11 @@ protected function _toHtml()
      if (false != $this->getTemplate()) {
      return parent::_toHtml();
      }
-     return '<li><a ' . $this->getLinkAttributes() . ' >' . $this->escapeHtml($this->getLabel()) . '</a></li>';
+     if($this->getLabel() == "Return & Exchange"){ 
+     	$class = "return_link"; 
+     }else{ 
+     	$class = "cancel_link";
+     }
+     return '<li><a class ="'.$class.'" ' . $this->getLinkAttributes() . ' >' . $this->escapeHtml($this->getLabel()) . '</a></li>';
     }
 }

@@ -1,0 +1,167 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php /** @var  $block \Magento\Sales\Block\Order\View*/?>
+<!--
+<div class="order-details-items ordered">-->
+    <?php  
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$Entity_id = $this->getRequest()->getParam('order_id'); 
+    $_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id);
+    $timestamp = strtotime($_order->getCreatedAt());
+    $newDate = date('d M Y', $timestamp);
+    $date = strtotime($_order->getCreatedAt());
+    $date = strtotime("+7 day", $date);
+    $delDate = date('d M Y', $date);
+	$itemCount=0;
+	$canceledItems=0;
+	$items = $_order->getAllItems();
+
+		foreach ($items as $value) {
+		    $product = $value->getProduct();
+		    if($product != null || $product!= ""){
+			$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+			    if(($value->getProductType() == 'simple') && isset($parent[0])){
+								continue;
+			    }else{
+			    	$itemCount++;
+			    	if($value->getStatus() == "Canceled"){
+			        $canceledItems++;
+			    	}
+			    } 
+	        }
+		}
+			
+    ?>
+
+<div class="col-lg-12 col-xs-12 order-details-container section-container">
+	<div class="row">
+		<div class="order-details">
+			<div class="col-lg-12 col-xs-12 order-row">
+				<div class="row">
+					<div class="col-lg-6 col-xs-6 a-left">
+						<div class="row">
+							<span class="order"><?php 
+							echo 'Order #'.$_order->getIncrementId().'';?></span>
+						</div>
+					</div>
+					<div class="col-lg-6 col-xs-6 a-right">
+						<div class="row">
+							<span class="invoice">
+								<?php if($_order->canCancel()) : 
+											if($itemCount != $canceledItems){
+								?>
+    								<button class="confirmation" onclick="callController(<?php echo $_order->getEntityId() ?>)" >Cancel Order</button>
+    								<!-- <a class="confirmation" href="<?php //echo $this->getUrl('sales/order/invoice').'?order_id='.$_order->getEntityId(); ?>">Invoice</a> -->
+								<?php }
+								endif; ?>
+									
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-12 col-xs-12">
+				<div class="row">
+					<div class="order-content">
+						<div class="col-lg-12 col-xs-12">
+							<div class="row">
+								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Order date
+									</span><br>
+									<span class="clear-text">
+										<?php echo $newDate; ?>
+									</span>
+								</div>
+								<div class="order-date col-lg-2 col-sm-4 col-md-3 col-xs-6">
+									<span class="lite-text">
+										Delivery
+									</span><br>
+									<span class="clear-text">
+										<?php echo $delDate; ?>
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-lg-12 col-xs-12">
+							<div class="row">
+								<div class="order-details-content">
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+											<span class="lite-text">
+												Ship to
+											</span><br>
+											<span class="ordered-customer-name">
+												<?php echo $_order->getCustomerName(); ?>
+											</span><br>
+											<span class="address">
+											<?php  $ShippingAddressobj = $_order->getShippingAddress();
+											if(!empty($ShippingAddressobj)){
+											$ShippingAddress = $ShippingAddressobj->getData();
+											echo $ShippingAddress['street'];echo"</br>";
+											echo $ShippingAddress['city'];echo"</br>";
+											echo $ShippingAddress['email'];echo"</br>";
+											echo $ShippingAddress['postcode'];echo"</br>";
+											echo $ShippingAddress['telephone'];
+											}
+											?><br>
+											</span>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+											<span class="lite-text">
+												Payment Method
+											</span><br>
+											<span class="clear-text">
+											<?php $payment = $_order->getPayment();
+											echo $payment->getMethodInstance()->getTitle();
+											?>
+											</span>
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+										<span class="lite-text">
+												Order Summary
+											</span>
+										<table class="order-summary-table">
+											<tbody>
+												<tr><td>Item(s) subtotal</td><td><?php echo "&#8377;".number_format($_order->getSubtotal());?></td></tr>
+												<tr><td>Shipping</td><td><?php echo "&#8377;".number_format($_order->getShippingAmount());?></td></tr>
+												<tr><td>Total</td><td><?php echo "&#8377;".number_format($_order->getGrandtotal());?></td></tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function callController(orderId){
+			jQuery.ajax({
+                    showLoader: true,
+                    url: "<?php echo $this->getUrl('artist/refund/index') ?>",
+                    data: {"OrderId":orderId},
+                    type: "POST",
+                    dataType: 'json',
+                    success:function(data)  
+                    {  
+                         window.location.reload();
+                         alert('Your order has been cancelled and refund is initiated.');
+  
+                        
+                    }                         
+            })
+       }
+</script>

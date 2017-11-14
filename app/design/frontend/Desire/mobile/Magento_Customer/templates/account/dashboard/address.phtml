@@ -1,0 +1,136 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Account\Dashboard\Address $block */
+?>
+<div class="block-dashboard-addresses get_link" id="addressbook">
+	<div class="show_adres">
+		<div class="dash-title">
+			<h3><?php echo __('Address Book') ?></h3>
+		</div>
+		<div class="small_address">
+			<span>
+				<?php
+					$short_address = strip_tags($block->getPrimaryBillingAddressHtml());
+					if (strlen($short_address) > 50) {
+								$stringCut = substr($short_address, 0, 40);
+								$short_address = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+							}
+					echo $short_address
+				?>
+			</span>
+			<span class="address_tag">Home</span>
+		</div>
+	</div>
+	<div class="all_address">
+		<div class="owl-carousel owl-theme">
+			<div class="item">
+				<div class="title-address-book">
+					<div class="row title-address-description">
+						<div class="col-md-2">
+							<h3><?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+									$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+									if ($customerSession->isLoggedIn()) {
+										$custname=(string)$customerSession->getCustomer()->getName();
+										echo $custname;
+										}
+								?>
+							</h3>
+						</div>
+						<div class="col-md-6">
+							<div class="address-location defaul-add">Home</div>
+							<p class="whole-add"><?php echo $block->getPrimaryBillingAddressHtml() ?></p>
+						</div>
+						<div class="col-md-2">
+							
+						</div>
+						<div class="col-md-2">
+							<h4><a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getPrimaryBillingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4>
+						</div>
+					</div>
+					<div class="title-address-container">
+						<h3><?php echo __('Default Address') ?></h3>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="title-address-book-second">
+					<div class="row title-address-description">
+						<div class="col-md-2">
+							<h3><?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+									$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+									if ($customerSession->isLoggedIn()) {
+										$custname=(string)$customerSession->getCustomer()->getName();
+										echo $custname;
+										}
+								?>
+							</h3>
+						</div>
+						<div class="col-md-6">
+							<div class="address-location other-add">Tom's Office</div>
+							<p class="whole-add"><?php echo $block->getPrimaryShippingAddressHtml() ?></p>
+						</div>
+						<div class="col-md-2">
+							<h4><a href="">Make it default <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4>
+						</div>
+						<div class="col-md-2">
+							<h4><a class="action edit" href="<?php echo $block->getPrimaryShippingAddressEditUrl() ?>" data-ui-id="default-billing-edit-link">Edit <i class="fa fa-angle-right" aria-hidden="true"></i></a></h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<div class="title-address-book-second">
+					<div class="title-address-description-last">
+						<a class="action edit" href="<?php echo $block->getAddressBookUrl() ?>">
+						<img src="<?php echo $this->getViewFileUrl('Magento_Customer::images/add-new.png');?>" alt="image"> 
+						<p>Add new address</p></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+require(['jquery'],function($){
+    jQuery(document).ready(function(){
+		jQuery(".show_adres").click(function(){
+			jQuery(".show_adres").toggleClass('open');
+			jQuery(".dash-title h3").toggleClass('clicked-titl');
+			jQuery(".small_address").toggle();
+			jQuery(".all_address").toggle(800);
+		});
+    });
+});
+</script>
+<script>
+require(['jquery','owl_carousel'],function($){
+	$(document).ready(function() {
+	  $('.all_address .owl-carousel').owlCarousel({
+		loop: false,
+		margin: 10,
+		responsiveClass: true,
+		stagePadding:0,
+		responsive: {
+		  0: {
+			items: 1,
+			nav: false
+		  },
+		  600: {
+			items: 1,
+			nav: false
+		  },
+		  1000: {
+			items: 1,
+			nav: false
+		  }
+		}
+	  })
+	})
+});
+</script>

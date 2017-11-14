@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_shipment_save_commit_after">
+        <observer name="Pickrr_Magento2_Shipment_Commit_After" instance="Pickrr\Magento2\Observer\shipmentCommitAfter" />
+    </event>
+    <event name="sales_order_invoice_save_after">
+        <observer name="Pickrr_Magento2_Order_Commit_After" instance="Pickrr\Magento2\Observer\orderCommitAfter" />
+    </event>
+    <event name="payment_method_is_active">
+        <observer name="Pickrr_Magento2_Custom_Payment" instance="Pickrr\Magento2\Observer\paymentMethod" />
+    </event>
+</config>

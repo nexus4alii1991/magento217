@@ -1,0 +1,118 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Account\Dashboard\Info $block */
+?>
+<div class="block block-dashboard-info" id="page2">
+	<a name="accountinfo"></a>
+	<div class="dash-info-title"><h3> Account Information</h3></div>
+	<div class="account-information">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<h4><?php /* @escapeNotVerified */ echo __('Contact Information') ?>
+				<a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account/edit') ?>"><span>Edit <i class="fa fa-chevron-right" aria-hidden="true"></i></span></a></h4>
+				<h5><?php echo $block->escapeHtml($block->getName()) ?></h5>
+				<p>
+					<?php $customerId = $block->escapeHtml($block->getCustomer()->getId()); 
+						$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+						$customer = $objectManager->create('Magento\Customer\Model\Customer')->load($customerId);
+						$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+						$shippingAddressID =  $customerSession->getCustomer()->getDefaultBilling();
+						$billingAddress = $objectManager->create('Magento\Customer\Model\Address')->load($shippingAddressID);
+						$billingStreet = $billingAddress->getStreet();
+						$billingStreet1 = $billingStreet[0];
+						$billingStreet2 = $billingStreet[1];
+						$billingcity= $billingAddress->getCity();
+						$billingregion= $billingAddress->getRegion();
+						$billingZipcode= $billingAddress->getpostcode();
+						$billingCountry = $billingAddress->getCountry();
+						$country = $objectManager->create('\Magento\Directory\Model\Country')->load($billingCountry)->getName();
+						print_r($billingStreet1.'</br>'. $billingStreet2.'</br>'.$billingcity.', '.$billingregion.', '.$billingZipcode.'</br>'.$country);
+					?>
+				</p>
+				<p><?php echo $block->escapeHtml($block->getCustomer()->getEmail()) ?></p>
+				<p><?php $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+						$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+						if ($customerSession->isLoggedIn()) {
+							$custcontact=(string)$customerSession->getCustomer()->getPrimaryBillingAddress()->getTelephone();
+							echo $custcontact;
+							}
+					?>
+				</p>
+				<h6><a href="<?php /* @escapeNotVerified */ echo $block->getChangePasswordUrl() ?>" class="action change-password">
+				<?php /* @escapeNotVerified */ echo __('Change Password') ?> <i class="fa fa-chevron-right" aria-hidden="true"></i></a></h6>
+			</div>
+			<?php if ($block->isNewsletterEnabled()): ?>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<h4><?php /* @escapeNotVerified */ echo __('Newsletters') ?> 
+				<a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getUrl('newsletter/manage') ?>"><span>Edit <i class="fa fa-chevron-right" aria-hidden="true"></i></span></a>
+				</h4>
+				<div class="box-content">
+					<p>
+						<?php if ($block->getIsSubscribed()): ?>
+							<?php /* @escapeNotVerified */ echo __('You subscribe to "General Subscription".') ?>
+						<?php else: ?>
+							<?php /* @escapeNotVerified */ echo __('You are not currently subscribed to our newsletter.') ?>
+						<?php endif; ?>
+					</p>
+					<?php /* Extensions placeholder */ ?>
+					<?php echo $block->getChildHtml('customer.account.dashboard.info.extra')?>
+				</div>
+			</div>
+			<?php endif; ?>
+		</div>
+	</div>
+</div>
+		
+		
+<!--		
+<div class="block block-dashboard-info">
+    <div class="block-title"><strong><?php /* @escapeNotVerified */ echo __('Account Information') ?></strong></div>
+    <div class="block-content">
+        <div class="box box-information">
+            <strong class="box-title">
+                <span><?php /* @escapeNotVerified */ echo __('Contact Information') ?></span>
+            </strong>
+            <div class="box-content">
+                <p>
+                    <?php echo $block->escapeHtml($block->getName()) ?><br>
+                    <?php echo $block->escapeHtml($block->getCustomer()->getEmail()) ?><br>
+                </p>
+            </div>
+            <div class="box-actions">
+                <a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account/edit') ?>">
+                    <span><?php /* @escapeNotVerified */ echo __('Edit') ?></span>
+                </a>
+                <a href="<?php /* @escapeNotVerified */ echo $block->getChangePasswordUrl() ?>" class="action change-password">
+                    <?php /* @escapeNotVerified */ echo __('Change Password') ?>
+                </a>
+            </div>
+        </div>
+        <?php if ($block->isNewsletterEnabled()): ?>
+            <div class="box box-newsletter">
+                <strong class="box-title">
+                    <span><?php /* @escapeNotVerified */ echo __('Newsletters') ?></span>
+                </strong>
+                <div class="box-content">
+                    <p>
+                        <?php if ($block->getIsSubscribed()): ?>
+                            <?php /* @escapeNotVerified */ echo __('You subscribe to "General Subscription".') ?>
+                        <?php else: ?>
+                            <?php /* @escapeNotVerified */ echo __('You don\'t subscribe to our newsletter.') ?>
+                        <?php endif; ?>
+                    </p>
+                    <?php /* Extensions placeholder */ ?>
+                    <?php echo $block->getChildHtml('customer.account.dashboard.info.extra')?>
+                </div>
+                <div class="box-actions">
+                    <a class="action edit" href="<?php /* @escapeNotVerified */ echo $block->getUrl('newsletter/manage') ?>"><span><?php /* @escapeNotVerified */ echo __('Edit') ?></span></a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>-->

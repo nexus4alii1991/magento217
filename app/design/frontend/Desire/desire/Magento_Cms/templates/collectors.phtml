@@ -1,17 +1,22 @@
-<?php /*<!-- Collectores Block-->*/ ?>
+<?php echo $this->getLayout()
+          ->createBlock('Magento\Cms\Block\Block')
+          ->setBlockId('collectors-edition-home')
+          ->toHtml();?>
+
+<?php /*<!-- Collectores Block-->
 
 <div class="collectores-edition section-cotainer"> 
 	<div class="columns-grid grid-2">
 		<div class="grid">
 			<div class="collector-box">
 				<div class="collector-img">
-					<img src="<?php echo $this->getViewFileUrl('images/img-1.jpg');?>" />
+					<a href="#"><img src="<?php echo $this->getViewFileUrl('images/img-1.jpg');?>" /></a>
 				</div>
 			</div>
 			<div class="devider"></div>
 			<div class="collector-box">
 				<div class="collector-img">
-					<img src="<?php echo $this->getViewFileUrl('images/img-3.jpg');?>" />
+					<a href="#"><img src="<?php echo $this->getViewFileUrl('images/img-3.jpg');?>" /></a>
 				</div>
 			</div>
 		</div>
@@ -19,16 +24,17 @@
 		<div class="grid">
 			<div class="collector-box">
 				<div class="collector-text">
-					<h2 class="colletores-title">COLLECTORES EDITION</h2>
-					<p class="sub-title">Curated for those who are on the constant hunt for the unique, for the one with an affinity for the extraordinary. Explore the Desitre desire range and prepare to be inspired.</p> 
-					<button class="fill large">Explore</button>
+					<h2 class="colletores-title">COLLECTORS EDITION</h2>
+					<p class="sub-title">Curated for those who are on the constant hunt for the unique, for the one with an affinity for the extraordinary. Explore the Desire Desire range and prepare to be inspired.</p> 
+					<button class="fill large" onclick="window.location.href='#'">Explore</button>
 				</div>
 			</div>
 			<div class="collector-box">
 				<div class="collector-img">
-					<img src="<?php echo $this->getViewFileUrl('images/img-2.jpg');?>" />
+					<a href="#"><img src="<?php echo $this->getViewFileUrl('images/img-2.jpg');?>" /></a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+*/ ?>

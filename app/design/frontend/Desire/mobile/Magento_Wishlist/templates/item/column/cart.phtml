@@ -1,0 +1,51 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart */
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+<?php foreach ($block->getChildNames() as $childName): ?>
+    <?php /* @escapeNotVerified */ echo $block->getLayout()->renderElement($childName, false); ?>
+<?php endforeach;?>
+<!--<div class="col-lg-1 col-md-1 wish_product_qty recent-orders-footer-description">
+    <?php if ($item->canHaveQty() && $product->isVisibleInSiteVisibility()): ?>
+        <div class="field qty">
+            <label class="label" for="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number" data-role="qty" id="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]" class="input-text qty" data-validate="{'required-number':true,'validate-greater-than-zero':true}"
+               name="qty[<?php /* @escapeNotVerified */ echo $item->getId() ?>]" value="<?php /* @escapeNotVerified */ echo $block->getAddToCartQty($item) * 1 ?>">
+            </div>
+        </div>
+    <?php endif; ?>
+</div>-->
+<div class="wish_product_review">
+	<div class="wish_rating_point">4.2 <i class="fa fa-star" aria-hidden="true"></i></div>
+	<div class="wish_review">29 ratings &amp; 29 reviews</div>
+</div>
+<div class="wish_product_add_cart">
+	<?php if ($product->getIsSalable()): ?>
+		<p class="available stock" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+			<span><?php /* @escapeNotVerified */ echo __('In stock') ?></span>
+		</p>
+	<?php else: ?>
+		<p class="unavailable stock" title="<?php /* @escapeNotVerified */ echo __('Availability') ?>">
+			<span><?php /* @escapeNotVerified */ echo __('Out of stock') ?></span>
+		</p>
+	<?php endif; ?>
+    <?php if ($product->isSaleable()): ?>
+    <div class="product-item-actions">
+        <div class="actions-primary">
+            <button type="button" data-role="tocart" data-post='<?php echo $block->getItemAddToCartParams($item)?>' title="<?php echo __('Add to Bag') ?>" data-item-id="<?php echo $item->getId()?>" class="action tocart primary">
+                <span><?php echo __('Add to Bag') ?></span>
+            </button>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>

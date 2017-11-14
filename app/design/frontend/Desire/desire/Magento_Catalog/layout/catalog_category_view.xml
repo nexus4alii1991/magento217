@@ -6,18 +6,21 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <link src="Magento_Catalog::js/filter-func-modification.js"/>
+    </head>
     <body>
 	
-        <!-- <move element="catalog.leftnav" destination="category.product.list.additional" before="-"/> -->
+        <move element="catalog.leftnav" destination="category.product.list.additional" before="-"/> 
 		
-		<referenceBlock name="content.top">
+		<!--<referenceBlock name="content.top">
+			<block class="Magento\Framework\View\Element\Template" name="top-filter" template="Magento_Catalog::navigation/top-filter.phtml"></block>
 			
-			<!--<block class="Magento\Framework\View\Element\Template" name="top-filter" template="Magento_Catalog::navigation/top-filter.phtml"></block>
-			<block class="Magento\Framework\View\Element\Template" name="sort_by_product" template="Magento_Catalog::navigation/top-right-filter.phtml"></block>-->
-		</referenceBlock>
+		</referenceBlock>-->
 		
-		<referenceBlock name="page.bottom.container">
+		<referenceBlock name="page.bottom">
 			<block class="Magento\Framework\View\Element\Template" name="may-like-slider" template="Magento_Catalog::product/may-like-slider.phtml"></block>
 		</referenceBlock>
+
     </body>
 </page>

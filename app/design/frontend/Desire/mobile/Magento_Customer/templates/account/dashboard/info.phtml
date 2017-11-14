@@ -1,0 +1,47 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Magento\Customer\Block\Account\Dashboard\Info $block */
+?>
+<div class="block-dashboard-info get_link" id="accountinfo">
+	<div class="dash-info-title">
+	<h3><span><i aria-hidden="true"></i></span>My Account</h3></div>
+	<div class="account-information">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="user_img">
+					<div class="profile_pic">
+						<img src="" alt="">
+					</div>
+				</div>
+				<h5><?php echo $block->escapeHtml($block->getName()) ?></h5>
+				<p class="customer_tel">
+				<?php 
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+					$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+					$EmailId = $block->escapeHtml($block->getCustomer()->getEmail());
+						if ($customerSession->isLoggedIn()) {
+							$shippingAddress = $customerSession->getCustomer()->getPrimaryShippingAddress();
+							if(!empty($shippingAddress)){
+							echo $custcontact=$shippingAddress->getTelephone();
+							} 
+							}
+					?>
+				</p>
+				<p class="customer_mail"><?php echo $EmailId; ?>
+					<a class="action edit edit_account" href="<?php /* @escapeNotVerified */ echo $block->getUrl('customer/account/edit') ?>">
+					<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
+					</a>
+				</p>
+				
+				<!--<h6><a href="<?php echo $block->getChangePasswordUrl() ?>" class="action change-password">
+				<?php echo __('Change Password') ?> <i class="fa fa-angle-right" aria-hidden="true"></i></a></h6>-->
+			</div>
+		</div>
+	</div>
+</div>

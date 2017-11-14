@@ -1,6 +1,7 @@
 <?php
 namespace WeltPixel\OwlCarouselSlider\Block\Slider;
 
+
 class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements \Magento\Widget\Block\BlockInterface
 {
     /**
@@ -8,6 +9,8 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
      *
      * @var \Magento\Framework\Registry
      */
+
+
     protected $_coreRegistry;
     protected $_helperProducts;
     protected $_helperCustom;
@@ -25,6 +28,10 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
     protected $_reportsCollectionFactory;
     protected $_viewProductsBlock;
 
+
+
+
+
     /**
      * Internal constructor, that is called from real constructor
      *
@@ -38,6 +45,7 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
      */
 
     public function __construct(
+
         \Magento\Catalog\Block\Product\Context $context,
         \WeltPixel\OwlCarouselSlider\Helper\Products $helperProducts,
         \WeltPixel\OwlCarouselSlider\Helper\Custom $helperCustom,
@@ -45,6 +53,7 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productsCollectionFactory,
         \Magento\Reports\Model\ResourceModel\Product\CollectionFactory $reportsCollectionFactory,
         \Magento\Reports\Block\Product\Widget\Viewed\Proxy $viewedProductsBlock,
+
         array $data = []
     )
     {
@@ -61,9 +70,9 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
         if (is_null($this->_currentProduct)) {
             $this->_currentProduct = $this->_coreRegistry->registry('current_product');
         }
-
         parent::__construct($context, $data);
         $this->_isScopePrivate = false;
+
 
     }
 
@@ -102,7 +111,8 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
                 $productCollection = [];
         }
 
-        return $productCollection;
+        return $productCollection; 
+        //print_r($productCollection);exit;
     }
 
     /**
@@ -220,8 +230,33 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
         };
 
         $_collection = $this->_addProductAttributesAndPrices($_collection);
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+        $connection = $resource->getConnection();
+        $tableName = $resource->getTableName('sales_bestsellers_aggregated_monthly');
+        $select = "SELECT * FROM " . $tableName ." WHERE store_id='".$this->getStoreId()."'";
+        $data = $connection->fetchAll($select);
+        //print_r($data);
+        foreach($data as $item){
+            $productId = $item['product_id']; 
+            //$productId = 489;
+            $parentIds = $objectManager->get('Magento\ConfigurableProduct\Model\Product\Type\Configurable')
+            ->getParentIdsByChild($productId);
+            $parentId = array_shift($parentIds);
+            if(!empty($parentId)){
+            $connection = $resource->getConnection();
+             $tableName = $resource->getTableName('sales_bestsellers_aggregated');
+             $sql = "Insert Into " . $tableName . " (period, store_id, product_id, product_name, product_price, qty_ordered, rating_pos) 
+                        Values ('".$item['period']."', ".$item['store_id'].", ".$parentId.", '".$item['product_name']."', ".$item['product_price'].", ".$item['qty_ordered'].", ".$item['rating_pos'].")";
+            //echo $sql;exit;
+/*            $connection->query($sql); 
+*/            }      
+            
+        }
+
         $_collection->getSelect()
-            ->join(['bestsellers' => $_collection->getTable('sales_bestsellers_aggregated_yearly')],
+            ->join(['bestsellers' => $_collection->getTable('sales_bestsellers_aggregated')],
                 'e.entity_id = bestsellers.product_id AND bestsellers.store_id = '.$this->getStoreId(),
                 ['qty_ordered','rating_pos'])
             ->order('rating_pos');
@@ -303,13 +338,26 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
         $limit  = $this->_getProductLimit('recently_viewed');
         $random = $this->_getRandomSort('recently_viewed');
 
-        if($limit == 0) {
+        /*if($limit == 0) {
             return [];
         };
+*/
+       /* $currentStoreId = $this->_storeManager->getStore()->getId();
 
-        $_collection = $this->_viewProductsBlock->getItemsCollection();
+        $collection = $this->_productCollectionFactory->create()
+        ->addAttributeToSelect(
+            '*'
+        )->addViewsCount()->setStoreId(
+                $currentStoreId
+        )->addStoreFilter(
+                $currentStoreId
+        );
+        $_collection = $collection->getItems();*/
+       // return $items;
 
-        if ($random) {
+        //$_collection = $this->_viewProductsBlock->getItemsCollection();
+
+        /*if ($random) {
             $allIds = $_collection->getAllIds();
             $candidateIds = $_collection->getAllIds();
             $randomIds = [];
@@ -317,16 +365,68 @@ class Products extends \Magento\Catalog\Block\Product\AbstractProduct implements
             while (count($randomIds) <= count($allIds) - 1) {
                 $randomKey = mt_rand(0, $maxKey);
                 $randomIds[$randomKey] = $candidateIds[$randomKey];
+            }*/
+
+           // $_collection->addIdFilter($randomIds);
+        //};
+
+
+//remove this once found logic for popular
+
+if (!$limit || $limit == 0) {
+            return [];
+        }
+
+        $_collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds());
+
+        if ($random) {
+            $allIds = $_collection->getAllIds();
+            $randomIds = [];
+            $maxKey = count($allIds) - 1;
+            while (count($randomIds) <= count($allIds) - 1) {
+                $randomKey = mt_rand(0, $maxKey);
+                $randomIds[$randomKey] = $allIds[$randomKey];
             }
 
             $_collection->addIdFilter($randomIds);
         };
+
+        $_collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds());
+
+        $_collection = $this->_addProductAttributesAndPrices($_collection)
+            ->addAttributeToFilter(
+                'news_from_date',
+                ['date' => true, 'to' => $this->getEndOfDayDate()],
+                'left')
+            ->addAttributeToFilter(
+                'news_to_date',
+                [
+                    'or' => [
+                        0 => ['date' => true, 'from' => $this->getStartOfDayDate()],
+                        1 => ['is' => new \Zend_Db_Expr('null')],
+                    ]
+                ],
+                'left')
+            ->addAttributeToSort(
+                'news_from_date',
+                'desc')
+            ->addStoreFilter($this->getStoreId())->setCurPage(1);
 
         if ($limit && $limit > 0 ) {
             $_collection->setPageSize($limit);
         };
 
         return $_collection;
+
+//ends
+
+
+
+       /* if ($limit && $limit > 0 ) {
+            $_collection->setPageSize($limit);
+        };
+
+        return $_collection;*/
     }
 
     /**

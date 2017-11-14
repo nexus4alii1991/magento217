@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<div class="field gender<?php if ($block->isRequired()) echo ' required' ?>">
+    <div class="control">
+		<div class="gender">
+			<input type="radio" class="" name="gender" value="1" checked="checked"/><?php /* @escapeNotVerified */ echo __('Male') ?>
+		</div>
+		<div class="gender">
+			<input type="radio" class="" name="gender" value="2" /><?php /* @escapeNotVerified */ echo __('Female') ?>
+		</div>
+    </div>
+</div>

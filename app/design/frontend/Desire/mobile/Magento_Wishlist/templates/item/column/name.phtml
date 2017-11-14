@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+?>
+<div class="wish_product_name recent-orders-footer-description">
+	<div class="recent-orders-header-description">
+		<a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl($item) ?>" title="<?php echo $block->escapeHtml($product->getName()) ?>" class="product-item-link">
+			<?php echo $block->escapeHtml($product->getName()) ?>
+		</a>
+		<p><?php echo $block->escapeHtml($product->getDescription())  ?></p>
+	</div>
+</div>

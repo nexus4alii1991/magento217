@@ -1,0 +1,73 @@
+/*------------fontcss-------------*/
+@font-face {
+  font-family: 'luma-icons';
+  src: url('../fonts/Luma-Icons.eot');
+  src: url('../fonts/Luma-Icons.eot?#iefix') format('embedded-opentype'), url('../fonts/Luma-Icons.woff2') format('woff2'), url('../fonts/Luma-Icons.woff') format('woff'), url('../fonts/Luma-Icons.ttf') format('truetype'), url('../fonts/Luma-Icons.svg#luma-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Affogato Light';
+  src: url('../fonts/Affogato-Light.woff2') format('woff2'), 
+	   url('../fonts/Affogato-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Affogato';
+  src: url('../fonts/Affogato-Regular.woff2') format('woff2'), 
+	   url('../fonts/Affogato-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Affogato Medium';
+  src: url('../fonts/Affogato-Medium.woff2') format('woff2'), 
+	   url('../fonts/Affogato-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Affogato Bold';
+  src: url('../fonts/Affogato-Bold.woff2') format('woff2'), 
+	   url('../fonts/Affogato-Bold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Affogato Black';
+  src: url('../fonts/Affogato-Black.woff2') format('woff2'), 
+	   url('../fonts/Affogato-Black.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/******************** Muller Fonts ********************************/
+
+@font-face {
+  font-family: 'MullerNarrow Light';
+  src: url('../fonts/MullerNarrow-Light.otf') format('opentype');
+  font-weight: 300;	
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MullerNarrow LightItalic';
+  src: url('../fonts/MullerNarrow-LightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'MullerNarrow ExtraBold';
+  src: url('../fonts/MullerNarrow-ExtraBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MullerNarrow ExtraBoldItalic';
+  src: url('../fonts/MullerNarrow-ExtraBoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}

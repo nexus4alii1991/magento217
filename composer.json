@@ -67,12 +67,16 @@
     },
     "minimum-stability": "alpha",
     "prefer-stable": true,
-    "repositories": [
-        {
+    "repositories": {
+        "0": {
             "type": "composer",
             "url": "https://repo.magento.com/"
+        },
+        "magento2-mobiledetect": {
+            "type": "git",
+            "url": "git@github.com:EaDesgin/magento2-mobiledetect;"
         }
-    ],
+    },
     "extra": {
         "magento-force": "override"
     }

@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+?>
+<?php if ($block->isPossibleOnepageCheckout()):?>
+<?php 
+	$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+	$cart = $objectManager->get('\Magento\Checkout\Model\Cart');
+	$grandTotal = $cart->getQuote()->getGrandTotal();
+?>
+<div class="fixed-block">
+	<div class="estimate-total">
+		<span class="white">Cart Subtotal</span>
+		<strong class="white"><?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($grandTotal,true,false);?></strong>
+	</div>
+    <button type="button"
+            data-role="proceed-to-checkout"
+            title="<?php /* @escapeNotVerified */ echo __('Proceed to checkout') ?>"
+            data-mage-init='{"Magento_Checkout/js/proceed-to-checkout":{"checkoutUrl":"<?php /* @escapeNotVerified */ echo $block->getCheckoutUrl(); ?>"}}'
+            class="action primary checkout<?php echo($block->isDisabled()) ? ' disabled' : ''; ?>"
+            <?php if ($block->isDisabled()):?>disabled="disabled"<?php endif; ?>>
+        <span><?php /* @escapeNotVerified */ echo __('Proceed to checkout') ?></span>
+    </button>
+</div>	
+<?php endif?>

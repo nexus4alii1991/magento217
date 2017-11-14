@@ -6,6 +6,7 @@
 -->
 <li id="shipping" class="checkout-shipping-address" data-bind="fadeVisible: visible()">
     <div class="step-title" data-bind="i18n: 'Delivery Address'" data-role="title"></div>
+	<div class="step-title-sub">Choose a correct address for your Delivery &amp;  Billing</div>
     <div id="checkout-step-shipping"
          class="step-content"
          data-role="content">
@@ -30,6 +31,7 @@
                 data-bind="click: showFormPopUp, visible: !isNewAddressAdded()"
                 class="action action-show-popup">
             <span data-bind="i18n: 'New Address'"></span></button>
+            <span id="not" style="display: none;margin-top:-20px;float: left;width: 100%;"> Zipcode is not servicable </span>
         <div id="opc-new-shipping-address" data-bind="visible: isFormPopUpVisible()">
             <!-- ko template: 'Magento_Checkout/shipping-address/form' --><!-- /ko -->
         </div>

@@ -1,41 +1,72 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+		<referenceBlock name="head.additional">
+			<block class="Magento\Framework\View\Element\Template" name="loadingheadcontent" template="Magento_Cms::head-content-for-loading.phtml" before="-"></block>
+		</referenceBlock>
+		<referenceBlock name="after.body.start" >
+			<block class="Magento\Framework\View\Element\Template" name="loading-content" template="Magento_Cms::loading-animation.phtml" before="-"></block>
+		</referenceBlock>
         <referenceBlock name="logo">
             <arguments>
                 <argument name="logo_file" xsi:type="string">images/logo.png</argument>
                 <argument name="logo_img_width" xsi:type="number">69</argument>
                 <argument name="logo_img_height" xsi:type="number">85</argument>
             </arguments>
+
         </referenceBlock>
-		
+        <referenceBlock name="catalog.topnav" remove="true"/>
+        <referenceBlock name="store.menu">
+			<block class="Hiddentechies\Bizkick\Block\Rewrite\Html\Topmenu" name="new-menu" template="Magento_Theme::html/topmenu.phtml">
+			</block>
+		</referenceBlock>
 		<referenceBlock name="header.panel">
 			<block class="Magento\Framework\View\Element\Template" name="my-account-icon" before="header.links" template="TW_MS::my-account-icon.phtml">
 			</block>
 		</referenceBlock>
 		
-		<referenceBlock name="register-link">
-			<arguments>
-				<argument name="label" xsi:type="string" translate="true">Sign Up</argument>
-			</arguments>
-		</referenceBlock>
-		
 		<referenceBlock name="header.links" after="top.links">
-			<block class="TW\MS\Block\Link" name="return-and-exchange" after="register-link">
+			<block class="Magento\Framework\View\Element\Html\Links" name="top.links">
+				<referenceBlock name="wish-list-link" remove="true" />
+				<block class="Magento\Framework\View\Element\Html\Link\Current" name="my-orders-link">
+					<arguments>
+						<argument name="label" xsi:type="string" translate="true">My Orders</argument>
+						<argument name="path" xsi:type="string">customer/account/#myordrs</argument>
+					</arguments>
+				</block>
+			</block>
+			
+			
+			<block class="Magento\Customer\Block\Account\RegisterLink" name="register-link-new"  after="-">
+				<arguments>
+					<argument name="label" xsi:type="string" translate="true">Sign Up</argument>
+					<argument name="class" xsi:type="string" translate="true">header-signup-link</argument>
+				</arguments>
+			</block>
+			<!-- 
+			<block class="TW\MS\Block\Link" name="return-and-exchange" after="-">
 				<arguments>
 					<argument name="label" xsi:type="string" translate="true">Return and Exchange</argument>
-					<argument name="path" xsi:type="string" translate="true">return-and-exchange</argument>
+					<argument name="path" xsi:type="string" translate="true">customer/account/</argument>
 				</arguments>
-			</block>
-			<block class="TW\MS\Block\Link" name="cancellation" after="register-link">
+			</block> -->
+			<!-- <block class="TW\MS\Block\Link" name="cancellation" after="-">
 				<arguments>
 					<argument name="label" xsi:type="string" translate="true">Cancellation</argument>
-					<argument name="path" xsi:type="string" translate="true">cancellation</argument>
+					<argument name="path" xsi:type="string" translate="true">customer/account/</argument>
 				</arguments>
-			</block>
+			</block> -->
 		</referenceBlock>
 		
+		<referenceBlock name="header" remove="true"/>
+		<referenceBlock name="register-link" remove="true"/>
+
+		<!--
+		<referenceBlock name="top.search" remove="true"/>
+		<referenceBlock name="minicart" remove="true"/>
+		-->
+		
 		<referenceBlock name="footer">
-			<block class="TW\CatewithimgWidget\Block\Widget\CatewithimgWidget" before="footer_links">
+			<block class="ProgrammingAtKstark\CatewithimgWidget\Block\Widget\CatewithimgWidget" before="footer_links">
 				<action method="setBlocktitle">
 					  <argument name="blocktitle" xsi:type="string">footer</argument>
 				</action>
@@ -48,21 +79,72 @@
 			</block >
 		</referenceBlock>
 		
-		<referenceBlock name="header" remove="true"/>
-		<referenceBlock name="register-link" remove="true"/>
-
-		<!--
-		<referenceBlock name="top.search" remove="true"/>
-		<referenceBlock name="minicart" remove="true"/>
-		-->
-		
 		<move element="breadcrumbs" destination="footer" before="-"/>
 		<move element="top.search" destination="before.body.end"/>
 		<move element="minicart" destination="before.body.end"/>
 		
 		
 		<move element="navigation.sections" destination="header-wrapper" />
+	<!-- 	<referenceBlock name="navigation.sections" remove="true"/> -->
 		<move element="header.panel.wrapper" destination="header-wrapper" />
+		
+		<referenceBlock name="footer_links">
+			
+			<referenceBlock name="privacy-policy-link">
+				<arguments>
+						<argument name="label" xsi:type="string">Privacy Policy</argument>
+				 </arguments>
+			</referenceBlock> 
+			<move element="privacy-policy-link" destination="footer_links" after="-"/>
+			<move element="blog" destination="footer_links" after="-"/>
+			
+			<block class="Magento\Framework\View\Element\Html\Link\Current" name="faqs-link" before="-">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Faqs</argument>
+                    <argument name="path" xsi:type="string">faqs</argument>
+                </arguments>
+            </block>
+			
+			<block class="Magento\Framework\View\Element\Html\Link\Current" name="about-us-link" >
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">About Us</argument>
+                    <argument name="path" xsi:type="string">about</argument>
+                </arguments>
+            </block>
+			<block class="Magento\Framework\View\Element\Html\Link\Current" name="corporate" after="about-us-link"  >
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Corporate Gifting</argument>
+                    <argument name="path" xsi:type="string">corporate</argument>
+                </arguments>
+            </block>
+			<block class="Magento\Framework\View\Element\Html\Link\Current" ifconfig="contact/contact/enabled" name="contact-us-link" after="corporate" >
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Contact Us</argument>
+                    <argument name="path" xsi:type="string">contact</argument>
+                </arguments>
+            </block>
+			
+			<block class="Magento\Framework\View\Element\Html\Link\Current" name="t-and-c" after="contact-us-link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Terms And Conditions</argument>
+                    <argument name="path" xsi:type="string">terms-and-conditions</argument>
+                </arguments>
+            </block>
+			
+			
+			
+<!--
+			<block class="Magento\Framework\View\Element\Html\Link\Current" name="trackorder-link" >
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Track Order</argument>
+                    <argument name="path" xsi:type="string">track-order</argument>
+                </arguments>
+            </block>-->
+			<!--<referenceBlock name="privacy-policy-link" remove="true"/>-->
+			<referenceBlock name="search-term-popular-link" remove="true"/>
+			<referenceBlock name="sales-guest-form-link" remove="true"/>
+			<referenceBlock name="catalog-search-advanced-link" remove="true"/>
+        </referenceBlock>
 		
 		
 		<referenceContainer name="before.body.end">

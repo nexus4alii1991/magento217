@@ -66,6 +66,7 @@ class Cancel extends \Magento\Framework\App\Action\Action implements OrderInterf
                 $this->messageManager->addError($e->getMessage());
             }
         }
-        return $resultRedirect->setPath('*/*/history');
+        //return $resultRedirect->setPath('*/*/history');
+        return $this->_redirect('customer/account');
     }
 }

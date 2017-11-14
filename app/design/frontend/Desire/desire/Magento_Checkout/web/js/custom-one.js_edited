@@ -1,0 +1,157 @@
+ require([ 'jquery', 'jquery/ui'], function($){
+
+  jQuery(document).ready(function(){  
+    var est = $("#estimate").val();
+    var mail = $("#custom_mail").val();
+    var zip ="";
+    var otp_mob="";
+    var mob_otp="";
+    var setdate = setInterval(function(){
+     if(document.getElementById('checkout-loader') == null) {
+      jQuery(document).on('click','.continue',function(){
+        otp_mob = jQuery('.selected-item .mob').text();
+        jQuery('#custom-mobile').val(otp_mob);
+        jQuery("#razorpay").attr('checked', true);
+    });
+      /* COD otp verification */
+    function Verifi(){
+      mob_otp = '9206645724';
+    alert(mob_otp);    
+      $.ajax({
+                showLoader: true,
+                url: "https://next.desiredesire.com/sociallogin/milton/milton",
+                data: {"mobile":mob_otp},
+                type: "POST"
+            }).done(function (data) {
+      if(data == "sent"){
+        $('.payment-method-billing-address').append(
+            '<span class="sent" style=" display:none;color: green;font-size:13px;font-family: bold;">OTP has been sent successfully</span><span class=""><input type="text" id="otp"><button type="button" style="display:none" class="action" id="verify"><span><?php echo __("Verify") ?></span></button></span>');
+        jQuery('.sent').show();
+      jQuery('#verify').show();
+      }
+            });
+     }
+
+             
+   jQuery(document).on('change','#cashondelivery',function(){
+         Verifi();
+    });
+      /* COD otp verification */
+
+      zip = $(".selected-item .my-zip").text();
+      jQuery('.pin').html(zip);
+       $.ajax({
+        showLoader: true,
+        url: "https://next.desiredesire.com/sociallogin/check/check",
+        data: {"zipcode":parseInt(zip)},
+        type: "POST"
+    }).done(function (data) {
+    if(data == 1){
+    $(".continue").removeAttr("disabled")
+    $('#not').fadeOut();
+    }else if(data == 0){
+    jQuery('#not').show();  
+        $(".continue").attr("disabled", "disabled");
+    }else if(data == "not"){
+    jQuery('#not').show();  
+        $(".continue").attr("disabled", "disabled");
+    }
+    });
+      jQuery('.set-dlv').html(est);
+      jQuery('#demo1').html(mail);
+      updateDiv();
+     }
+    }, 1000);
+function updateDiv(){
+  clearInterval(setdate);
+}
+    
+  var count="";
+  var city = "";
+  var country = "";
+  var state = "";
+  var jui = "";
+
+     jQuery(document).on('click','.action-select-shipping-item',function(){
+    var my_zip = $(".selected-item .my-zip").text();
+    jQuery('.pin').html(my_zip);
+                       $.ajax({
+                                showLoader: true,
+                                url: "https://next.desiredesire.com/sociallogin/check/check",
+                                data: {"zipcode":parseInt(my_zip)},
+                                type: "POST"
+                            }).done(function (data) {
+                if(data == 1){
+                $(".continue").removeAttr("disabled")
+                $('#not').fadeOut();
+                }else if(data == 0){
+                jQuery('#not').show();  
+                    $(".continue").attr("disabled", "disabled");
+                }else if(data == "not"){
+                jQuery('#not').show();  
+                    $(".continue").attr("disabled", "disabled");
+                }
+                            });
+                         
+  });          
+
+    jQuery(document).on('change','input[name="postcode"]',function(){
+    var tyu = $('input[name="postcode"]').val();
+                       $.ajax({
+                                showLoader: true,
+                                url: "https://next.desiredesire.com/sociallogin/check/check",
+                                data: {"zipcode":tyu},
+                                type: "POST"
+                            }).done(function (data) {
+                if(data == 1){
+                $(".continue").removeAttr("disabled")
+                $('#not').fadeOut();
+                }else if(data == 0){
+                                jQuery('.custom-warn').show();
+                                jQuery('.custom-warn').delay(4000).fadeOut();
+                                jQuery('input[name="postcode"]').delay(4000).val("");
+                }else if(data == "not"){
+                                jQuery('.custom-warn').show();
+                                setTimeout(showpanel1, 3000);
+                               
+                }
+                            });
+                         
+    function showpanel1() { 
+     jQuery('.custom-warn').fadeOut();
+   jQuery('input[name="postcode"]').val("");
+                                
+ }                     
+                        $.ajax({
+                                showLoader: false,
+                                url: "https://maps.googleapis.com/maps/api/geocode/json?address="+tyu+"&sensor=true",
+                                data: "",
+                                type: "POST"
+                            }).done(function (data) {
+                var arr = $.map(data, function(el) { return el });
+                var arr1 = arr[0]['address_components'];
+                 for(count = 0; count <= arr1.length -1; count++){
+                   jui = arr1[count]['types'][0];
+                   if(jui == 'locality' || jui == 'administrative_area_level_2'){ 
+                   city = arr1[count]['long_name'];
+                  }else if(jui == 'administrative_area_level_1'){
+                    state = arr1[count]['long_name'];
+                    short_state = arr1[count]['short_name'];
+                  }else if(jui == 'country'){
+                    country = arr1[count]['short_name'];
+                  }
+                 }
+                jQuery("select[name='country_id'] option[value="+country+"]").prop('selected', 'selected');
+                  jQuery("select[name='country_id']").trigger("change");
+                jQuery("select[name='region_id'] option[value="+short_state+"]").prop('selected', 'selected');
+                jQuery('input[name="region"]').val(state);
+                jQuery('input[name="city"]').keyup();
+                jQuery('input[name="city"]').val(city);
+                            });
+  
+  }); 
+
+});
+  });
+
+ 

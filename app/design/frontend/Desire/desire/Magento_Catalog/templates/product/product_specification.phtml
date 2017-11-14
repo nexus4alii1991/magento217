@@ -1,46 +1,121 @@
-<div class="product_specification">
+<?php 
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+$attribute = $_product->getResource()->getAttribute('dd_product_type');
+if ($attribute){ $product_type = $attribute->getFrontend()->getValue($_product);}
+
+$techSpecs = $_product->getResource()->getAttribute('tech_specs');
+if($techSpecs){ $techSpecification = $techSpecs ->getFrontend()->getValue($_product);}
+//$description = $_product->getResource()->getAttribute('description');
+
+$description = $this->helper('Magento\Catalog\Helper\Output')->productAttribute($block->getProduct(), $block->getProduct()->getDescription(), 'description');
+
+if($product_type != "Show"){   
+
+		if((!empty($techSpecification)) && (!empty($description))){
+?>
+<div id = "product_spec" class="product_specification">
 	<div class="specificason-data">
+		<?php if((empty($techSpecification)) && (!empty($description))){?>
+
+		<!-- only specs -->
+		<div class="only_specifications">
+			<div class="specification_data col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="specification-hed">
+					<span class="specific-img"><img src="<?php echo $this->getViewFileUrl('images/specific-img.jpg');?>" alt=""></span>
+					<h6>Specifications</h6>
+				</div>
+				<?php echo $description;?>
+			</div>
+		</div>
+		<?php 
+			} elseif((!empty($techSpecification)) && (!empty($description))){?>
+		<!-- Details and Specs -->
+		<div class="all_specifications">
+			<div class="specification_data col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="specification-hed">
+					<span class="detail-img"><img src="<?php echo $this->getViewFileUrl('images/detail-img.jpg');?>" alt=""></span>
+					<h6>Details</h6>
+				</div>
+				<?php echo $description;?>
+			</div>
+			<div class="details_data col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="specification-hed">
+					<span class="specific-img"><img src="<?php echo $this->getViewFileUrl('images/specific-img.jpg');?>" alt=""></span>
+					<h6>Specifications</h6>
+				</div>
+				
+				<?php echo $techSpecification; ?>
+			</div>
+		</div>
+	<?php } elseif((!empty($techSpecification)) && (empty($description))){?>
+		<!-- Only Details -->
+		<div class="only_specifications">
+		<div class="specification_data col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="specification-hed">
+					<span class="detail-img"><img src="<?php echo $this->getViewFileUrl('images/detail-img.jpg');?>" alt=""></span>
+					<h6>Details</h6>
+				</div>
+				<?php echo $techSpecification; ?>
+			</div>
+	</div>
+	<?php }?>
+</div>
+</div>
+<?php }}else{ ?>
+	<div class="product-show-details-container">
+	<h2>Look Deeper</h2>
+	<!-- New Changes-->
+	
+	<!-- Details and Specs -->
+	<div class="all_specifications">
 		<div class="specification_data col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<div class="specification-hed">
-				<span class="specific-img"><img src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/specific-img.jpg');?>" alt=""></span>
-				<h6>Specifications</h6>
+				<span class="detail-img"><img src="<?php echo $this->getViewFileUrl('images/detail-img.jpg');?>" alt=""></span>
+				<h6>Details</h6>
 			</div>
-			<ul>
-				<li>World's first furtive civilian drone</li>
-				<li>Unique sensory experience - files and flaps like a bird</li>
-				<li>Resistant foam body, carbon fiber wings</li>
-				<li>World's first furtive civilian drone</li>
-				<li>Unique sensory experience - files and flaps like a bird</li>
-				<li>Resistant foam body, carbon fiber wings</li>
-				<li>World's first furtive civilian drone</li>
-				<li>Unique sensory experience - files and flaps like a bird</li>
-				<li>Resistant foam body, carbon fiber wings</li>
-				<li>World's first furtive civilian drone</li>
-				<li>Unique sensory experience - files and flaps like a bird</li>
-				<li>Resistant foam body, carbon fiber wings</li>
-				<li>World's first furtive civilian drone</li>
-			</ul>
+			<?php echo $description;?>
 		</div>
 		<div class="details_data col-lg-6 col-md-6 col-sm-6 col-xs-12">
 			<div class="specification-hed">
-				<span class="detail-img"><img src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/detail-img.jpg');?>" alt=""></span>
-				<h6>Details</h6>
+				<span class="specific-img"><img src="<?php echo $this->getViewFileUrl('images/specific-img.jpg');?>" alt=""></span>
+				<h6>Specifications</h6>
 			</div>
-			<ul>
-				<li><span>Size: </span>36.5 x 21 x 7.5 cm</li>
-				<li><span>Weight: </span>8.35 g</li>
-				<li><span>Capability: </span>All iOS and Android devices bluetooth 4.0</li>
-				<li>In the box:
-					<ul class="sub-ul">
-						<li>Resistant foam body, carbon fiber wings</li>
-						<li>Resistant foam body, carbon fiber wings</li>
-						<li>Resistant foam body, carbon fiber wings</li>
-						<li>Resistant foam body, carbon fiber wings</li>
-						<li>Resistant foam body, carbon fiber wings</li>
-						<li>Resistant foam body, carbon fiber wings</li>
-					</ul>
-				</li>
-			</ul>
+			<?php echo $techSpecification; ?>
 		</div>
 	</div>
+	
+	
+	<?php /* ?>
+	<div class="product-show-details-image">
+		<img src="<?php echo $this->getViewFileUrl('images/product-show-detial-1.png');?>" >
+	</div>
+
+	<div class="row product-show-details-row">
+		<div class="product-show-details-row-small upper-left-row">
+			<h3>The Brand Story</h3>
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+			Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut </p>
+			<a class="product-show-read" href="#">Read More</a>
+			<a class="product-show-cart" href="#">Add to bag</a>
+		</div>
+		<div class="product-show-details-row-large upper-row">
+			<img src="<?php echo $this->getViewFileUrl('images/product-show-detial-2.png');?>" >
+		</div>
+	</div>
+	<div class="row product-show-details-row lower-row">
+		<div class="product-show-details-row-large">
+			<img src="<?php echo $this->getViewFileUrl('images/product-show-detial-3.png');?>" >
+		</div>
+		<div class="product-show-details-row-small">
+			<h3>The Craft</h3>
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+			Lorem ipsum dolor sit amet, cons ectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut </p>
+			<a class="product-show-read" href="#">Read More</a>
+			<a class="product-show-cart" href="#">Add to bag</a>
+		</div>
+	</div>
+	<?php */ ?>
 </div>
+<?php } ?>

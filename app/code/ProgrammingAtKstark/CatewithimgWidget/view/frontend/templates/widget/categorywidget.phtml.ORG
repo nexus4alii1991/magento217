@@ -1,0 +1,51 @@
+<?php
+    $categories = $this->getCategoryCollection();
+    $categoryHelper = $this->getCategoryHelper();
+?>
+<div class="category-container section-cotainer">
+    <div class="columns-grid grid-3">
+        <?php
+        foreach($categories as $category):
+            $cat = $this->getCategorymodel($category->getId());
+            $image = $cat->getImageUrl();
+            if($image != null):
+        ?>
+        <div class="grid">
+            <div class="category-box">
+                <div class="category-img">
+                    <img src="<?php echo $image;?>" alt="<?php echo $cat->getName()?>"/>
+                </div>
+                <div class="category-title">
+                    <a href="<?php echo $cat->getUrl(); ?>"><h4 class="category-name"><?php echo wordwrap($cat->getName(), 8, "<br>\n", false); ?></h4></a>
+                </div>
+            </div>
+        </div>
+    <?php 
+    endif;
+    endforeach;?> 
+</div>
+</div>
+<?php /*<div class="widget block block-static-block cwiw" id="catewithimg">
+    <div class="block-content">
+        <div class="content-heading">
+            <h2 class="title"><?php echo $this->getMainTitle(); ?></h2>
+            <p class="info"><?php echo $this->getTagLine(); ?></p>
+        </div>
+        <div class="row">
+        <?php
+        foreach($categories as $category):
+            $cat = $this->getCategorymodel($category->getId());
+            $image = $cat->getImageUrl();
+        ?>
+            <?php if($image != null): ?>
+                <div class="col-md-4">
+                    <a class="category_name" href="<?php echo $cat->getUrl(); ?>">
+                       <img src="<?php echo $image; ?>" class="img-responsive category_image" alt="<?php echo $cat->getName(); ?>" />
+                        <h3><span><?php echo $cat->getName(); ?></span></h3>
+                    </a>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </div>
+    </div>
+</div>*/?>

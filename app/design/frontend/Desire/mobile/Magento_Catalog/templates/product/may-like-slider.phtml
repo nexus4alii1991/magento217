@@ -1,0 +1,76 @@
+<?php 
+ $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+$Block = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\ProductCollection');
+
+$currentProduct = $myBlock->getCurrentProduct();
+//$Productcollection = $Block->getProducts();
+//if ($currentProduct = $myBlock->getCurrentProduct()) {
+if(!empty($currentProduct)){
+    $upSellProducts = $currentProduct->getUpSellProducts();}
+    if(empty($upSellProducts)){
+    $upSellProducts = $Block->getProducts();
+    }
+//}
+?>
+<?php //if ( empty($upSellProducts)){  ?>
+<div class="may-like-slider">
+	<div class="maylike-heading">You may also like</div>
+	<div class="maylike_data col-sm-12 col-xs-12">
+	
+		<?php 
+			$i = 0;
+			foreach ($upSellProducts as $upSellProduct) { //print_r($upSellProduct->getData()); 
+			if ($i++ == 10) break;
+            $sku = $upSellProduct->getSku();
+            $id = $upSellProduct->getEntityId(); 
+            $product = $objectManager->create('Magento\Catalog\Model\Product')->load($id);
+           
+            $imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+            $image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->getUrl();
+            $likedproducts = $myBlock->getProductBySku($sku); 
+           
+			?>
+		<div class="maylike_prod_data col-sm-6 col-xs-6">
+			<a href="<?php echo $product->getProductUrl();?>" title="" class="slider-product-image">
+				<img class="lazyOwl" alt="" style="display: inline;" src="<?php echo $image_url;?>">
+			</a>
+			<h3 class="product-name">
+				<?php
+					$product_name = strip_tags($likedproducts->getName());
+
+					if (strlen($product_name) > 25) {
+						$stringCut = substr($product_name, 0, 30);
+						$product_name = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+					}
+				?>
+				<a href="<?php echo $product->getProductUrl();?>" title=""><?php echo $product_name; ?></a>
+			</h3>
+			<div class="prod_rating">
+				<div class="rating_data">
+					<span class="rating_point">4.2</span>
+					<span class="rating_star"><i class="fa fa-star" aria-hidden="true"></i></span>
+				</div>
+			</div>
+			<div class="price-box">
+				<p class="special-price">
+					<span class="price color-red">
+						<span class="CurrencySymbol">₹</span><?php echo $product->getFinalPrice();?>
+					</span>
+				</p>
+			</div>
+			<div class="bot-sec">
+				<div class="discont_price">
+					<span class="discount_amount">1000</span>
+					<span class="discount_percent">10% Off</span>
+				</div>
+				<div class="may_like_wishlist">
+					<a href=""><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+       <?php }
+  // }?>
+	</div>
+</div>
+<?php// }?>

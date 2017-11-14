@@ -1,0 +1,202 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$mediaurl = $objectManager->get('Magento\Store\Model\StoreManagerInterface')
+                    ->getStore()
+                    ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+$lookdeeprImageUrl = $mediaurl."/lookdeeper_mobile.jpg"; 
+//echo $lookdeeprImageUrl; exit();
+/*$productImageAttr = $_product->getCustomAttribute( 'look_deeper' );
+if(!empty($productImageAttr)){
+$productImage = $this->helper('Magento\Catalog\Helper\Image')
+    ->init($_product, 'look_deeper')
+    ->setImageFile($productImageAttr->getValue());
+}*/
+
+
+
+$productattributes = $objectManager->get('Magento\Catalog\Model\Product')->load($_product->getId());
+            $catIds = $_product->getCategoryIds(); //print_r($catIds); exit;
+                if(count($catIds) ){
+                           foreach($catIds as $Id){
+                            $category = $objectManager->create('Magento\Catalog\Model\category')->load($Id);
+                            $categoryDetails = $category->getData(); 
+                            if(!empty($categoryDetails)){
+                            $categories = explode("/",$categoryDetails['url_path']);
+                            $urlKey="";                            
+                            if(!empty($categories)){
+                            $urlKey = $categories[0];
+                            } 
+                            }  
+                           }
+                        } 
+?>
+
+<?php /* ?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames('detailed_info', 'getChildHtml')):?>
+    <div class="product info detailed">
+        <?php $layout = $block->getLayout(); ?>
+        <div class="product data items" data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <?php foreach ($detailedInfoGroup as $name):?>
+                <?php
+                    $html = $layout->renderElement($name);
+                    if (!trim($html)) {
+                        continue;
+                    }
+                    $alias = $layout->getElementAlias($name);
+                    $label = $block->getChildData($alias, 'title');
+                ?>
+                <div class="data item title"
+                     aria-labeledby="tab-label-<?php  echo $alias;?>-title"
+                     data-role="collapsible" id="tab-label-<?php echo $alias;?>">
+                    <a class="data switch"
+                       tabindex="-1"
+                       data-toggle="switch"
+                       href="#<?php echo $alias; ?>"
+                       id="tab-label-<?php echo $alias;?>-title">
+                        <?php echo $label; ?>
+                    </a>
+                </div>
+                <div class="data item content" id="<?php echo $alias; ?>" data-role="content">
+                    <?php echo $html; ?>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php endif; ?>
+<?php */ ?>
+<?php if($urlKey == "phone-cases"){ ?>
+
+<div class="product info detailed">
+		<div class="container-fluid">
+  
+			<div class="info_heading">Look Deeper</div>
+			<div class="prod-info">
+				<img src="<?php echo $lookdeeprImageUrl;?>">
+			</div>
+		</div>
+</div>
+
+<?php }?>
+<div class="product_info_group">
+	<div class="tabs">
+		<ul class="tab-links">
+			<?php if($_product->getShortDescription()){ ?>
+				<li class="active"><a href="#description">Description</a></li>
+			<?php } ?>
+			<?php if($_product->getDescription()){?>
+				<li><a href="#detail">Detail</a></li>
+			<?php } ?>
+			<?php if($_product->getTechSpecs()){ ?>
+				<li><a href="#specification">Specification</a></li>
+			<?php } ?>
+		</ul>
+		<?php
+			$sortDes = strip_tags($_product->getShortDescription());
+
+			if (strlen($sortDes) > 250) {
+				$stringCut = substr($sortDes, 0, 250);
+				$sortDes = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+			}
+			/************************/
+			$tecSpec = strip_tags($_product->getTechSpecs());
+
+			if (strlen($tecSpec) > 250) {
+				$stringCut = substr($tecSpec, 0, 250);
+				$tecSpec = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+			}
+			/************************/
+			$Des = strip_tags($_product->getDescription());
+
+			if (strlen($Des) > 250) {
+				$stringCut = substr($Des, 0, 250);
+				$Des = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+			}
+			
+		?>
+		<div class="tab-content tab-content-data">
+			<?php if($_product->getShortDescription()){ ?>
+				<div id="description" class="tab active">
+					<div class="showing_txt">
+						<p><?php echo $sortDes; ?></p>
+					</div>
+					<span class="show_txt">Know More</span>
+					<div class="disable_txt">
+						<p><?php echo $_product->getShortDescription(); ?></p>
+					</div>
+					<span class="hide_txt">Know Less</span> 
+				</div>
+			<?php } ?>
+			
+			<?php if($_product->getDescription()){?>
+				<div id="detail" class="tab">
+					<div class="showing_txt">
+						<p><?php echo $Des; ?></p>
+					</div>
+					<span class="show_txt">Know More</span>
+					<div class="disable_txt">
+						<p><?php echo $_product->getDescription();?></p>
+					</div>
+					<span class="hide_txt">Know Less</span>
+				</div>
+			<?php } ?>
+			
+			<?php if($_product->getTechSpecs()){ ?>
+				<div id="specification" class="tab">
+					<div class="showing_txt">
+						<p><?php echo $tecSpec; ?></p>
+					</div>
+					<span class="show_txt">Know More</span>
+					<div class="disable_txt">
+						<p><?php echo $_product->getTechSpecs(); ?></p>
+					</div>
+					<span class="hide_txt">Know Less</span> 
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</div>
+<script>
+require(['jquery','owl_carousel'],function($){
+	jQuery(document).ready(function() {
+		
+		
+		jQuery('.tabs .tab-links a').on('click', function(e)  {
+			var currentAttrValue = jQuery(this).attr('href');
+	 
+			// Show/Hide Tabs
+			jQuery('.tabs ' + currentAttrValue).show().siblings().hide();
+	 
+			// Change/remove current tab to active
+			jQuery(this).parent('li').addClass('active').siblings().removeClass('active');
+	 
+			e.preventDefault();
+		});
+		
+		jQuery(".show_txt").click(function(){
+			jQuery(".show_txt").addClass('remove');
+			jQuery(".hide_txt").addClass('showthis');
+			jQuery(".disable_txt").show();
+			jQuery(".showing_txt").hide();
+			
+		});
+		jQuery(".hide_txt").click(function(){
+			jQuery(".hide_txt").removeClass('showthis');
+			jQuery(".disable_txt").hide();
+			jQuery(".showing_txt").show();
+			jQuery(".show_txt").removeClass('remove');
+		});
+		
+	});
+});
+</script>

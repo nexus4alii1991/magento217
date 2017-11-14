@@ -1,0 +1,81 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+<div class="box-tocart">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()): ?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number"
+                       name="qty"
+                       id="qty"
+                       maxlength="12"
+                       value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+                       title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty"
+                       data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+            </button>
+            <?php echo $block->getChildHtml('', true) ?>
+			<?php //code for Key notes
+				$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+				$product = $objectManager->get('Magento\Framework\Registry')->registry('current_product');
+				$dispatch_eta = $product->getResource()->getAttribute('dispatch_eta');
+				if($dispatch_eta){
+				$dispatch_eta_value = $dispatch_eta->getFrontend()->getValue($product); 
+				} 
+				$return_eligiblity = $product->getResource()->getAttribute('return_eligiblity');
+				if($return_eligiblity){
+				$return_eligiblity_value = $return_eligiblity->getFrontend()->getValue($product); 
+				} 
+			?>
+			<div class="desire-product-catogory-information">
+				<p><i class="fa fa-check" aria-hidden="true"></i><span><?php echo "Ships in ".$dispatch_eta_value." business days" ?></span></p>
+				<p><i class="fa fa-check" aria-hidden="true"></i><span>COD available. Please refer <a href="<?php echo $this->getUrl("faqs");?>"><strong>FAQ</strong></a> for more information</span></p>
+				<p><i class="fa fa-check" aria-hidden="true"></i><span><?php if($return_eligiblity_value == 0){echo "Returns not eligible";}else{echo "".$return_eligiblity_value." days return";}?></span></p>
+			</div>
+			<?php //code for key notes end ?>
+        </div>
+		
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+</script>
+<?php if (!$block->isRedirectToCartEnabled()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "catalogAddToCart": {
+                "bindSubmit": true
+            }
+        }
+    }
+</script>
+<?php endif; ?>

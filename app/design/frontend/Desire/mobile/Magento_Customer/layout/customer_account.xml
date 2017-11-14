@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <attribute name="class" value="account"/>
+		<referenceBlock name="page.main.title" remove="true"/>
+		<referenceBlock name="customer_account_dashboard_top" remove="true"/>
+		<!--<move element="customer_account_navigation" destination="content" after="customer_account_dashboard_info"/>-->
+		<referenceBlock name="content">
+			<container name="dashboard-links" as="links" label="Page" htmlTag="ul" htmlClass="dashboard_menu" after="customer_account_dashboard_info">
+				<block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-orders-link" >
+					<arguments>
+						<argument name="path" xsi:type="string">customer/sales/order</argument>
+						<argument name="label" xsi:type="string" translate="true">My Orders</argument>
+					</arguments>
+				</block>
+				<!-- <block class="Magento\Framework\View\Element\Html\Link\Current" ifconfig="wishlist/general/active" name="customer-account-navigation-wish-list-link"  after="customer-account-navigation-orders-link">
+					<arguments>
+						<argument name="path" xsi:type="string">wishlist</argument>
+						<argument name="label" xsi:type="string">My Wishlist</argument>
+					</arguments>
+				</block> -->
+			</container>
+		</referenceBlock>
+    </body>
+</page>

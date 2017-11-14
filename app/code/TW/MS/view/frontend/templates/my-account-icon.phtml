@@ -1,3 +1,27 @@
 <a href="javascript:void(0)" >
-	<img src="<?php echo $this->getViewFileUrl('TW_MS::images/profile.png'); ?>" alt="My Acoount" width="40"/>
+	<img src="<?php echo $this->getViewFileUrl('TW_MS::images/profile.png'); ?>" alt="My Account" width="40"/>
 </a>
+<?php 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+if($customerSession->isLoggedIn()) {
+   $stat = 'yes';
+}
+else{
+   $stat = 'no';
+}
+ ?>
+ <input type="hidden" value="<?php echo $stat ?>" id="stat">
+<script>
+require([ 'jquery', 'jquery/ui'], function($){
+ $( document ).ready(function() {
+ 	var stat = $('#stat').val();
+ 	if(stat == "no"){
+    $(".return_link").addClass( "social-login" );
+    $(".return_link").attr('href','#social-login-popup');
+    $(".cancel_link").addClass( "social-login" );
+    $(".cancel_link").attr('href','#social-login-popup');
+ 	}
+});
+})
+</script>

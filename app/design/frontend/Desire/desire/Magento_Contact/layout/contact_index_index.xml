@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Contact Us</title>
+    </head>
+    <body>
+		<referenceContainer name="page.top">
+			<block class="Magento\Framework\View\Element\Template" name="static_page_bg" template="Magento_Cms::static_page_bg.phtml"></block>
+		</referenceContainer>
+        <referenceContainer name="content">
+            <block class="Magento\Contact\Block\ContactForm" name="contactForm" template="Magento_Contact::form.phtml">
+                <container name="form.additional.info" label="Form Additional Info"/>
+            </block>
+        </referenceContainer>
+		<referenceContainer name="page.bottom">
+			<block class="Magento\Framework\View\Element\Template" name="location_map" template="Magento_Contact::map_location.phtml"></block>
+		</referenceContainer>
+    </body>
+</page>

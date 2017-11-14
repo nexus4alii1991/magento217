@@ -79,6 +79,9 @@
         <!-- ko if: getCartParam('possible_onepage_checkout') -->
         <div class="actions">
             <div class="primary">
+				<a class="button action viewcart" data-bind="attr: {href: shoppingCartUrl}">
+					<!-- ko i18n: 'View Cart' --><!-- /ko -->
+				</a>
                 <button
                         id="top-cart-btn-checkout"
                         type="button"
@@ -90,6 +93,7 @@
             </div>
         </div>
         <!-- /ko -->
+		
     <!-- /ko -->
 
 

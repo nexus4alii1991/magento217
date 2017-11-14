@@ -16,7 +16,4 @@
 	<event name="sales_order_invoice_save_after">
 	<observer name="case_invoice" instance="Hiddentechies\Bizkick\Observer\CaseInvoice" />
 	</event>
-	<event name="sales_order_shipment_save_after">
-	 <observer name="pickr" instance="Hiddentechies\Bizkick\Observer\Pickr" />
-	</event>
 </config>

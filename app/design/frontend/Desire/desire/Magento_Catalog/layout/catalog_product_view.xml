@@ -7,23 +7,33 @@
 -->
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
+        <!-- <link src="Magento_Catalog::js/preselect.js"/> -->
         <css src="mage/gallery/gallery.css"/>
+        <css src="Magebuzz_Socialshare::css/socialshare.css"/>
     </head>
     <update handle="catalog_product_opengraph" />
     <update handle="page_calendar"/>
     <body>
+	
+	<move element="product_name" destination="product.info.main" before="product.info.review"/>
+	
+	<block class="Magento\Catalog\Block\Product\View" name="product_name" template="Magento_Catalog::product/view/product_name.phtml" before="product.info.review"></block>
+  <!--<referenceBlock name="product.design">
+  	<block class="Magento\Catalog\Block\Product\View" name="product_brand" template="Magento_Catalog::product/view/product_name.phtml" before="product.info.review"></block>
+  </referenceBlock>-->
 	<referenceBlock name="product.info.price">
-        <block class="Magento\Framework\View\Element\Template" name="product_artist" template="Magento_Catalog::product/view/artist.phtml" after="product.info.review"></block>
-		<block class="Magento\Framework\View\Element\Template" name="product_brand" template="Magento_Catalog::product/view/product_brand.phtml" before="product.price.final"></block>
+        <block class="Magento\Catalog\Block\Product\View" name="product_artist" template="Magento_Catalog::product/view/artist.phtml" after="product.info.review"></block>
+		<block class="Magento\Catalog\Block\Product\View" name="product_brand" template="Magento_Catalog::product/view/product_brand.phtml" before="product.price.final"></block>
 	</referenceBlock>
-	<referenceBlock name="content.bottom">
-        <block class="Magento\Framework\View\Element\Template" name="may-like-slider" template="Magento_Catalog::product/may-like-slider.phtml"></block>
-	</referenceBlock>
+	
 	<referenceBlock name="page.bottom">
-		<block class="Magento\Framework\View\Element\Template" name="product_show_video" template="Magento_Catalog::product/product_show_video.phtml"></block>
-		<block class="Magento\Framework\View\Element\Template" name="product_show_details" template="Magento_Catalog::product/product_show_details.phtml"></block>
+	
+		<block class="Magento\Catalog\Block\Product\View" name="product_specification" template="Magento_Catalog::product/product_specification.phtml"></block>
+		<!-- <block class="Magento\Framework\View\Element\Template" name="may-like-slider" template="Magento_Catalog::product/may-like-slider.phtml">
+		</block> -->
 		<block class="Magento\Framework\View\Element\Template" name="related_items_slider" template="Magento_Catalog::product/related_items_slider.phtml"></block>
 		<block class="Magento\Framework\View\Element\Template" name="brought-together" template="Magento_Catalog::product/brought-together.phtml"></block>
 	</referenceBlock>
+	    <referenceBlock name="page.main.title" remove="true"/>
     </body>
 </page>

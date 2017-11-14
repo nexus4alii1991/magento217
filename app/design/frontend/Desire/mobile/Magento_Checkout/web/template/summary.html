@@ -1,0 +1,30 @@
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="opc-block-summary" data-bind="blockLoader: isLoading">
+    <!-- ko foreach: elems() -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+
+<script type="text/javascript">
+/*	require([ 'jquery', 'jquery/ui'], function($){
+jQuery(document).ready(function(){ 
+var today = new Date();
+var dd = today.getDate();
+alert("hello");
+alert(dd);
+});
+})
+	
+var ViewModel = function(first) {
+    this.delivery = ko.observable(first); 
+    this.delivery = ko.computed(function() {
+        return this.delivery();
+    }, this);
+};
+ko.applyBindings(new ViewModel(dd));*/
+</script>

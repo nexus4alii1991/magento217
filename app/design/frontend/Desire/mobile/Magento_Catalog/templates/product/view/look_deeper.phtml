@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+
+$_helper = $this->helper('Magento\Catalog\Helper\Output');
+$_product = $block->getProduct();
+$productImageAttr = $_product->getCustomAttribute( 'look_deeper' );
+if(!empty($productImageAttr)){
+$productImage = $this->helper('Magento\Catalog\Helper\Image')
+    ->init($_product, 'look_deeper')
+    ->setImageFile($productImageAttr->getValue());
+  }
+?>
+<div class="">
+	<div class="container-fluid prodcut_detail_img">
+		<div class="prod-info">
+			<!--<img src="<?php if(!empty($productImage)){echo $productImage->getUrl();}?>">-->
+			<img alt="" src="<?php echo $this->getViewFileUrl('Magento_Catalog::images/product_detail_img.jpg');?>">
+		</div>
+	</div>
+</div>

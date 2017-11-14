@@ -9,17 +9,15 @@
 <?php if(!$enabled){ return; } ?>
 
 <?php
-$products = $this->getProductCollection();
-
-if(!count($products)) { return; }
+$products = $this->getProductCollection(); 
+//if(!count($products)) { return; }
 
 $productsType = $this->getData('products_type');
 $sliderConfig = json_encode($sliderData);
-$sliderTitle  = array_key_exists('title', $sliderData) ? $sliderData['title'] : '';
+$sliderTitle  = array_key_exists('title', $sliderData) ? $sliderData['title'] : ''; 
 $breakpoint   = $this->getBreakpointConfiguration();
 
 ?>
-
 <div class="custom-slider">
     <?php if (trim($sliderTitle)) : ?>
     <div class="content-heading">
@@ -31,24 +29,26 @@ $breakpoint   = $this->getBreakpointConfiguration();
 
             <?php
             $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
-            $productImage = $_imagehelper->init($product, 'category_page_list')->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+            $productImage = $_imagehelper->init($product, 'category_page_list')->resize(640,512)->getUrl();
             $productUrl   =  $product->getUrlModel()->getUrl($product);
             ?>
 
 			<div class="item">
 				<div class="product-content">
 					<div class="product-image">
-						<img alt="<?php echo $product->getName(); ?>" src="<?php echo $productImage; ?>" class=""
+						<a href="<?php echo $productUrl?>" >
+							<img alt="<?php echo $product->getName(); ?>" src="<?php echo $productImage; ?>" class=""
                                     <?php echo $sliderData['lazyLoad'] ? 'data-src="' . $productImage . '" data-src-retina="' . $productImage . '" class="owl-lazy"' : '' ?>
                                 />
+						</a>
 					</div>
 					<div class="actions-secondary" data-role="add-to-links">
 						<?php if ($showWishlist || $showCompare): ?>
 							<div class="secondary-addto-links actions-secondary" data-role="add-to-links">
 								<?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow() && $showWishlist): ?>
-									<a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($product); ?>'  class="action towishlist" data-action="add-to-wishlist" title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
-										<span class="fa fa-heart"></span>
-									</a>
+										<a href="#" data-post='<?php /* @escapeNotVerified */ echo $block->getAddToWishlistParams($product); ?>'  class="action towishlist" data-action="add-to-wishlist" title="<?php /* @escapeNotVerified */ echo __('Add to Wish List') ?>">
+											<span class="fa fa-heart-o"></span>
+										</a>
 								<?php endif; ?>
 
 								<?php if ($block->getAddToCompareUrl() && $showCompare): ?>
@@ -65,9 +65,19 @@ $breakpoint   = $this->getBreakpointConfiguration();
 							</div>
 						<?php endif; ?>
 					</div>
+					<?php
+						$product_name = strip_tags($product->getName());
+
+						if (strlen($product_name) > 45) {
+							$stringCut = substr($product_name, 0, 45);
+							$product_name = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
+						}
+					?>
 					
 					<div class="product-details">
-						<h4 class="product-name"> <?php echo $product->getName(); ?></h4>
+						<a href="<?php echo $productUrl ;?>">
+							<h4 class="product-name"> <?php echo $product_name; ?></h4>
+						</a>
 						<span class="price">
 							<?php if($showPrice) : ?>
 								<?php /* @escapeNotVerified */ echo $this->getProductPrice($product); ?>
@@ -77,12 +87,14 @@ $breakpoint   = $this->getBreakpointConfiguration();
 					<div class="action">
 						<?php $postDataHelper = $this->helper('Magento\Framework\Data\Helper\PostHelper');
 							$postData = $postDataHelper->getPostData($block->getAddToCartUrl($product), ['product' => $product->getEntityId()]) ?>
-						<button class="fill add-to-cart fixed left"
+						<!-- <button class="fill add-to-cart fixed left"
+                                onclick="window.location.href='<?php echo $productUrl; ?>'"
 								data-post='<?php /* @escapeNotVerified */ echo $postData; ?>'
 								type="button" title="<?php /* @escapeNotVerified */ echo __('Add to Cart') ?>">
 							<span><?php /* @escapeNotVerified */ echo __('Add to cart') ?></span>
-						</button>
-						<button class="view-more-button right fixed" onclick="window.location('<?php echo $productUrl; ?>')">Explore</button>
+						</button> -->
+                        <button class="fill add-to-cart fixed left" onclick="window.location.href='<?php echo $productUrl; ?>'">Add to cart</button>
+						<button class="view-more-button right fixed" onclick="window.location.href='<?php echo $productUrl; ?>'">Explore</button>
 					</div>
 				</div>
 			</div>

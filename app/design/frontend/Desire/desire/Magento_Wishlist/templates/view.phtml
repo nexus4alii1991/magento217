@@ -1,0 +1,99 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block \Magento\Wishlist\Block\Customer\Wishlist */
+?>
+<?php 
+$isEnabled = \Magento\Framework\App\ObjectManager::getInstance()
+->get('Magento\Framework\App\Config\ScopeConfigInterface') ->getValue('wishlist/general/active');
+ ?>
+<?php if ($isEnabled): ?>
+  <div class="block block-wishlist get_link" data-bind="scope: 'wishlist'" id="wishlist">
+    <div class="dash-info-title">
+      <h3 class="left-side-name"><img class="heding-icon" src="<?php echo $this->getViewFileUrl('Magento_Customer::images/heart.png');?>" alt="image"> My Wishlist</h3>
+      <h3 class="right-side-name"><a href="">Share <img class="heding-icon" src="<?php echo $this->getViewFileUrl('Magento_Customer::images/connection.png');?>" alt="image"></a></h3>
+    </div>
+  <?php if ($this->helper('Magento\Wishlist\Helper\Data')->isAllow()) : ?>
+      <?php echo($block->getChildHtml('wishlist.rss.link'));?>
+      <form class="form-wishlist-items" id="wishlist-view-form"
+            data-mage-init='{"wishlist":{
+            "addToCartUrl":<?php /* @escapeNotVerified */ echo $block->getItemAddToCartParams("%item%");?>,
+            "addAllToCartUrl":<?php /* @escapeNotVerified */ echo $block->getAddAllToCartParams(); ?>,
+            "commentString":""},
+            "validation": {}}' action="<?php /* @escapeNotVerified */ echo $block->getUrl('wishlist/index/update', ['wishlist_id' => $block->getWishlistInstance()->getId()]) ?>" method="post">
+          <?php echo $block->getChildHtml('top'); ?>
+          <?php if ($block->hasWishlistItems()): ?>
+              <?php echo $block->getBlockHtml('formkey');?>
+              <?php $block->getChildBlock('items')->setItems($block->getWishlistItems()); ?>
+              <?php echo $block->getChildHtml('items');?>
+          <?php else: ?>
+              <div class="message info empty"><span><?php /* @escapeNotVerified */ echo __('You have no items in your wish list.') ?></span></div>
+          <?php endif ?>
+          <?php echo $block->getChildHtml('bottom'); ?>
+          <div class="actions-toolbar">
+              <div class="primary">
+                  <?php echo $block->getChildHtml('control_buttons');?>
+              </div>
+              <div class="secondary">
+                  <a href="<?php echo $block->escapeUrl($block->getBackUrl()) ?>" class="action back">
+                      <span><?php /* @escapeNotVerified */ echo __('Back') ?></span>
+                  </a>
+              </div>
+          </div>
+      </form>
+  </div>
+      <script id="form-tmpl" type="text/x-magento-template">
+        <form id="wishlist-hidden-form" method="post" action="<%- data.url %>" class="no-display">
+            <% if (data.qty) { %>
+            <input name="qty" value="<%- data.qty %>">
+            <% } %>
+            
+            <% if (data.item) { %>
+            <input name="item" value="<%- data.item %>">
+            <% } %>
+            
+            <% if (data.entity) { %>
+            <input name="entity" value="<%- data.entity %>">
+            <% } %>
+        </form>
+    </script>
+  <?php endif ?>
+  <?php
+  $om = \Magento\Framework\App\ObjectManager::getInstance();
+  $customerSession = $om->create('Magento\Customer\Model\Session');
+  if($customerSession->isLoggedIn()) {
+    $cust = $customerSession->getCustomer()->getId();
+  ?>
+  <input type="hidden" id="cust_id" value="<?php echo $cust ?>">
+  <?php
+  }
+   ?>
+  <script>
+   require([ 'jquery', 'jquery/ui'], function($){
+    jQuery(document).ready(function(){  
+    jQuery(document).on('click','#wish_rem',function(){
+                var ioty =jQuery(this).closest('.recent-orders-discription').attr('class');
+                var res = ioty.split(" ");
+            var cust_id = jQuery('#cust_id').val();
+            var prod_id = res[1];
+            var typ = "";
+                          $.ajax({
+                                  showLoader: true,
+                                  url: "<?php echo $this->getUrl('sociallogin/wishlist/wishlist') ?>",
+                                  data: {"cust_id":cust_id,"prod_id":prod_id},
+                                  type: "POST"
+                              }).done(function (data) {
+                            typ = parseInt(data);
+                             jQuery('.customer-description').append('<div class="page messages"><div class="messages"><div class="message-success success message"><div>Product removed from wishlist successfully.</div></div></div></div>');
+                             jQuery('.'+typ).hide();
+                              });
+      });
+    })
+  });
+  </script>
+<?php endif ?>

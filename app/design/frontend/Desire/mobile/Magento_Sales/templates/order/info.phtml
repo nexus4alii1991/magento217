@@ -1,0 +1,172 @@
+<?php
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+?>
+<?php  /**@var $block \Magento\Sales\Block\Order\Info */ ?>
+<?php //$_order = $block->getOrder(); 
+$Entity_id = $this->getRequest()->getParam('order_id'); 
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$myBlock = \Magento\Framework\App\ObjectManager::getInstance()->get('Mageplaza\Currentproduct\Block\Currentproduct');
+$imageHelper  = $objectManager->get('\Magento\Catalog\Helper\Image');
+$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+$connection = $resource->getConnection();
+$tableName = $resource->getTableName('sales_order_item_canceled'); 
+
+$_order = $objectManager->create('Magento\Sales\Model\Order')->load($Entity_id);
+$_order->getRealOrderId(); 
+$order_id = $_order->getEntityId();
+$items = $_order->getAllItems();
+
+if (!empty($_POST)){
+    $orderDetail = $objectManager->create('Magento\Sales\Model\Order')->load($_POST['orderid']);
+if ($orderDetail->canCancel()) {
+    $orderItems = $orderDetail->getAllItems();        
+    
+    foreach ($orderItems as $value) { 
+        $product = $value->getProduct();
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+				
+				if(($value->getProductType() == 'simple') && isset($parent[0])){
+					continue;
+        		}
+        if($value->getId() == $_POST['itemid']){ 
+            $value->setQtyCanceled($value['qty_ordered']);
+            $value->save(); 
+
+        }else{
+         continue;
+        }
+    }
+    if($orderDetail->save()){ 
+	$sql = "Insert Into " . $tableName . " (order_id, item_id, qty_canceled, comments) Values (".$_POST['orderid'].",".$_POST['itemid'].",".$value['qty_ordered'].",'".$_POST['comments']."')";
+	$connection->query($sql);
+	}
+
+}
+
+}
+
+
+?>
+
+    
+
+<div class="col-lg-12 col-xs-12 shipping-details-container section-container" id="status">
+	<div class="row">
+		<div class="shipping-details">
+			<?php foreach($items as $item) { 
+				$product = $item->getProduct();
+				$parent = $objectManager->create('Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable')->getParentIdsByChild($product->getId());
+				
+				if(($item->getProductType() == 'simple') && isset($parent[0])){
+					continue;
+				}
+
+				$image_url = $imageHelper->init($product, 'product_page_image_small')->setImageFile($product->getFile())->resize(172,160)->getUrl();
+
+				$productbysku = $myBlock->getProductBySku($product->getSku());
+				$item_id = $item->getId(); 
+
+				?>
+			<div class="shipping-content">
+				<div class="action">
+					<div class="button-container">
+						<button class="review" type="button">Write a product review</button>
+					</div>
+					<div class="button-container">
+						<?php if($_order->getState() == "Complete"){?>
+						<button class="return">Return or replace item</button>
+						<?php } 
+						if(($_order->getState() != "Complete") || ($_order->getState() != "Shipped")){
+							if ($item->getStatus() != "Canceled"){?>
+						
+							<button type="button" id="cancle-ordr" data-item="<?php echo $item_id; ?>" data-order="<?php echo $order_id; ?>" class="return" data-toggle="modal" data-target="#myModal" >Cancel Item </button>
+							
+						<?php 
+							}else {?>
+								<button>Item Canceled</button>
+							
+						<?php	}
+						}
+						?>
+						<div class="remaining-options-for-return">
+							<span class="lite-text">Eligible through 29 Oct 2017</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php }?>
+		</div>
+	</div>
+</div>
+
+<!-- popup -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Are you sure?</h4>
+      </div>
+      <div class="modal-body">
+      	<?php //echo $_POST['orderid']; ?>
+        <form method="POST" id="itemcancel" action="">
+		<input type="hidden" id="orderid" name="orderid" />
+		<input type="hidden" id="itemid" name="itemid" />
+			<h3>Why are you returning or cancelling this?</h3>
+			<input type="Text" name="comments"/>
+			<button class="return" id="CancelItem" onclick="document.getElementById('itemcancel').submit(); value="Cancel">Cancel Item </button>
+    	</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<style>
+.sales-order-view.modal-open .modal-backdrop.in{display:none;}
+.sales-order-view.modal-open .modal {
+    overflow-x: hidden;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+</style>
+
+<script type="text/javascript">
+require(['jquery'],function($){
+		$( "#cancle-ordr" ).on( "click", function() {
+		
+		var item = $(this).data('item');      
+        var order = $(this).data('order');
+        $("#itemid").val(item);
+        $("#orderid").val(order);
+		$("#myModal").appendTo("body").modal('show');
+		
+	});
+});
+
+
+$('#CancelItem').click(function(e){
+    e.preventDefault();                
+    $.ajax({
+        type: "POST",
+        url: $(this),
+        success: function(data){
+            $("#status").replaceWith();
+        }
+    });
+});
+
+</script>
+
+

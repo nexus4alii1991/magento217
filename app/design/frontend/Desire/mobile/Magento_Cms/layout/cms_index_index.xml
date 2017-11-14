@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+		
+	</head>
+	
+	<body>
+		<referenceContainer name="page.top">
+			<block class="WeltPixel\OwlCarouselSlider\Block\Slider\Custom" >
+				 <action method="setSliderId">
+					  <argument name="slider_id" xsi:type="string">6</argument>
+				  </action>
+			</block >
+		</referenceContainer>
+
+		<referenceBlock name="main">
+			<block class="Magento\Framework\View\Element\Template" name="welcome-block" template="Magento_Cms::welcome.phtml">
+			</block>
+			
+			<block class="Magento\Framework\View\Element\Template" name="Category-block" template="Magento_Catalog::category/homepage-category.phtml">
+			</block>
+			
+			<block class="Magento\Framework\View\Element\Template" name="collectors-block" template="Magento_Cms::collectors.phtml">
+			</block>
+			
+			<block class="Magento\Framework\View\Element\Template" name="tabs-products" template="Magento_Catalog::products/tabs-products.phtml">
+			</block>
+			
+			<block class="Magento\Framework\View\Element\Template" name="awards-block" template="Magento_Cms::awards.phtml">
+			</block>
+			
+			<block class="Magento\Framework\View\Element\Template" name="testimonial-block" template="Magento_Cms::testimonial.phtml">
+			</block>
+			
+		</referenceBlock>
+	  
+	  
+		<referenceBlock name="page.bottom.container" before="-">
+			<block class="Magento\Framework\View\Element\Template" name="shipping-and-fetured-block" template="Magento_Cms::shipping-and-feature.phtml">
+			</block>
+		</referenceBlock>
+	</body>
+
+</page>
+
+
+
